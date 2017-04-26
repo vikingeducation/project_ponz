@@ -58,33 +58,38 @@ router.post("/register", (req, res) => {
 
 router.get("/", async (req, res) => {
   if (req.user) {
-    let allChildren = [];
     let points = 0;
+    let initialUser = await User.findById(req.user._id).populate({
+      path: "children",
+      populate: { path: "children", populate: { path: "children" } }
+    });
+    let initial = await User.findById(req.user._id).populate("children");
+    let allChildren = initialUser.children;
 
-    let initialUser = await User.findById(req.user._id).populate("children");
-
-    for (let i = 0; i < initialUser.children.length; i++) {
-      let firstChild = await User.findById(
-        initialUser.children[i]._id
-      ).populate("children");
+    for (let i = 0; i < initial.children.length; i++) {
+      firstChild = await User.findById(initial.children[i]._id).populate(
+        "children"
+      );
       points += 40;
 
       for (let j = 0; j < firstChild.children.length; j++) {
-        let secondChild = await User.findById(
-          firstChild.children[j]._id
-        ).populate("children");
+        secondChild = await User.findById(firstChild.children[j]._id).populate(
+          "children"
+        );
         firstChild.children[j].children.push(secondChild);
         points += 20;
 
         for (let k = 0; k < secondChild.children.length; k++) {
-          let thirdChild = await User.findById(
+          thirdChild = await User.findById(
             secondChild.children[k]._id
           ).populate("children");
           console.log("First child: ", firstChild);
           console.log("First child-children: ", firstChild.children);
-          console.log("First child-children-children: ", firstChild.children[j].children);
-          console.log("First child: ", firstChild.children[j].children[k]);
-
+          console.log(
+            "First child-children-children: ",
+            firstChild.children[j].children
+          );
+          console.log("First child 4: ", firstChild.children[j].children[k]);
 
           // firstChild.children[j].children[k].children.push(thirdChild);
           points += 10;
