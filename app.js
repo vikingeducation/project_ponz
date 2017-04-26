@@ -95,8 +95,8 @@ app.use((req, res, next) => {
 // ----------------------------------------
 // Routes
 // ----------------------------------------
-//const indexRouter = require("./routers/indexRouter");
-//app.use("/", indexRouter);
+const indexRouter = require("./routers/index");
+app.use("/", indexRouter);
 
 app.listen(3000, () => {
   console.log("Listening on port 3000...");
