@@ -95,7 +95,7 @@ router.get("/", async (req, res) => {
           points += 10;
         }
       }
-      allChildren.push(firstChild);
+      // allChildren.push(firstChild);
       // console.log("All: ", allChildren);
     }
 
