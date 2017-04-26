@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const moment = require("moment");
 // ----------------------------------------
 // Handlebars
 // ----------------------------------------
@@ -7,7 +8,12 @@ const expressHbs = require("express-handlebars");
 const hbs = expressHbs.create({
   extname: ".hbs",
   partialsDir: "views/",
-  defaultLayout: "main"
+  defaultLayout: "main",
+  helpers: {
+    formatDate: function(date) {
+      return moment(date).format("MMM Do YY");
+    }
+  }
 });
 app.set("view engine", "hbs");
 app.engine("hbs", hbs.engine);

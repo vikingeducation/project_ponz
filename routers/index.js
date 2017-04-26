@@ -5,12 +5,20 @@ const passport = require("passport");
 var User = require("../models/user");
 
 router.get("/ponzvert/", (req, res) => {
-  res.render("register");
+  if (req.user) {
+    res.redirect("/");
+  } else {
+    res.render("register");
+  }
 });
 
 router.get("/ponzvert/:id", (req, res) => {
   var parentCode = req.params.id;
-  res.render("register", { parentCode });
+  if (req.user) {
+    res.redirect("/");
+  } else {
+    res.render("register", { parentCode });
+  }
 });
 
 router.post("/register", (req, res) => {
@@ -65,50 +73,38 @@ router.get("/", async (req, res) => {
         let secondChild = await User.findById(
           firstChild.children[j]._id
         ).populate("children");
-        // console.log("First: ", firstChild.children);
-        // console.log("Second: ", secondChild);
         firstChild.children[j].children.push(secondChild);
         points += 20;
+
+        for (let k = 0; k < secondChild.children.length; k++) {
+          let thirdChild = await User.findById(
+            secondChild.children[k]._id
+          ).populate("children");
+          console.log("FOR", firstChild.children[j].children[k]);
+          firstChild.children[j].children[k].children.push(thirdChild);
+          points += 10;
+        }
       }
       allChildren.push(firstChild);
-      console.log("All: ", allChildren)
+      console.log("All: ", allChildren);
     }
-    // console.log("all Children", allChildren);
+
     res.render("home", { allChildren, points });
   } else {
     res.redirect("/login");
   }
 });
 
-// router.get("/", (req, res) => {
-
-//   if (req.user) {
-//     let allChildren = [];
-
-//     User.findById(req.user._id).populate('children')
-//       .then((user) => {
-//         for( let i = 0; i < user.children.length; i++ ) {
-//           User.findById(user.children[i]._id).populate('children')
-//             .then((user) => {
-//               allChildren.push(user.children);
-
-//             })
-//         }
-//         console.log("All Children array:", allChildren);
-//         res.render("home")
-//       })
-
-//   } else {
-//     res.redirect("/login");
-//   }
-// });
-
 router.post("/login", passport.authenticate("local"), function(req, res) {
   res.redirect("/");
 });
 
 router.get("/login", (req, res) => {
-  res.render("login");
+  if (req.user) {
+    res.redirect("/");
+  } else {
+    res.render("login");
+  }
 });
 
 router.get("/logout", (req, res) => {

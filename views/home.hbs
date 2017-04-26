@@ -3,15 +3,24 @@
   <p>Share this link with your friends to ponvert them!</p>
 </div>
 
-<h2>{{points}}</h2>
+<h2 style="background-color:#34a834;color:white;padding:40px;border-radius:5px">Ponz Pointz: {{points}}</h2>
 
+<div class="panel panel-default">
+  <div class="panel-heading">Ponzverts</div>
+  <div class="panel-body">
+    <ul style="list-style-type:none">
   {{#each allChildren as |child1|}}
-  <p>Child: {{child1.email}}</p>
+  <li style="padding:15px"><strong><span style="background-color:#34a834;padding:10px;color:white;margin-right:5px;border-radius:5px">$40</span>{{child1.email}}</strong> ponverted on {{formatDate child1.createdAt}}</li>
     {{#if child1.children.length}}
+      <ul style="list-style-type:none">
       {{#each child1.children as |child2|}}
-        <p>Grandchild: {{child2.email}}</p>
+        <li style="padding:15px"><strong><span style="background-color:#34a834;padding:10px;color:white;margin-right:5px;border-radius:5px">$20</span>{{child2.email}}</strong> ponverted on {{formatDate child2.createdAt}}</li>
       {{/each}}
+    </ul>
     {{/if}}
 
   {{/each}}
+</ul>
+</div>
+</div>
 
