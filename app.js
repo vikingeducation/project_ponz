@@ -72,6 +72,7 @@ app.use((req, res, next) => {
 // Passport
 // ----------------------------------------
 const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
 app.use(passport.initialize());
 app.use(passport.session());
 
