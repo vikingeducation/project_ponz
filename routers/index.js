@@ -48,23 +48,53 @@ router.post("/register", (req, res) => {
   }
 });
 
-router.get("/", (req, res) => {
-  console.log("user", req.user);
+router.get("/", async (req, res) => {
+
   if (req.user) {
-    res.render("home");
+    let allChildren = [];
+
+    let initialUser = await User.findById(req.user._id).populate('children');
+      
+      for( let i = 0; i < initialUser.children.length; i++ ) {
+        let firstChildren = await User.findById(initialUser.children[i]._id).populate('children');
+            allChildren.push(firstChildren);
+      }
+      console.log("All Children array:", allChildren);
+      res.render("home")
+
+
   } else {
     res.redirect("/login");
   }
 });
 
-// router.post(
-//   "/login",
-//   passport.authenticate("local", {
-//     successRedirect: "/",
-//     failureRedirect: "/login"
-//     // failureFlash: true
-//   })
-// );
+
+
+
+
+// router.get("/", (req, res) => {
+
+//   if (req.user) {
+//     let allChildren = [];
+
+//     User.findById(req.user._id).populate('children')
+//       .then((user) => {
+//         for( let i = 0; i < user.children.length; i++ ) {
+//           User.findById(user.children[i]._id).populate('children')
+//             .then((user) => {
+//               allChildren.push(user.children);
+
+//             }) 
+//         }
+//         console.log("All Children array:", allChildren);
+//         res.render("home")
+//       })
+
+//   } else {
+//     res.redirect("/login");
+//   }
+// });
+
 
 router.post("/login", passport.authenticate("local"), function(req, res) {
   res.redirect("/");

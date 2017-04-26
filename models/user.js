@@ -6,20 +6,32 @@ mongoose.Promise = bluebird;
 
 var User = new Schema({
   referralCode: { type: String, unique: true },
+  pointsSpent: 0,
   children: [
     {
       type: Schema.Types.ObjectId,
       ref: "User"
     }
   ]
-});
+}, {timestamps: true});
 
 User.plugin(passportLocalMongoose, { usernameField: "email" });
 
 module.exports = mongoose.model("User", User);
 
-// User: 17 (23, 73)
 
-//   User: 23 (43, 74)
+//finding all children
 
-//     User: 43 (56)
+//forEach on children [3342, 434334 ,5566]
+  //findById
+  //if(children)forEach on children
+
+   //if(children)forEach on children
+
+
+// [ {[email, [{[email, [{[email, [children]]}] ]}]]}] ]}, ]
+
+
+//handlebars each child
+//{{child.email}}
+//{{if child.children}}
