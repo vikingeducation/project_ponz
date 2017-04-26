@@ -1,0 +1,30 @@
+{
+  "name": "project_ponz",
+  "version": "1.0.0",
+  "description": "Building Ponz.io, with its endearingly upside-down-triangle-shaped business model.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eglital/project_ponz.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eglital/project_ponz/issues"
+  },
+  "homepage": "https://github.com/eglital/project_ponz#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.2",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.2",
+    "mongoose": "^4.9.6",
+    "morgan": "^1.8.1",
+    "passport": "^0.3.2",
+    "passport-local-mongoose": "^4.0.0"
+  }
+}
