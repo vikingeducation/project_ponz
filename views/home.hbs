@@ -15,6 +15,13 @@
       <ul style="list-style-type:none">
       {{#each child1.children as |child2|}}
         <li style="padding:15px"><strong><span style="background-color:#34a834;padding:10px;color:white;margin-right:5px;border-radius:5px">$20</span>{{child2.email}}</strong> ponverted on {{formatDate child2.createdAt}}</li>
+        {{#if child2.children.length}}
+        <ul style="list-style-type:none">
+          {{#each child2.children as |child3|}}
+          <li style="padding:15px"><strong><span style="background-color:#34a834;padding:10px;color:white;margin-right:5px;border-radius:5px">$20</span>{{child3.email}}</strong> ponverted on {{formatDate child3.createdAt}}</li>
+          {{/each}}
+        </ul>
+        {{/if}}
       {{/each}}
     </ul>
     {{/if}}
