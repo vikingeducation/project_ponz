@@ -5,3 +5,11 @@
   <p>Share this link with your friends to ruin them financially for the rest of their lives!</p>
 </div>
 <h4>Your value as a human is: {{user.points}}<h4>
+  <div class="row">
+    <div class="col-xs-12">
+      {{#each user.children as |child|}}
+      <p>{{child.fname}}</p>
+        {{> shared/_child child=child}}
+      {{/each}}
+    </div>
+  </div>

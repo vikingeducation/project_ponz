@@ -45,8 +45,8 @@ module.exports = passport => {
     // move first child to queue
     // grab all children from that child
     // attach depth + 1 to all children
-
-    let children = (await User.findById(req.user.id).populate('children').lean()).children;
+    user = await User.findById(req.user.id).populate("children").lean();
+    let children = user.children;
     children.forEach(child => child.depth = 1);
     let stack = children;
     let results = [];
@@ -63,7 +63,7 @@ module.exports = passport => {
       }
       results.push(user);
     }
-    res.render("index", { user });
+    res.render("index", { user, results });
   });
 
   router.get("/login", loggedOutOnly, (req, res) => {
