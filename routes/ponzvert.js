@@ -7,6 +7,7 @@ const {
 
 const User = require("../models/User");
 const { augmentParents } = require("../services/ponz");
+
 router.get("/:referralId", loggedOutOnly, (req, res) => {
   const referralId = req.params.referralId;
   res.render("ponzvert", { referralId });
@@ -26,7 +27,6 @@ router.post("/", loggedOutOnly, async (req, res, next) => {
 
   if (user) {
     augmentParents(user);
-
     req.login(newUser, err => {
       if (err) throw err;
       res.redirect("/");

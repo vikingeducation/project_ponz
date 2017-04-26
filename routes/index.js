@@ -8,8 +8,54 @@ const {
 const User = require("../models/User");
 
 module.exports = passport => {
-  router.get("/", loggedInOnly, (req, res, next) => {
+  router.get("/", loggedInOnly, async (req, res, next) => {
     const user = req.user;
+
+  // User populated with children
+  //
+  //   { _id: 5901013ee0706c0a621f1461,
+  // fname: 'a',
+  // lname: 'a',
+  // email: 'a',
+  // points: 80,
+  // passwordHash: '$2a$08$09pOdqoXbNXlmudN7UX5B.i2NFh.f41U.aexj38RTdLk4ARCiHql2',
+  // __v: 2,
+  // children:
+  //  [ { _id: 5901014ce0706c0a621f1462,
+  //      fname: 'b',
+  //      lname: 'b',
+  //      email: 'b',
+  //      points: 0,
+  //      passwordHash: '$2a$08$sj0YvhfbThKxuPGl.WVND.i5f8qoZcCUzuV/Ql4elgTUdk9oqwtKW',
+  //      parent: 5901013ee0706c0a621f1461,
+  //      __v: 0,
+  //      children: [] },
+  //    { _id: 59010152e0706c0a621f1463,
+  //      fname: 'c',
+  //      lname: 'c',
+  //      email: 'c',
+  //      points: 0,
+  //      passwordHash: '$2a$08$Ae9sdESnFkkcS0HqM6Ex1eBD5Ngm/we4QTTgad1moqho5pKlz4EAW',
+  //      parent: 5901013ee0706c0a621f1461,
+  //      __v: 0,
+  //      children: [] } ] }
+
+
+  // [ children ]
+  // attach depth to each child
+  // move first child to queue
+  // grab all children from that child
+  // attach depth + 1 to all children
+
+    let stack = [];
+    let children = (await user.populate('children')).children;
+    children = children.map(child => child.depth = 1);
+    while (children.length) {
+      queue.push(children.unshift());
+      while (queue.length) {
+
+      }
+    }
 
     res.render("index", { user });
   });
