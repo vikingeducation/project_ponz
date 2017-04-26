@@ -15,7 +15,6 @@ const UserSchema = mongoose.Schema({
   fname: { type: String },
   lname: { type: String },
   points: { type: Number },
-  depth: { type: Number },
   passwordHash: { type: String },
   parent: {
     type: Schema.Types.ObjectId,

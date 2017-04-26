@@ -19,7 +19,6 @@ router.post("/", loggedOutOnly, (req, res, next) => {
     lname: lname,
     email: email,
     points: 0,
-    depth: 0,
     password: password,
     parent: referralId
   });
