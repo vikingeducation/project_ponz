@@ -17,12 +17,10 @@ router.post("/register", (req, res) => {
   const { email, password } = req.body;
   const parentCode = req.body.parentCode;
   const referralCode = uniqid.time();
-  
-const user = new User({ email, referralCode });
-
+  const user = new User({ email, referralCode });
 
   if (parentCode) {
-    user.save().then(user => {
+    User.register(user, password, function(err, user) {
       User.update(
         { referralCode: parentCode },
         { $push: { children: user.id } }
@@ -38,15 +36,15 @@ const user = new User({ email, referralCode });
   } else {
     User.register(user, password, function(err, user) {
       if (err) {
-        console.log('error while user register!', err);
+        console.log("error while user register!", err);
         return next(err);
       } else {
-        req.login(user, function(){
-          console.log('user registered!');
-          res.redirect('/')
+        req.login(user, function() {
+          console.log("user registered!");
+          res.redirect("/");
         });
       }
-    })
+    });
   }
 });
 
@@ -68,15 +66,13 @@ router.get("/", (req, res) => {
 //   })
 // );
 
-router.post('/login', passport.authenticate('local'), function(req, res) {
-  res.redirect('/');
+router.post("/login", passport.authenticate("local"), function(req, res) {
+  res.redirect("/");
 });
 
 router.get("/login", (req, res) => {
   res.render("login");
 });
-
-
 
 router.get("/logout", (req, res) => {
   req.logout();
