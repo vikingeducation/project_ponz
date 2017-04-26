@@ -10,6 +10,7 @@ const User = require("../models/User");
 module.exports = passport => {
   router.get("/", loggedInOnly, (req, res, next) => {
     const user = req.user;
+
     res.render("index", { user });
   });
 
@@ -42,9 +43,10 @@ module.exports = passport => {
       lname: lname,
       email: email,
       points: 0,
-      password: password,
+      password: password
     });
-    user.save()
+    user
+      .save()
       .then(user => {
         req.login(user, err => {
           if (err) throw err;

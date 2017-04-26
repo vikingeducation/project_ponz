@@ -6,7 +6,7 @@ const {
 } = require("../services/session");
 
 const User = require("../models/User");
-
+const { augmentParents } = require("../services/ponz");
 router.get("/:referralId", loggedOutOnly, (req, res) => {
   const referralId = req.params.referralId;
   res.render("ponzvert", { referralId });
@@ -25,16 +25,8 @@ router.post("/", loggedOutOnly, async (req, res, next) => {
   let user = await newUser.save();
 
   if (user) {
-    let distance = 0;
-    while (user.parent) {
-      let parent = await User.findById(user.parent);
-      if (parent) {
-        parent.points += _pointsByDistance(distance);
-        parent.save();
-        distance++;
-      }
-      user = parent;
-    }
+    augmentParents(user);
+
     req.login(newUser, err => {
       if (err) throw err;
       res.redirect("/");
@@ -43,11 +35,5 @@ router.post("/", loggedOutOnly, async (req, res, next) => {
     res.redirect("/");
   }
 });
-
-function _pointsByDistance(distance) {
-  const points = [40, 20, 10, 5, 2];
-  if (distance < 5) return points[distance];
-  return 1;
-}
 
 module.exports = router;
