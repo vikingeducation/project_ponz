@@ -80,13 +80,18 @@ router.get("/", async (req, res) => {
           let thirdChild = await User.findById(
             secondChild.children[k]._id
           ).populate("children");
-          console.log("FOR", firstChild.children[j].children[k]);
-          firstChild.children[j].children[k].children.push(thirdChild);
+          console.log("First child: ", firstChild);
+          console.log("First child-children: ", firstChild.children);
+          console.log("First child-children-children: ", firstChild.children[j].children);
+          console.log("First child: ", firstChild.children[j].children[k]);
+
+
+          // firstChild.children[j].children[k].children.push(thirdChild);
           points += 10;
         }
       }
       allChildren.push(firstChild);
-      console.log("All: ", allChildren);
+      // console.log("All: ", allChildren);
     }
 
     res.render("home", { allChildren, points });
