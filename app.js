@@ -38,10 +38,15 @@ app.set("view engine", "handlebars");
 
 let passport = require("./services/passports")(app);
 
-const authenticateRouter = require("./routes/authenticate")(passport);
 const indexRouter = require("./routes/index");
-app.use("/auth/", authenticateRouter);
 app.use("/", indexRouter);
+
+// ----------------------------------------
+// Error Handler
+// ----------------------------------------
+app.use((err, req, res, next) => {
+  res.status(500).send(err.stack);
+});
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("taking calls");

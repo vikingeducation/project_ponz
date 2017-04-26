@@ -31,5 +31,6 @@ module.exports = app => {
         done(err);
       });
   });
+
   return passport;
 };
