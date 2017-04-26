@@ -46,34 +46,23 @@ module.exports = passport => {
     // grab all children from that child
     // attach depth + 1 to all children
 
-    User.find({ fname: "a" })
-      .populate({
-        path: "children",
-        populate: { path: "children" }
-      })
-      .then(user => {
-        console.log(user);
-      });
-
-    // let children = user.children;
-    // children = children.map(child => {
-    //   child.depth = 1;
-    //   return child;
-    // });
-    // console.log(user);
-    // let stack = children;
-    // while (stack.length) {
-    //   let current = stack.shift();
-    //   let currentChildren = (await current.populate("children")).children;
-    //   currentChildren = currentChildren.map(
-    //     child => child.depth = current.depth + 1
-    //   );
-    //   console.log("this is the current value", current);
-    //
-    //   stack = currentChildren.concat(stack);
-    // }
-    // console.log(user);
-
+    let children = (await User.findById(req.user.id).populate('children').lean()).children;
+    children.forEach(child => child.depth = 1);
+    let stack = children;
+    let results = [];
+    while (stack.length) {
+      let nextChild = stack.shift();
+      let user = await User.findById(nextChild._id).populate("children").lean();
+      user.depth = nextChild.depth;
+      let currentChildren = user.children;
+      if (currentChildren.length) {
+        currentChildren.forEach(child => {
+          child.depth = nextChild.depth + 1;
+        });
+        stack = currentChildren.concat(stack);
+      }
+      results.push(user);
+    }
     res.render("index", { user });
   });
 
