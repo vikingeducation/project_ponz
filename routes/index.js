@@ -35,25 +35,26 @@ module.exports = passport => {
     })
   );
 
-  router.post("/register", loggedOutOnly, async (req, res, next) => {
+  router.post("/register", loggedOutOnly, (req, res, next) => {
     const { fname, lname, email, password } = req.body;
     const user = new User({
       fname: fname,
       lname: lname,
       email: email,
       points: 0,
-      password: password
+      password: password,
     });
-    let pointArray = [40, 20, 10, 5, 2, 1];
-    let counter = 0;
-    await user.save();
-    while (user.parent) {
-      let parent = await User.findById(user.parent);
-      parent.points += pointArray[counter];
-      if (counter < 5) {
-        counter++;
-      }
-    }
+    user
+      .save()
+      .then(user => {
+        req.login(user, err => {
+          if (err) {
+            throw err;
+          }
+          res.redirect("/");
+        });
+      })
+      .catch(next);
   });
 
   return router;

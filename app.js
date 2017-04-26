@@ -80,6 +80,14 @@ passport.deserializeUser(function(id, done) {
 });
 
 // ----------------------------------------
+// currentUser
+// ----------------------------------------
+app.use((req, res, next) => {
+  if (req.user) res.locals.currentUser = req.user;
+  next();
+});
+
+// ----------------------------------------
 // Routers
 // ----------------------------------------
 const indexRouter = require("./routes/index")(passport);
