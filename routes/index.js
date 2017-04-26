@@ -44,13 +44,10 @@ module.exports = passport => {
       points: 0,
       password: password,
     });
-    user
-      .save()
+    user.save()
       .then(user => {
         req.login(user, err => {
-          if (err) {
-            throw err;
-          }
+          if (err) throw err;
           res.redirect("/");
         });
       })

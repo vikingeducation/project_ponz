@@ -14,7 +14,7 @@ router.get("/:referralId", loggedOutOnly, (req, res) => {
 
 router.post("/", loggedOutOnly, async (req, res, next) => {
   const { fname, lname, email, password, referralId } = req.body;
-  const newUser = new User({
+  let newUser = new User({
     fname: fname,
     lname: lname,
     email: email,
@@ -22,28 +22,30 @@ router.post("/", loggedOutOnly, async (req, res, next) => {
     password: password,
     parent: referralId
   });
+  let user = await newUser.save();
 
-  let distance = 0;
-  try {
-    let user = await newUser.save();
+  if (user) {
+    let distance = 0;
     while (user.parent) {
       let parent = await User.findById(user.parent);
-      parent.points += _pointsByDistance(distance);
+      if (parent) {
+        parent.points += _pointsByDistance(distance);
+        parent.save();
+        distance++;
+      }
       user = parent;
-      distance++;
     }
     req.login(newUser, err => {
       if (err) throw err;
       res.redirect("/");
     });
-  } catch (err) {
-    next(err);
+  } else {
+    res.redirect("/");
   }
-  res.redirect("/");
 });
 
 function _pointsByDistance(distance) {
-  let points = [40, 20, 10, 5, 2];
+  const points = [40, 20, 10, 5, 2];
   if (distance < 5) return points[distance];
   return 1;
 }
