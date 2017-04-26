@@ -6,7 +6,12 @@ mongoose.Promise = bluebird;
 
 var User = new Schema({
   referralCode: { type: String, unique: true },
-  children: { type: Array }
+  children: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User"
+    }
+  ]
 });
 
 User.plugin(passportLocalMongoose, { usernameField: "email" });
