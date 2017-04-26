@@ -49,28 +49,29 @@ router.post("/register", (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-
   if (req.user) {
     let allChildren = [];
 
-    let initialUser = await User.findById(req.user._id).populate('children');
-      
-      for( let i = 0; i < initialUser.children.length; i++ ) {
-        let firstChildren = await User.findById(initialUser.children[i]._id).populate('children');
-            allChildren.push(firstChildren);
+    let initialUser = await User.findById(req.user._id).populate("children");
+
+    for (let i = 0; i < initialUser.children.length; i++) {
+      let firstChildren = await User.findById(
+        initialUser.children[i]._id
+      ).populate("children");
+      for (let j = 0; j < firstChildren.children.length; j++) {
+        let secondChildren = await User.findById(
+          firstChildren.children[j]._id
+        ).populate("children");
+        firstChildren.children.children = secondChildren;
+        allChildren.push(firstChildren);
       }
-      console.log("All Children array:", allChildren);
-      res.render("home")
-
-
+    }
+    console.log("all Children", allChildren);
+    res.render("home", { allChildren });
   } else {
     res.redirect("/login");
   }
 });
-
-
-
-
 
 // router.get("/", (req, res) => {
 
@@ -84,7 +85,7 @@ router.get("/", async (req, res) => {
 //             .then((user) => {
 //               allChildren.push(user.children);
 
-//             }) 
+//             })
 //         }
 //         console.log("All Children array:", allChildren);
 //         res.render("home")
@@ -94,7 +95,6 @@ router.get("/", async (req, res) => {
 //     res.redirect("/login");
 //   }
 // });
-
 
 router.post("/login", passport.authenticate("local"), function(req, res) {
   res.redirect("/");

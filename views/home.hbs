@@ -1,5 +1,14 @@
 <h1>You are in!</h1>
 <p>Your referral link: <a href="http://localhost:3000/ponzvert/{{currentUser.referralCode}}">http://localhost:3000/ponzvert/{{currentUser.referralCode}}</a></p>
-{{#each currentUser.children as |child|}}
-<p>Child ID: {{child}}</p>
-{{/each}}
+
+
+  {{#each allChildren as |child1|}}
+  Child1: {{child1.email}}
+    {{#if child1.children.length}}
+      {{#each child1.children as |child2|}}
+        Child2: {{child2.email}}
+      {{/each}}
+    {{/if}}
+
+  {{/each}}
+
