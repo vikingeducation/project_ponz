@@ -4,6 +4,14 @@ let router = express.Router();
 
 const User = require("../models/User");
 
+router.get("/", (req, res, next) => {
+  User.findById(req.user.id)
+    .then(user => {
+      res.render("index", user);
+    })
+    .catch(next);
+});
+
 router.get("/login", (req, res) => {
   res.render("login");
 });
@@ -32,14 +40,18 @@ router.post("/register", (req, res, next) => {
     lname: lname,
     email: email,
     points: 0,
-    depth: 1,
+    depth: 0,
     password: password
   });
   user
     .save()
     .then(user => {
-      req.login(user);
-      res.redirect("/");
+      req.login(user, err => {
+        if (err) {
+          throw err;
+        }
+        res.redirect("/");
+      });
     })
     .catch(next);
 });
