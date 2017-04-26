@@ -1,12 +1,13 @@
 <h1>You are in!</h1>
 <p>Your referral link: <a href="http://localhost:3000/ponzvert/{{currentUser.referralCode}}">http://localhost:3000/ponzvert/{{currentUser.referralCode}}</a></p>
 
+<h2>{{points}}</h2>
 
   {{#each allChildren as |child1|}}
-  Child1: {{child1.email}}
+  <p>Child: {{child1.email}}</p>
     {{#if child1.children.length}}
       {{#each child1.children as |child2|}}
-        Child2: {{child2.email}}
+        <p>Grandchild: {{child2.email}}</p>
       {{/each}}
     {{/if}}
 

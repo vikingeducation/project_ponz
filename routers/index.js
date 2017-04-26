@@ -51,23 +51,30 @@ router.post("/register", (req, res) => {
 router.get("/", async (req, res) => {
   if (req.user) {
     let allChildren = [];
+    let points = 0;
 
     let initialUser = await User.findById(req.user._id).populate("children");
 
     for (let i = 0; i < initialUser.children.length; i++) {
-      let firstChildren = await User.findById(
+      let firstChild = await User.findById(
         initialUser.children[i]._id
       ).populate("children");
-      for (let j = 0; j < firstChildren.children.length; j++) {
-        let secondChildren = await User.findById(
-          firstChildren.children[j]._id
+      points += 40;
+
+      for (let j = 0; j < firstChild.children.length; j++) {
+        let secondChild = await User.findById(
+          firstChild.children[j]._id
         ).populate("children");
-        firstChildren.children.children = secondChildren;
-        allChildren.push(firstChildren);
+        // console.log("First: ", firstChild.children);
+        // console.log("Second: ", secondChild);
+        firstChild.children[j].children.push(secondChild);
+        points += 20;
       }
+      allChildren.push(firstChild);
+      console.log("All: ", allChildren)
     }
-    console.log("all Children", allChildren);
-    res.render("home", { allChildren });
+    // console.log("all Children", allChildren);
+    res.render("home", { allChildren, points });
   } else {
     res.redirect("/login");
   }
