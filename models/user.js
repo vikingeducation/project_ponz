@@ -27,12 +27,12 @@ UserSchema.methods.populateChildren = async function(
 ) {
   let user = await User.findById(this._id).populate("children").exec();
   let score = initialScore;
+  user.score = score;
   user.children = await Promise.all(
     user.children.map(child => {
       if (score > 1) {
-        score = Math.floor(score / depth);
+        score = Math.floor(40 / depth);
       }
-      child.score = score;
       initialUser.totalScore += score;
       return child.populateChildren(initialUser, score, depth * 2);
     })
@@ -42,3 +42,6 @@ UserSchema.methods.populateChildren = async function(
 
 const User = mongoose.model("User", UserSchema);
 module.exports = User;
+
+
+
