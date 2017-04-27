@@ -1,24 +1,30 @@
-<div style="border: solid 1px #ccc; padding: 20px">
-  <p>Your referral link is <strong><a href="http://localhost:3000/ponzvert/{{currentUser.referralCode}}">http://localhost:3000/ponzvert/{{currentUser.referralCode}}</a></strong></p>
-  <p>Share this link with your friends to ponvert them!</p>
+<div class="panel panel-default top-panel">
+  <div class="panel-body">
+    <p>Your referral link is <span><a href="http://localhost:3000/ponzvert/{{currentUser.referralCode}}">http://localhost:3000/ponzvert/{{currentUser.referralCode}}</a></span></p>
+    <p>Share this link with your friends to ponvert them!</p>
+  </div>
 </div>
 
-<h2 style="background-color:#34a834;color:white;padding:40px;border-radius:5px">Ponz Pointz: {{points}}</h2>
+<div class="panel panel-default ponz-pointz">
+  <div class="panel-body">
+    <h1>Ponz Pointz</h1><sup>TM</sup><span class="points"> {{points}}</span>
+  </div>
+</div>
 
 <div class="panel panel-default">
-  <div class="panel-heading">Ponzverts</div>
+  <div class="panel-heading">Your Ponzverts</div>
   <div class="panel-body">
-    <ul style="list-style-type:none">
+    <ul class="all-ponzverts">
   {{#each allChildren as |child1|}}
-  <li style="padding:15px"><strong><span style="background-color:#34a834;padding:10px;color:white;margin-right:5px;border-radius:5px">$40</span>{{child1.email}}</strong> ponverted on {{formatDate child1.createdAt}}</li>
+  <li><span>$40</span>{{child1.email}} ponverted on {{formatDate child1.createdAt}}</li>
     {{#if child1.children.length}}
-      <ul style="list-style-type:none">
+      <ul>
       {{#each child1.children as |child2|}}
-        <li style="padding:15px"><strong><span style="background-color:#34a834;padding:10px;color:white;margin-right:5px;border-radius:5px">$20</span>{{child2.email}}</strong> ponverted on {{formatDate child2.createdAt}}</li>
+        <li><span>$20</span>{{child2.email}} ponverted on {{formatDate child2.createdAt}}</li>
         {{#if child2.children.length}}
-        <ul style="list-style-type:none">
+        <ul>
           {{#each child2.children as |child3|}}
-          <li style="padding:15px"><strong><span style="background-color:#34a834;padding:10px;color:white;margin-right:5px;border-radius:5px">$20</span>{{child3.email}}</strong> ponverted on {{formatDate child3.createdAt}}</li>
+          <li><span>$20</span>{{child3.email}} ponverted on {{formatDate child3.createdAt}}</li>
           {{/each}}
         </ul>
         {{/if}}

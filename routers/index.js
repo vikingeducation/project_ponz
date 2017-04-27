@@ -4,6 +4,7 @@ var uniqid = require("uniqid");
 const passport = require("passport");
 var User = require("../models/user");
 
+
 router.get("/ponzvert/", (req, res) => {
   if (req.user) {
     res.redirect("/");
@@ -11,6 +12,7 @@ router.get("/ponzvert/", (req, res) => {
     res.render("register");
   }
 });
+
 
 router.get("/ponzvert/:id", (req, res) => {
   var parentCode = req.params.id;
@@ -20,6 +22,7 @@ router.get("/ponzvert/:id", (req, res) => {
     res.render("register", { parentCode });
   }
 });
+
 
 router.post("/register", (req, res) => {
   const { email, password } = req.body;
@@ -56,13 +59,15 @@ router.post("/register", (req, res) => {
   }
 });
 
+
 router.get("/", async (req, res) => {
   if (req.user) {
     let points = 0;
-    let initialUser = await User.findById(req.user._id).populate({
-      path: "children",
-      populate: { path: "children", populate: { path: "children" } }
-    });
+    let initialUser = await User.findById(req.user._id).populate({ path: "children",
+        populate: { path: "children",
+        populate: { path: "children" }}
+      });
+
     let initial = await User.findById(req.user._id).populate("children");
     let allChildren = initialUser.children;
 
@@ -83,20 +88,10 @@ router.get("/", async (req, res) => {
           thirdChild = await User.findById(
             secondChild.children[k]._id
           ).populate("children");
-          console.log("First child: ", firstChild);
-          console.log("First child-children: ", firstChild.children);
-          console.log(
-            "First child-children-children: ",
-            firstChild.children[j].children
-          );
-          console.log("First child 4: ", firstChild.children[j].children[k]);
 
-          // firstChild.children[j].children[k].children.push(thirdChild);
           points += 10;
         }
       }
-      // allChildren.push(firstChild);
-      // console.log("All: ", allChildren);
     }
 
     res.render("home", { allChildren, points });
@@ -105,9 +100,11 @@ router.get("/", async (req, res) => {
   }
 });
 
+
 router.post("/login", passport.authenticate("local"), function(req, res) {
   res.redirect("/");
 });
+
 
 router.get("/login", (req, res) => {
   if (req.user) {
@@ -116,6 +113,7 @@ router.get("/login", (req, res) => {
     res.render("login");
   }
 });
+
 
 router.get("/logout", (req, res) => {
   req.logout();

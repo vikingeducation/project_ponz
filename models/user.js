@@ -17,21 +17,14 @@ var User = new Schema({
 
 User.plugin(passportLocalMongoose, { usernameField: "email" });
 
+// User.methods.populateChildren = function(depth=0) {
+//   let user = await User.findById(this._id).populate("children").exec();
+//   user.depth = depth;
+//   user.children = await Promise.all(
+//     user.children.map(child => child.populateChildren(depth + 1))
+//   );
+//   return user;
+// }
+
 module.exports = mongoose.model("User", User);
 
-
-//finding all children
-
-//forEach on children [3342, 434334 ,5566]
-  //findById
-  //if(children)forEach on children
-
-   //if(children)forEach on children
-
-
-// [ {[email, [{[email, [{[email, [children]]}] ]}]]}] ]}, ]
-
-
-//handlebars each child
-//{{child.email}}
-//{{if child.children}}
