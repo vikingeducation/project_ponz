@@ -43,8 +43,11 @@ var hbs = expressHandlebars.create({
   partialsDir: "views/",
   defaultLayout: "main",
   helpers: {
+    pyramidContainerWidth: pyramid => {
+      return `${pyramid.length * 60}px`;
+    },
     pyramidHeight: pyramid => {
-      let height = pyramid.length * 50;
+      let height = pyramid.length * 52;
       return `${height}px`;
     },
     pyramidWidth: pyramid => {
@@ -54,6 +57,11 @@ var hbs = expressHandlebars.create({
     indent: depth => {
       let indent = depth > 0 ? 50 : 0;
       return `${indent}px`;
+    },
+    valueCalc: depth => {
+      let values = [40, 20, 10, 5, 2];
+      let value = depth < 5 ? values[depth] : 1;
+      return `$${value}`;
     }
   }
 });

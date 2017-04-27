@@ -1,8 +1,8 @@
 
   <div class="child-ponz" style="margin-left:{{indent child.depth}}">
     <div>
-      <span class="label label-success">
-        {{child.fname}} at <span class="badge">{{child.depth}}</span>
+      <span class="label label-default">
+        {{child.fname}} gave you <span class="badge badge-success">{{valueCalc child.depth}}</span>
       </span>
     </div>
     {{#each child.children as |child|}}

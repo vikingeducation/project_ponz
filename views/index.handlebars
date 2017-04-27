@@ -1,25 +1,56 @@
-<h1>Welcome to the future</h1>
+<h1 style="margin-bottom: 30px;">Welcome to the future</h1>
 
-<div class="">
-  Your referral link is <a href="http://localhost:3000/ponzvert/{{ user.id }}">http://localhost:3000/ponzvert/{{ user.id }}</a>
-  <p>Share this link with your friends to ruin them financially for the rest of their lives!</p>
-</div>
-<h4>Your value as a human is: {{user.points}}<h4>
-
-<div class="row">
-  <div class="col-xs-12">
-    {{#each user.children as |child|}}
-      {{> _child child=child}}
-    {{/each}}
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    Your referral link
+  </div>
+  <div class="panel-body">
+    <a href="http://localhost:3000/ponzvert/{{ user.id }}">http://localhost:3000/ponzvert/{{ user.id }}</a>
+  </div>
+  <div class="panel-footer">
+    Share this link with your friends to ruin them financially for the rest of their lives!
   </div>
 </div>
 
-<div class="pyramid" style="border-width: 0 {{ pyramidWidth pyramid }} {{ pyramidHeight pyramid }} {{ pyramidWidth pyramid }};">
-  <div class="pyramid-levels">
-    {{#each pyramid as |level|}}
-      <div class="pyramid-level">
-        {{ level }}
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    Your value as a human
+  </div>
+  <div class="panel-body">
+     ${{user.points}}
+  </div>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    Your Ponzverts
+  </div>
+  <div class="panel-body">
+    {{#if user.children.length}}
+      {{#each user.children as |child|}}
+        {{> _child child=child}}
+      {{/each}}
+    {{else}}
+      You are pathetic excuse of a human being.
+    {{/if}}
+  </div>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    Your Chain of Opportunity
+  </div>
+  <div class="panel-body">
+    <div class="pyramid-container" style="width: {{ pyramidContainerWidth pyramid }}; height: {{ pyramidHeight pyramid }};">
+      <div class="pyramid-levels" style="width: {{ pyramidContainerWidth pyramid }};">
+        {{#each pyramid as |level|}}
+          <div class="pyramid-level text-center">
+            {{ level }}
+          </div>
+        {{/each}}
       </div>
-    {{/each}}
+      <div class="pyramid" style="border-width: 0 {{ pyramidWidth pyramid }} {{ pyramidHeight pyramid }} {{ pyramidWidth pyramid }};">
+      </div>
+    </div>
   </div>
 </div>
