@@ -58,10 +58,10 @@ router.post("/register", (req, res) => {
 
 router.get("/", async (req, res) => {
   if (req.user) {
-    req.user.totalPoints = 0;
-    let user = await req.user.populateChildren();
+    let user = await req.user.populateChildren(req.user, 40);
+    user.totalScore = req.user.totalScore;
     console.log("user", JSON.stringify(user, null, 2));
-    res.render("home");
+    res.render("home", { user });
   } else {
     res.redirect("/login");
   }
