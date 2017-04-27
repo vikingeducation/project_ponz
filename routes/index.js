@@ -18,8 +18,7 @@ module.exports = passport => {
     let user = await req.user.populateChildren();
     let userClone = clone(user);
     let pyramid = buildPyramid(userClone);
-    //console.log(JSON.stringify(user, null, 2));
-    res.render("index", { user });
+    res.render("index", { user, pyramid });
   });
 
   router.get("/login", loggedOutOnly, (req, res) => {
