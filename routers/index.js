@@ -4,7 +4,6 @@ var uniqid = require("uniqid");
 const passport = require("passport");
 var User = require("../models/user");
 
-
 router.get("/ponzvert/", (req, res) => {
   if (req.user) {
     res.redirect("/");
@@ -12,7 +11,6 @@ router.get("/ponzvert/", (req, res) => {
     res.render("register");
   }
 });
-
 
 router.get("/ponzvert/:id", (req, res) => {
   var parentCode = req.params.id;
@@ -22,7 +20,6 @@ router.get("/ponzvert/:id", (req, res) => {
     res.render("register", { parentCode });
   }
 });
-
 
 router.post("/register", (req, res) => {
   const { email, password } = req.body;
@@ -59,52 +56,20 @@ router.post("/register", (req, res) => {
   }
 });
 
-
 router.get("/", async (req, res) => {
   if (req.user) {
-    let points = 0;
-    let initialUser = await User.findById(req.user._id).populate({ path: "children",
-        populate: { path: "children",
-        populate: { path: "children" }}
-      });
-
-    let initial = await User.findById(req.user._id).populate("children");
-    let allChildren = initialUser.children;
-
-    for (let i = 0; i < initial.children.length; i++) {
-      firstChild = await User.findById(initial.children[i]._id).populate(
-        "children"
-      );
-      points += 40;
-
-      for (let j = 0; j < firstChild.children.length; j++) {
-        secondChild = await User.findById(firstChild.children[j]._id).populate(
-          "children"
-        );
-        firstChild.children[j].children.push(secondChild);
-        points += 20;
-
-        for (let k = 0; k < secondChild.children.length; k++) {
-          thirdChild = await User.findById(
-            secondChild.children[k]._id
-          ).populate("children");
-
-          points += 10;
-        }
-      }
-    }
-
-    res.render("home", { allChildren, points });
+    let user = await req.user.populateChildren();
+    console.log("User score", user.children[0].score);
+    console.log("user", JSON.stringify(user, null, 2));
+    res.render("home");
   } else {
     res.redirect("/login");
   }
 });
 
-
 router.post("/login", passport.authenticate("local"), function(req, res) {
   res.redirect("/");
 });
-
 
 router.get("/login", (req, res) => {
   if (req.user) {
@@ -113,7 +78,6 @@ router.get("/login", (req, res) => {
     res.render("login");
   }
 });
-
 
 router.get("/logout", (req, res) => {
   req.logout();

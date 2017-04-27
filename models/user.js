@@ -4,27 +4,39 @@ var mongoose = require("mongoose"),
 const bluebird = require("bluebird");
 mongoose.Promise = bluebird;
 
-var User = new Schema({
-  referralCode: { type: String, unique: true },
-  pointsSpent: 0,
-  children: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "User"
-    }
-  ]
-}, {timestamps: true});
+var UserSchema = new Schema(
+  {
+    referralCode: { type: String, unique: true },
+    pointsSpent: 0,
+    children: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+      }
+    ]
+  },
+  { timestamps: true }
+);
 
-User.plugin(passportLocalMongoose, { usernameField: "email" });
+UserSchema.plugin(passportLocalMongoose, { usernameField: "email" });
 
-// User.methods.populateChildren = function(depth=0) {
-//   let user = await User.findById(this._id).populate("children").exec();
-//   user.depth = depth;
-//   user.children = await Promise.all(
-//     user.children.map(child => child.populateChildren(depth + 1))
-//   );
-//   return user;
-// }
+var total = 0;
+UserSchema.methods.populateChildren = async function(score = 80) {
+  let user = await User.findById(this._id).populate("children").exec();
 
-module.exports = mongoose.model("User", User);
+  if (score > 1) {
+    score = Math.floor(score / 2);
+  }
+  user.children = await Promise.all(
+    user.children.map(child => {
+      child.score = score;
+      total += score;
+      child.populateChildren(score);
+    })
+  );
+  console.log("total", total);
+  return user;
+};
 
+const User = mongoose.model("User", UserSchema);
+module.exports = User;
