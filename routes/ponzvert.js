@@ -26,7 +26,7 @@ router.post("/", loggedOutOnly, async (req, res, next) => {
   let user = await newUser.save();
 
   if (user) {
-    augmentParents(user);
+    user.addPointsToParents();
     req.login(newUser, err => {
       if (err) throw err;
       res.redirect("/");

@@ -49,6 +49,29 @@ UserSchema.methods.populateChildren = async function(depth = 0) {
   return user;
 };
 
+UserSchema.methods.addPointsToParents = async function() {
+  let distance = 0;
+  let parent = await User.findById(this.parent);
+  parent.children.push(this._id);
+  parent.save();
+  let user = this;
+  while (user.parent) {
+    let parent = await User.findById(user.parent);
+    if (parent) {
+      parent.points += _pointsByDistance(distance);
+      parent.save();
+      distance++;
+    }
+    user = parent;
+  }
+};
+
+function _pointsByDistance(distance) {
+  const points = [40, 20, 10, 5, 2];
+  if (distance < 5) return points[distance];
+  return 1;
+}
+
 const User = mongoose.model("User", UserSchema);
 
 module.exports = User;

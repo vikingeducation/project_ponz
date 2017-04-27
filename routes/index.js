@@ -12,6 +12,7 @@ module.exports = passport => {
 
   router.get("/", loggedInOnly, async (req, res, next) => {
     let user = await req.user.populateChildren();
+    console.log(JSON.stringify(user, null, 2));
     res.render("index", { user });
   });
 
