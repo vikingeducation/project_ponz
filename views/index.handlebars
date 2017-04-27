@@ -5,10 +5,21 @@
   <p>Share this link with your friends to ruin them financially for the rest of their lives!</p>
 </div>
 <h4>Your value as a human is: {{user.points}}<h4>
-  <div class="row">
-    <div class="col-xs-12">
-      {{#each user.children as |child|}}
-        {{> _child child=child}}
-      {{/each}}
-    </div>
+
+<div class="row">
+  <div class="col-xs-12">
+    {{#each user.children as |child|}}
+      {{> _child child=child}}
+    {{/each}}
   </div>
+</div>
+
+<div class="pyramid" style="border-width: 0 {{ pyramidWidth pyramid }} {{ pyramidHeight pyramid }} {{ pyramidWidth pyramid }};">
+  <div class="pyramid-levels">
+    {{#each pyramid as |level|}}
+      <div class="pyramid-level">
+        {{ level }}
+      </div>
+    {{/each}}
+  </div>
+</div>

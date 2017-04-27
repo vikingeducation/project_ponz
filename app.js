@@ -1,4 +1,5 @@
-const app = require("express")();
+const express = require('express');
+const app = express();
 const bodyParser = require("body-parser");
 const expressSession = require("express-session");
 const expressHandlebars = require("express-handlebars");
@@ -40,7 +41,17 @@ app.use(
 // ----------------------------------------
 var hbs = expressHandlebars.create({
   partialsDir: "views/",
-  defaultLayout: "main"
+  defaultLayout: "main",
+  helpers: {
+    pyramidHeight: pyramid => {
+      let height = pyramid.length * 50;
+      return `${height}px`;
+    },
+    pyramidWidth: pyramid => {
+      let width = pyramid.length * 60 / 2;
+      return `${width}px`;
+    }
+  }
 });
 
 app.engine("handlebars", hbs.engine);
@@ -78,6 +89,11 @@ passport.deserializeUser(function(id, done) {
     .then(user => done(null, user))
     .catch(done);
 });
+
+// ----------------------------------------
+// Serve /public
+// ----------------------------------------
+app.use(express.static(`${__dirname}/public`));
 
 // ----------------------------------------
 // currentUser

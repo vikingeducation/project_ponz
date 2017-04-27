@@ -5,7 +5,7 @@ ponz.clone = object => {
 };
 
 ponz.buildPyramid = user => {
-  let pyramid = [];
+  let pyramid = [1];
   let nextLevel = [];
   user.children.forEach(child => nextLevel.push(child));
   while (nextLevel.length) {
