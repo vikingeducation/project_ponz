@@ -16,15 +16,15 @@
   <div class="panel-body">
     <ul class="all-ponzverts">
   {{#each allChildren as |child1|}}
-  <li><span>$40</span>{{child1.email}} ponverted on {{formatDate child1.createdAt}}</li>
+  <li><span>$40</span><strong>{{child1.email}}</strong> ponverted on {{formatDate child1.createdAt}}</li>
     {{#if child1.children.length}}
       <ul>
       {{#each child1.children as |child2|}}
-        <li><span>$20</span>{{child2.email}} ponverted on {{formatDate child2.createdAt}}</li>
+        <li><span>$20</span><strong>{{child2.email}}</strong> ponverted on {{formatDate child2.createdAt}}</li>
         {{#if child2.children.length}}
         <ul>
           {{#each child2.children as |child3|}}
-          <li><span>$20</span>{{child3.email}} ponverted on {{formatDate child3.createdAt}}</li>
+          <li><span>$20</span><strong>{{child3.email}}</strong> ponverted on {{formatDate child3.createdAt}}</li>
           {{/each}}
         </ul>
         {{/if}}
