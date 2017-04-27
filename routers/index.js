@@ -3,22 +3,22 @@ var router = express.Router();
 var uniqid = require("uniqid");
 const passport = require("passport");
 var User = require("../models/user");
+const { loggedOutOnly, loggedInOnly } = require("../lib/session");
 
-router.get("/ponzvert/", (req, res) => {
-  if (req.user) {
-    res.redirect("/");
-  } else {
-    res.render("register");
-  }
+router.get("/", loggedInOnly, async (req, res) => {
+  let user = await req.user.populateChildren(req.user, 40);
+  user.totalScore = req.user.totalScore;
+  console.log("user", JSON.stringify(user, null, 2));
+  res.render("home", { user });
 });
 
-router.get("/ponzvert/:id", (req, res) => {
+router.get("/ponzvert/", loggedOutOnly, (req, res) => {
+  res.render("register");
+});
+
+router.get("/ponzvert/:id", loggedOutOnly, (req, res) => {
   var parentCode = req.params.id;
-  if (req.user) {
-    res.redirect("/");
-  } else {
-    res.render("register", { parentCode });
-  }
+  res.render("register", { parentCode });
 });
 
 router.post("/register", (req, res) => {
@@ -56,27 +56,12 @@ router.post("/register", (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
-  if (req.user) {
-    let user = await req.user.populateChildren(req.user, 40);
-    user.totalScore = req.user.totalScore;
-    console.log("user", JSON.stringify(user, null, 2));
-    res.render("home", { user });
-  } else {
-    res.redirect("/login");
-  }
+router.get("/login", loggedOutOnly, (req, res) => {
+  res.render("login");
 });
 
 router.post("/login", passport.authenticate("local"), function(req, res) {
   res.redirect("/");
-});
-
-router.get("/login", (req, res) => {
-  if (req.user) {
-    res.redirect("/");
-  } else {
-    res.render("login");
-  }
 });
 
 router.get("/logout", (req, res) => {

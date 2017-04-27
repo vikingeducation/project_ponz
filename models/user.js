@@ -31,7 +31,7 @@ UserSchema.methods.populateChildren = async function(
   user.children = await Promise.all(
     user.children.map(child => {
       if (score > 1) {
-        score = Math.floor(40 / depth);
+        score = Math.floor(initialScore / depth);
       }
       initialUser.totalScore += score;
       return child.populateChildren(initialUser, score, depth * 2);
