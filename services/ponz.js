@@ -1,9 +1,5 @@
 let ponz = {};
 
-ponz.clone = object => {
-  return JSON.parse(JSON.stringify(object));
-};
-
 ponz.buildPyramid = user => {
   let pyramid = [1];
   let nextLevel = [];

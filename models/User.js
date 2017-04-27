@@ -42,9 +42,7 @@ UserSchema.methods.populateChildren = async function(depth = -1) {
   let user = await User.findById(this._id).populate("children");
   user.depth = depth;
   user.children = await Promise.all(
-    user.children.map(child => {
-      return child.populateChildren(depth + 1);
-    })
+    user.children.map(child => child.populateChildren(depth + 1))
   );
   return user;
 };

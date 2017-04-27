@@ -19,11 +19,12 @@ app.use((req, res, next) => {
 // ----------------------------------------
 // Body Parser
 // ----------------------------------------
-app.use(
-  bodyParser.urlencoded({
-    extended: false
-  })
-);
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// ----------------------------------------
+// Serve /public
+// ----------------------------------------
+app.use(express.static(`${__dirname}/public`));
 
 // ----------------------------------------
 // Sessions
@@ -39,31 +40,11 @@ app.use(
 // ----------------------------------------
 // Handlebars
 // ----------------------------------------
+const helpers = require("./helpers");
 var hbs = expressHandlebars.create({
   partialsDir: "views/",
   defaultLayout: "main",
-  helpers: {
-    pyramidContainerWidth: pyramid => {
-      return `${pyramid.length * 60}px`;
-    },
-    pyramidHeight: pyramid => {
-      let height = pyramid.length * 52;
-      return `${height}px`;
-    },
-    pyramidWidth: pyramid => {
-      let width = pyramid.length * 60 / 2;
-      return `${width}px`;
-    },
-    indent: depth => {
-      let indent = depth > 0 ? 50 : 0;
-      return `${indent}px`;
-    },
-    valueCalc: depth => {
-      let values = [40, 20, 10, 5, 2];
-      let value = depth < 5 ? values[depth] : 1;
-      return `$${value}`;
-    }
-  }
+  helpers: helpers
 });
 
 app.engine("handlebars", hbs.engine);
@@ -79,17 +60,18 @@ app.use(passport.session());
 const LocalStrategy = require("passport-local").Strategy;
 const User = require("./models/User");
 passport.use(
-  new LocalStrategy(
-    { usernameField: "email" },
-    function(email, password, done) {
-      User.findOne({ email }, function(err, user) {
-        if (err) return done(err);
-        if (!user || !user.validPassword(password))
-          return done(null, false, { message: "Invalid email/password" });
-        return done(null, user);
-      });
-    }
-  )
+  new LocalStrategy({ usernameField: "email" }, function(
+    email,
+    password,
+    done
+  ) {
+    User.findOne({ email }, function(err, user) {
+      if (err) return done(err);
+      if (!user || !user.validPassword(password))
+        return done(null, false, { message: "Invalid email/password" });
+      return done(null, user);
+    });
+  })
 );
 
 passport.serializeUser(function(user, done) {
@@ -99,11 +81,6 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(id, done) {
   User.findById(id).then(user => done(null, user)).catch(done);
 });
-
-// ----------------------------------------
-// Serve /public
-// ----------------------------------------
-app.use(express.static(`${__dirname}/public`));
 
 // ----------------------------------------
 // currentUser

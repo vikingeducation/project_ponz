@@ -16,8 +16,7 @@ const User = require("../models/User");
 module.exports = passport => {
   router.get("/", loggedInOnly, async (req, res, next) => {
     let user = await req.user.populateChildren();
-    let userClone = clone(user);
-    let pyramid = buildPyramid(userClone);
+    let pyramid = buildPyramid(user);
     res.render("index", { user, pyramid });
   });
 
@@ -52,15 +51,13 @@ module.exports = passport => {
       points: 0,
       password: password
     });
-    user
-      .save()
-      .then(user => {
-        req.login(user, err => {
-          if (err) throw err;
-          res.redirect("/");
-        });
-      })
-      .catch(next);
+    user.save().then(user => {
+      req.login(user, err => {
+        if (err) throw err;
+        res.redirect("/");
+      });
+    })
+    .catch(next);
   });
 
   return router;
