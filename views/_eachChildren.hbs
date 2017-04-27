@@ -1,4 +1,4 @@
-<ul>
+<ul class="all-ponzverts">
   {{#each child.children as |child|}}
     <li><span>{{child.score}}</span><strong>{{child.email}}</strong> ponverted on {{formatDate child.createdAt}}</li>
     {{#if child.children.length}}

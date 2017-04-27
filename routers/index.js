@@ -8,7 +8,7 @@ const { loggedOutOnly, loggedInOnly } = require("../lib/session");
 router.get("/", loggedInOnly, async (req, res) => {
   let user = await req.user.populateChildren(req.user, 40);
   user.totalScore = req.user.totalScore;
-  console.log("user", JSON.stringify(user, null, 2));
+  // console.log("user", JSON.stringify(user, null, 2));
   res.render("home", { user });
 });
 
@@ -47,8 +47,10 @@ router.post("/register", (req, res) => {
         console.log("error while user register!", err);
         return next(err);
       } else {
-        req.login(user, function() {
-          console.log("user registered!");
+        req.login(user, function(err) {
+          if (err) {
+            return next(err);
+          }
           res.redirect("/");
         });
       }

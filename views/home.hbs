@@ -14,14 +14,9 @@
 <div class="panel panel-default">
   <div class="panel-heading">Your Ponzverts</div>
   <div class="panel-body">
-    <ul class="all-ponzverts">
-  {{#each user.children as |child|}}
-    <li><span>{{child.score}}</span><strong>{{child.email}}</strong> ponverted on {{formatDate child.createdAt}}</li>
-    {{#if child.children.length}}
-      {{> _eachChildren child=child}}
-    {{/if}}
-  {{/each}}
-</ul>
+
+  {{> _eachChildren child=user}}
+
 </div>
 </div>
 
