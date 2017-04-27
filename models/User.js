@@ -38,7 +38,7 @@ UserSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.passwordHash);
 };
 
-UserSchema.methods.populateChildren = async function(depth = 0) {
+UserSchema.methods.populateChildren = async function(depth = -1) {
   let user = await User.findById(this._id).populate("children");
   user.depth = depth;
   user.children = await Promise.all(

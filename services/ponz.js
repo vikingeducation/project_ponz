@@ -163,11 +163,27 @@ let ponz = {};
 //   ]
 // }
 
-
 ponz.buildPyramid = user => {
-
+  let pyramidArray = [1];
+  let level = 0;
+  pyramidArray.push(user.children.length);
+  let queue = user.children;
+  queue.push(null);
+  while (queue.length) {
+    let current = queue.shift();
+    if (current) {
+      level += current.children.length;
+      queue.concat(current.children);
+    } else {
+      pyramidArray.push(level);
+      level = 0;
+      if (queue.length) {
+        queue.push(null);
+      }
+    }
+  }
+  console.log(pyramidArray);
+  return pyramidArray;
 };
-
-
 
 module.exports = ponz;
