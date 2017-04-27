@@ -1,6 +1,10 @@
 const express = require("express");
 let router = express.Router();
-const { buildPyramid } = require("../services/ponz");
+
+const {
+  clone,
+  buildPyramid
+} = require("../services/ponz");
 
 const {
   loggedInOnly,
@@ -12,7 +16,8 @@ const User = require("../models/User");
 module.exports = passport => {
   router.get("/", loggedInOnly, async (req, res, next) => {
     let user = await req.user.populateChildren();
-    let pyramid = buildPyramid(user);
+    let userClone = clone(user);
+    let pyramid = buildPyramid(userClone);
     //console.log(JSON.stringify(user, null, 2));
     res.render("index", { user });
   });

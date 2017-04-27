@@ -163,27 +163,45 @@ let ponz = {};
 //   ]
 // }
 
+// let pyramidArray = [1];
+// let level = 0;
+// pyramidArray.push(user.children.length);
+// let queue = user.children;
+// queue.push(null);
+// while (queue.length) {
+//   let current = queue.shift();
+//   if (current) {
+//     level += current.children.length;
+//     queue.concat(current.children);
+//   } else {
+//     pyramidArray.push(level);
+//     level = 0;
+//     if (queue.length) {
+//       queue.push(null);
+//     }
+//   }
+// }
+// return pyramidArray;
+
+ponz.clone = object => {
+  return JSON.parse(JSON.stringify(object));
+};
+
 ponz.buildPyramid = user => {
-  let pyramidArray = [1];
-  let level = 0;
-  pyramidArray.push(user.children.length);
-  let queue = user.children;
+  let pyramid = [];
+  let queue = [];
+  user.children.forEach(child => queue.push(child));
   queue.push(null);
-  while (queue.length) {
-    let current = queue.shift();
+  let i = 0;
+  while (queue[i] !== undefined) {
     if (current) {
-      level += current.children.length;
-      queue.concat(current.children);
+      current.children.forEach(child => queue.push(child));
     } else {
-      pyramidArray.push(level);
-      level = 0;
-      if (queue.length) {
-        queue.push(null);
-      }
+      queue.push(null);
     }
+    i++;
   }
-  console.log(pyramidArray);
-  return pyramidArray;
+  console.log(queue);
 };
 
 module.exports = ponz;
