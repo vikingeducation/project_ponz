@@ -1,0 +1,41 @@
+.label {
+  padding: 15px 20px;
+}
+
+.child-ponz {
+  margin: 30px 0;
+}
+
+.badge-success {
+  background-color: #468847;
+}
+
+.pyramid-container {
+  position: relative;
+  margin: 0 auto;
+}
+
+.pyramid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-color: transparent transparent #777 transparent;
+  z-index: 1;
+}
+
+.pyramid-levels {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.pyramid-level {
+  color: white;
+  border-bottom: 2px solid white;
+  padding: 15px 0;
+  width: 100%;
+}
