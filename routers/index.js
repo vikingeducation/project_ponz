@@ -58,8 +58,8 @@ router.post("/register", (req, res) => {
 
 router.get("/", async (req, res) => {
   if (req.user) {
+    req.user.totalPoints = 0;
     let user = await req.user.populateChildren();
-    console.log("User score", user.children[0].score);
     console.log("user", JSON.stringify(user, null, 2));
     res.render("home");
   } else {
