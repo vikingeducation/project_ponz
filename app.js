@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const expressSession = require("express-session");
@@ -50,6 +50,10 @@ var hbs = expressHandlebars.create({
     pyramidWidth: pyramid => {
       let width = pyramid.length * 60 / 2;
       return `${width}px`;
+    },
+    indent: depth => {
+      let indent = depth > 0 ? 50 : 0;
+      return `${indent}px`;
     }
   }
 });
@@ -68,7 +72,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const User = require("./models/User");
 passport.use(
   new LocalStrategy(
-    { usernameField: 'email' },
+    { usernameField: "email" },
     function(email, password, done) {
       User.findOne({ email }, function(err, user) {
         if (err) return done(err);
@@ -85,9 +89,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-  User.findById(id)
-    .then(user => done(null, user))
-    .catch(done);
+  User.findById(id).then(user => done(null, user)).catch(done);
 });
 
 // ----------------------------------------

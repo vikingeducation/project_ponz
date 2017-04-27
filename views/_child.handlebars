@@ -1,8 +1,11 @@
-<div class="row">
-  <div class="col-xs-offset-{{child.depth}}">
-      <p>{{child.fname}} at {{child.depth}}</p>
+
+  <div class="child-ponz" style="margin-left:{{indent child.depth}}">
+    <div>
+      <span class="label label-success">
+        {{child.fname}} at <span class="badge">{{child.depth}}</span>
+      </span>
+    </div>
     {{#each child.children as |child|}}
       {{> _child child=child}}
     {{/each}}
   </div>
-</div>
