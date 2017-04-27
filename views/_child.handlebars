@@ -1,0 +1,8 @@
+<div class="row">
+  <div class="col-xs-offset-{{child.depth}}">
+      <p>{{child.fname}} at {{child.depth}}</p>
+    {{#each child.children as |child|}}
+      {{> _child child=child}}
+    {{/each}}
+  </div>
+</div>

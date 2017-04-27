@@ -30,13 +30,24 @@ const UserSchema = mongoose.Schema({
 
 UserSchema.plugin(uniqueValidator);
 
+UserSchema.virtual("password").set(function(value) {
+  this.passwordHash = bcrypt.hashSync(value, 8);
+});
+
 UserSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.passwordHash);
 };
 
-UserSchema.virtual("password").set(function(value) {
-  this.passwordHash = bcrypt.hashSync(value, 8);
-});
+UserSchema.methods.populateChildren = async function(depth = 0) {
+  let user = await User.findById(this._id).populate("children");
+  user.depth = depth;
+  user.children = await Promise.all(
+    user.children.map(child => {
+      return child.populateChildren(depth + 1);
+    })
+  );
+  return user;
+};
 
 const User = mongoose.model("User", UserSchema);
 
