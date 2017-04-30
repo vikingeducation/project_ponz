@@ -1,0 +1,53 @@
+.top-panel {
+  padding: 20px;
+  font-size: 16px;
+}
+
+.top-panel p {
+  margin-bottom: 6px;
+}
+
+.top-panel span {
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.ponz-pointz {
+/*  background-color: #34a834;*/
+  background-color: #34a834;
+  color: white;
+  padding: 20px;
+}
+
+.ponz-pointz h1 {
+  display: inline-block;
+}
+
+sup {
+  font-size: 16px;
+  position: relative;
+  vertical-align: baseline;
+  top: -15px;
+}
+
+.points {
+  font-size: 45px;
+  font-weight: 900;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.all-ponzverts li {
+  padding: 15px;
+}
+
+.all-ponzverts span {
+  background-color: #34a834;
+  padding: 5px 10px;
+  color: white;
+  margin-right: 8px;
+  border-radius:5px;
+  font-weight: bold;
+}

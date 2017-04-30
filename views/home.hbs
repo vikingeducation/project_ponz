@@ -1,0 +1,22 @@
+<div class="panel panel-default top-panel">
+  <div class="panel-body">
+    <p>Your referral link is <span><a href="http://localhost:3000/ponzvert/{{currentUser.referralCode}}">http://localhost:3000/ponzvert/{{currentUser.referralCode}}</a></span></p>
+    <p>Share this link with your friends to ponvert them!</p>
+  </div>
+</div>
+
+<div class="panel panel-default ponz-pointz">
+  <div class="panel-body">
+    <h1>Ponz Pointz</h1><sup>TM</sup><span class="points"> {{user.totalScore}}</span>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">Your Ponzverts</div>
+  <div class="panel-body">
+
+  {{> _eachChildren child=user}}
+
+</div>
+</div>
+
