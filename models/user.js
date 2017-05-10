@@ -1,10 +1,8 @@
-var mongoose = require("mongoose"),
+const mongoose = require("mongoose"),
   Schema = mongoose.Schema,
   passportLocalMongoose = require("passport-local-mongoose");
-const bluebird = require("bluebird");
-mongoose.Promise = bluebird;
 
-var UserSchema = new Schema(
+const UserSchema = new Schema(
   {
     referralCode: { type: String, unique: true },
     children: [
@@ -13,7 +11,13 @@ var UserSchema = new Schema(
         ref: "User"
       }
     ],
-    totalScore: { type: Number, default: 0 }
+    pointsSpent: { type: Number, default: 0 },
+    itemsBought: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Item"
+      }
+    ]
   },
   { timestamps: true }
 );
@@ -42,6 +46,3 @@ UserSchema.methods.populateChildren = async function(
 
 const User = mongoose.model("User", UserSchema);
 module.exports = User;
-
-
-

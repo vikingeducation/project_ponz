@@ -12,6 +12,15 @@ const hbs = expressHbs.create({
   helpers: {
     formatDate: function(date) {
       return moment(date).format("MMM Do YY");
+    },
+    bootstrapAlertClassFor: function(key) {
+      return (
+        {
+          error: "danger",
+          alert: "danger",
+          notice: "info"
+        }[key] || key
+      );
     }
   }
 });
@@ -63,6 +72,12 @@ app.use((req, res, next) => {
 });
 
 // ----------------------------------------
+// Flash Messages
+// ----------------------------------------
+var flash = require("express-flash-messages");
+app.use(flash());
+
+// ----------------------------------------
 // Mongoose
 // ----------------------------------------
 var mongoose = require("mongoose");
@@ -104,6 +119,8 @@ app.use((req, res, next) => {
 // ----------------------------------------
 const indexRouter = require("./routers/index");
 app.use("/", indexRouter);
+const shopRouter = require("./routers/shop");
+app.use("/shop", shopRouter);
 
 app.listen(3000, () => {
   console.log("Listening on port 3000...");

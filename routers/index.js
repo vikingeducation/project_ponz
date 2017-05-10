@@ -1,14 +1,14 @@
 const express = require("express");
-var router = express.Router();
-var uniqid = require("uniqid");
+const router = express.Router();
+const uniqid = require("uniqid");
 const passport = require("passport");
-var User = require("../models/user");
+const User = require("../models/user");
 const { loggedOutOnly, loggedInOnly } = require("../lib/session");
 
 router.get("/", loggedInOnly, async (req, res) => {
+  req.user.totalScore = 0;
   let user = await req.user.populateChildren(req.user, 40);
-  user.totalScore = req.user.totalScore;
-  // console.log("user", JSON.stringify(user, null, 2));
+  user.totalScore = req.user.totalScore - req.user.pointsSpent;
   res.render("home", { user });
 });
 
@@ -37,6 +37,7 @@ router.post("/register", (req, res) => {
           if (err) {
             return next(err);
           }
+          req.flash("success", "Succesfully registered!");
           return res.redirect("/");
         });
       });
@@ -51,6 +52,7 @@ router.post("/register", (req, res) => {
           if (err) {
             return next(err);
           }
+          req.flash("success", "Succesfully registered!");
           res.redirect("/");
         });
       }
@@ -63,11 +65,13 @@ router.get("/login", loggedOutOnly, (req, res) => {
 });
 
 router.post("/login", passport.authenticate("local"), function(req, res) {
+  req.flash("success", "Succesfully logged in!");
   res.redirect("/");
 });
 
 router.get("/logout", (req, res) => {
   req.logout();
+  req.flash("success", "Succesfully logged out!");
   res.redirect("/");
 });
 

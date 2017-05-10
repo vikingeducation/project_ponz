@@ -1,0 +1,36 @@
+<!-- Title -->
+  <div class="row">
+    <div class="col-lg-12">
+      <h3 class="text-center">Products</h3>
+    </div>
+  </div>
+  <!-- /.row -->
+  <br>
+  <!-- Page Features -->
+  <div class="row text-center">
+  <h4>You have ${{user.totalScore}} to spend!</h4>
+  <hr>
+    {{#each items as |item|}}
+    <div class="col-md-3 col-sm-6 hero-feature">
+      <div class="thumbnail">
+        <img src="{{item.image}}" alt="">
+        <div class="caption">
+          <h3>{{item.name}}</h3>
+          <h5>${{item.price}}.00</h5>
+          <p>
+          <form action="/shop/buy" method="POST">
+            <input type="hidden" name="itemId" value="{{item._id}}">
+            <input type="hidden" name="total" value="{{../user.totalScore}}">
+            <input type="hidden" name="price" value="{{item.price}}">
+            <button type="submit" class="btn btn-primary">Redeem</button>
+          </form>
+        </p>
+
+        </div>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+  <!-- /.row -->
+
+  <hr>
