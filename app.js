@@ -122,6 +122,19 @@ app.use("/", indexRouter);
 const shopRouter = require("./routers/shop");
 app.use("/shop", shopRouter);
 
-app.listen(3000, () => {
-  console.log("Listening on port 3000...");
+// ----------------------------------------
+// Server
+// ----------------------------------------
+var port = process.env.PORT || process.argv[2] || 3000;
+var host = "localhost";
+
+var args;
+process.env.NODE_ENV === "production" ? (args = [port]) : (args = [port, host]);
+
+args.push(() => {
+  console.log(`Listening: http://${host}:${port}`);
 });
+
+app.listen.apply(app, args);
+
+module.exports = app;
