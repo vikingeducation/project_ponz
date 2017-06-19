@@ -36,20 +36,20 @@ const calculateScore = depth => {
   return [null, 20, 10, 5, 2][depth];
 };
 
-const ponzifyParent = user => {
+const updateScore = user => {
   let depth = 0;
 
-  const recursivePonze = user => {
+  const updateScoreRecursively = user => {
     let parent = user.parent;
       if (parent) {
         depth++;
         let score = calculateScore(depth);
-        User.findByIdAndUpdate(parent, {$inc: {score: score}}).then(recursivePonze);
+        User.findByIdAndUpdate(parent, {$inc: {score: score}}).then(updateScoreRecursively);
       } else {
         return Promise.resolve();
       }
   };
-  return recursivePonze(user);
+  return updateScoreRecursively(user);
 };
 
 router.post("/ponzify", (req, res) => {
@@ -64,7 +64,7 @@ router.post("/ponzify", (req, res) => {
         $push: { children: currentUser }
       })
     .then(user => {
-      return ponzifyParent(user);
+      return updateScore(user);
     })
     .then(() => {
       req.login(currentUser, function(err) {
