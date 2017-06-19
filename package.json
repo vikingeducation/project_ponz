@@ -1,0 +1,40 @@
+{
+  "name": "14_project_ponz",
+  "version": "1.0.0",
+  "description": "Building Ponz.io, with its endearingly upside-down-triangle-shaped business model.",
+  "main": "mongo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "c": "node repl.js",
+    "seed": "node seeds",
+    "seeds": "node seeds",
+    "start": "nodemon index.js",
+    "debug": "node --nolazy --debug-brk=5000 index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christianflorez/project_ponz.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/christianflorez/project_ponz/issues"
+  },
+  "homepage": "https://github.com/christianflorez/project_ponz#readme",
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
+    "cookie-session": "^2.0.0-beta.2",
+    "express": "^4.15.3",
+    "express-flash-messages": "^0.1.1",
+    "express-handlebars": "^3.0.0",
+    "mongoose": "^4.10.7",
+    "mongoose-unique-validator": "^1.0.5",
+    "morgan": "^1.8.2",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0"
+  }
+}
