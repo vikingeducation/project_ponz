@@ -29,15 +29,15 @@ router.post("/", (req, res, next) => {
 });
 
 const calculateScore = depth => {
-  if (depth >= 5) {
+  if (depth >= 4) {
     return 1;
   }
 
-  return [null, 20, 10, 5, 2][depth];
+  return [20, 10, 5, 2][depth];
 };
 
 const updateScore = user => {
-  let depth = 0;
+  let depth = -1;
 
   const updateScoreRecursively = user => {
     let parent = user.parent;
@@ -54,7 +54,8 @@ const updateScore = user => {
 
 router.post("/ponzify", (req, res) => {
   const { email, password, parent } = req.body;
-  let newUser = new User({ email, password, parent });
+  const score = 0;
+  let newUser = new User({ email, password, parent, score });
   let currentUser;
   newUser.save()
     .then(results => {

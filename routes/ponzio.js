@@ -7,7 +7,7 @@ const passport = require('passport');
 router.get("/", (req, res) => {
   if (req.user) {
     console.log(req.user);
-    res.render("ponzio/index", { user: req.user });
+    res.render("ponzio/index", { user: req.user, children: req.user.children });
   } else {
     res.redirect("/login");
   }
