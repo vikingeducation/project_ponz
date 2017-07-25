@@ -1,0 +1,18 @@
+{{!-- Adapted from http://jsfiddle.net/adamboduch/5yt6M/ --}}
+
+{{#each children }} {{! Each item is an "li" }}
+<li>
+    Email: <strong>{{ email }}</strong>
+    <li>
+      Score: <strong>{{ score }}</strong>
+    </li>
+    <li>Their Ponverts:</li>
+    {{#if children}} {{! Within the context of the current item }}
+    <ul>
+      {{> ponzio/referrals }} {{! Recursively render the partial }}
+    </ul>
+    {{else }}
+      <ul><li>None so far</li></ul>
+    {{/if}}
+</li>
+{{/each}}
