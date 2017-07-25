@@ -12,6 +12,14 @@ Clone the repository, the install the dependencies. Create some users to test th
 ## Deployment Link
 A deployed version of this project may be found [here.](https://shielded-escarpment-47453.herokuapp.com/)
 
+You can login with the following credentials:
+
+Email: foobar0@gmail.com
+
+Password: 123
+
+You can replace the digit in the email with any number up to 134 to view different accounts
+
 ## Additional Notes
 This project makes use of recursion in a few key places. It is worth looking at the `register.js` file in the routes folder. Specifically, the updateScoreRecursively function traverses throughout the entirety of the tree structure to find all the parents of the current user and update their scores accordingly. 
 
