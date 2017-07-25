@@ -9,6 +9,22 @@
       "request": "launch",
       "name": "Launch Program",
       "program": "${workspaceRoot}/index.js"
+    },
+    {
+      "name": "Jasmine-Node Debugging",
+      "cwd": "${workspaceRoot}",
+      "program": "${workspaceRoot}/node_modules/jasmine-node/lib/jasmine-node/cli.js",
+      "request": "launch",
+      "type": "node",
+      "args": [
+        "${workspaceRoot}/spec/.js"
+      ]
+    },
+    {
+      "request": "launch",
+      "type": "node",
+      "name": "Launch index.js",
+      "program": "${workspaceRoot}/index.js"
     }
   ]
 }

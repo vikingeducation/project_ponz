@@ -5,7 +5,6 @@ const User = models.User;
 const passport = require('passport');
 
 router.get("/", (req, res) => {
-  console.log('no spaghett!!');
   res.render("register/index");
 });
 
