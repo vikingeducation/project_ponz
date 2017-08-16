@@ -85,17 +85,20 @@ module.exports = {
 };
 
 async function createChildUser(req, res) {
+	let parentUser;
 	try {
-		const parentUser = await User.findOne({ shortid: req.session.shortid });
+		parentUser = await User.findOne({ shortid: req.session.shortid });
 		const id = shortid.generate();
 		req.body.shortid = id;
 		req.body.parent = parentUser._id;
 
 		const childUser = await User.create(req.body);
 
-		await User.findByIdAndUpdate(parentUser._id,
-		{ $push: { "children": childUser._id } },
-		{ "new": true, "upsert": true } )
+		parentUser = await User.findByIdAndUpdate(
+			parentUser._id,
+			{ $push: { children: childUser._id } },
+			{ new: true, upsert: true }
+		);
 
 		// console.log("parentuser", parentUser.populate('parent'))
 		// console.log("parentuser", parentUser.populate('parent').parent)
@@ -115,21 +118,31 @@ async function createChildUser(req, res) {
 }
 
 async function updatePoints(parentUser, points) {
-
 	let newParentUser;
 	try {
-		console.log("parentUser", parentUser);
-		if(!parentUser) return;
-		await User.findByIdAndUpdate(parentUser._id,
-			{ $inc: { 'points': points } }
-		)
-		newParentUser = await parentUser.populate('parent');
-		// console.log(newParentUser, "newParentUser");
-		if(points > 1) {
+		console.log(parentUser, "parentUser");
+		if (!parentUser) return;
+		await User.findByIdAndUpdate(parentUser._id, { $inc: { points: points } });
+		newParentUser = await User.findById(parentUser.parent);
+
+		console.log(newParentUser, "newParentUser");
+		if (points > 1) {
 			points /= 2;
 		}
-	} catch(err) {
+	} catch (err) {
 		console.error(err);
 	}
 	return updatePoints(newParentUser, points);
 }
+
+// User.findOne({ _id: req.params.id }, function(err, node) {
+// 	populateParents(node).then(function() {
+// 		// Do something with user
+// 	});
+// });
+
+// function populateParents(user) {
+// 	return User.populate(user, { parent: "parent" }).then(function(user) {
+// 		return user.parent ? populateParents(user.parent) : Promise.fulfill(user);
+// 	});
+// }
