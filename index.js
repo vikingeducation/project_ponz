@@ -82,7 +82,17 @@ const isAuthenticated = (req, res, next) => {
 
 app.get("/", isAuthenticated, (req, res) => {
   User.findById(req.user.id)
-  .populate("children")
+  .populate({
+    path: "children",
+    populate: {
+      path: "children",
+      model: "User",
+      populate: {
+        path: "children",
+        model: "User"
+      }
+    }
+  })
   .then((user)=>{
   return res.render("./index", {user:user});
   })
@@ -94,8 +104,12 @@ app.post("/login",
     failureRedirect: "/login",
     failureFlash: true
   })
-);  
+);
 
+app.get("/logout", isAuthenticated, (req, res) => {
+	req.logout();
+	return res.redirect("/login");
+});
 
 // mount routes
 app.use("/login", routes.login);
