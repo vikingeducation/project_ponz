@@ -31,6 +31,15 @@ const UserSchema = new mongoose.Schema(
 		timestamps: true
 	}
 );
+
+// Wrapper for find method so that we can gather children
+// recursively.
+UserSchema.statics.findRecursive = function(options) {
+	const user = this.findOne(options);
+	user.gatherPonverts();
+	return user;
+};
+
 UserSchema.statics.findRootUsers = function() {
 	return this.find({
 		parent: {
@@ -39,7 +48,7 @@ UserSchema.statics.findRootUsers = function() {
 	});
 };
 
-UserSchema.statics.findByReffererCode = async function(referrerCode) {
+UserSchema.statics.getReferrer = async function(referrerCode) {
 	return this.findOne({
 		username: base64.decode(utf8.decode(referrerCode))
 	});
@@ -49,6 +58,18 @@ UserSchema.methods.validatePassword = function(password) {
 	return bcrypt.compareSync(password, this.passwordHash);
 };
 
+UserSchema.methods.addPonvert = function(user) {
+	this.ponverts.push(user);
+	this.save();
+};
+
+UserSchema.methods.gatherPonverts = function() {
+	this.ponverts = this.find({ _id: this.ponverts });
+	return this.ponverts.map(ponvert => {
+		return ponvert.gatherPonverts();
+	});
+};
+
 UserSchema.virtual('password')
 	.set(function(password) {
 		this.passwordHash = bcrypt.hashSync(password, 12);
@@ -56,10 +77,9 @@ UserSchema.virtual('password')
 	.get(function() {
 		return this.passwordHash;
 	});
+
 UserSchema.virtual('usernameEncoded').get(function() {
-	const encoded = base64.encode(utf8.encode(this.username));
-	console.log(encoded);
-	return encoded;
+	return base64.encode(utf8.encode(this.username));
 });
 
 const User = mongoose.model('User', UserSchema);

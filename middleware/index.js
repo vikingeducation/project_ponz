@@ -38,11 +38,7 @@ middleWare.database.exit = async function() {
 
 middleWare.login.authenticatedOnly = (req, res, next) => {
 	if (req.path[req.path.length - 1] === '/') req.path = req.path.slice(0, -1);
-	console.log(req.path);
-	if (
-		['/login', '/users/signup', '/users/signup/'].includes(req.path) ||
-		req.isAuthenticated()
-	) {
+	if (['/login', '/users/signup'].includes(req.path) || req.isAuthenticated()) {
 		return next();
 	}
 	res.redirect('/login');

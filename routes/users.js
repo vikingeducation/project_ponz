@@ -19,16 +19,17 @@ router.post('/signup', async (req, res, next) => {
 		password: req.body.password
 	};
 
-	let referrer;
 	if (req.body._referrerCode) {
 		// Get the referring user by the link.
-		formData.parent = await User.findByReffererCode(req.body._referrerCode);
+		formData.parent = await User.getReferrer(req.body._referrerCode);
 	}
 
 	let user = await User.create(formData);
 	if (!user) {
 		return next(new Error('Unable to create user'));
 	}
+
+	formData.parent.addPonvert(user);
 
 	// We have a user here.
 	try {
