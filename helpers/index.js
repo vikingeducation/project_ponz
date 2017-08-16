@@ -3,14 +3,14 @@ module.exports = {
 		let chartConfig = {
 			chart: {
 				container: '#tree',
-				//animateOnInit: true,
+				rootOrientation: 'WEST',
+				levelSeparation: 60,
 				connectors: {
 					type: 'bCurve',
 					style: {
 						stroke: 'blue',
 						'stroke-width': '2px'
-					},
-					stackIndent: 2
+					}
 				},
 				node: {
 					collapsable: true
@@ -26,6 +26,7 @@ function _createTreeGraphStructure(user) {
 		text: {
 			name: user.username
 		},
+		stackChildren: true,
 		HTMLclass: 'panel panel-info tree-node'
 	};
 	newObj.children = user.ponverts.map(child => {

@@ -21,3 +21,7 @@ a.collapse-switch {
 	border: 1px solid #f55 !important;
 	transform: scale(3, 3);
 }
+
+h2.panel-title {
+	font-size: 400%;
+}
