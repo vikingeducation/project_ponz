@@ -9,7 +9,7 @@ const {
   loggedInOnly,
   loggedOutOnly
 } = require("./session/Session.js");
-
+var payOut = require("./moneyLogic");
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
@@ -40,7 +40,10 @@ app.get("/", loggedInOnly, (req, res) => {
 app.get("/login", loggedOutOnly, (req, res) => {
   res.render("login");
 });
-
+app.get("/money", loggedInOnly, (req, res) => {
+  payOut(req.user.referrerId);
+  //res.render("login");
+});
 app.get("/logout", loggedInOnly, (req, res) => {
   res.cookie("sessionId", "");
   res.redirect("/");
@@ -61,19 +64,25 @@ app.post("/register/:id", loggedOutOnly, (req, res) => {
       if (req.params.id !== "new") {
         newUser.referrerId = req.params.id;
       } else {
-        newUser.referredId = "none";
+        newUser.referrerId = 1;
       }
+      console.log("foundUser");
       User.create(newUser).then(newUser => {
+        console.log("creating");
         const sessionId = createSignedSessionId(newUser.username);
         res.cookie("sessionId", sessionId);
+        //AddReferral(req.params.id, newUser);
         return res.redirect("/");
       });
     } else {
+      console.log("else");
       return res.redirect("/login");
     }
   });
 });
-
+// var AddReferral = function(referer, refered) {
+//   User.update({ _id: referer }, { $push: { referrals: refered } });
+// };
 app.post("/login", loggedOutOnly, (req, res) => {
   User.findOne({ username: req.body.username }).then(foundUser => {
     if (foundUser === null) {
