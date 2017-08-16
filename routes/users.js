@@ -1,7 +1,25 @@
 var express = require('express');
 var router = express.Router();
 
+// TODO: REMOVE THIS BELOW
+const base64 = require('base-64');
+const utf8 = require('utf8');
+
 const { User } = require('../models');
+
+router.get('/', async (req, res) => {
+	let users = await User.find();
+	console.log(users);
+	users = users
+		.map(user => {
+			return { name: user.username, code: user.usernameEncoded };
+		})
+		.map(
+			code =>
+				`${code.name}::http://localhost:3000/users/signup/?_referrerCode=${code.code}`
+		);
+	res.end('<pre>' + JSON.stringify(users, null, 2) + '</pre>');
+});
 
 /* GET users listing. */
 router.get('/signup', async (req, res) => {
