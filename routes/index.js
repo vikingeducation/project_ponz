@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const mongoose = require("mongoose");
 const h = require("../helpers");
 const { User } = require("../models");
 
@@ -13,6 +14,10 @@ function authenticate(passport) {
   //main page
   router.get("/", ensureAuthenticated, (req, res) => {
     res.render("index");
+  });
+
+  router.get("/:id", (req, res) => {
+    res.render("register", { id: req.params.id });
   });
 
   //login view
@@ -37,8 +42,8 @@ function authenticate(passport) {
 
   //register handler
   router.post(h.registerPath(), (req, res, next) => {
-    const { username, password } = req.body;
-    User.create({ username, password })
+    const { id, username, password } = req.body;
+    User.create({ id, username, password })
       .then(user => {
         req.login(user, err => {
           if (err) next(err);

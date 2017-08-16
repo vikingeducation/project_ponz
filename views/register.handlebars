@@ -4,6 +4,9 @@
     <div class="panel-body">
 
       <form action="{{ registerPath }}" method="post">
+        {{#if id}}
+        <input type="hidden" name="id" value="{{id}}">
+        {{/if}}
         <div class="form-group">
           <input type="text" name="username" value="" placeholder="username" class="form-control">
         </div>
