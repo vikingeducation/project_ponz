@@ -26,11 +26,13 @@ router.post("/", (req, res, next) => {
 		User.findOne({referralCode: req.body.referral}).then(parent => {
 			referral = parent;
 
-			userInfo.parents = parent.parents.slice(0).map(parent=>{
-					parent.distance+=1;
-					return parent;
+			userInfo.parents = parent.parents.slice(0)
+
+			userInfo.parents = userInfo.parents.map(parent=>{
+				parent.distance+=1;
+				return parent;
 			});
-			userInfo.parents.unshift({distance:0, ancestor:referral});
+			userInfo.parents.unshift({distance:0, ancestor:referral._id});
 
 			const user = new User(userInfo);
 	  	return user.save()
@@ -41,17 +43,11 @@ router.post("/", (req, res, next) => {
 //			console.log("line 41: user.parents = ", user.parents)
 			let counter = 40;
 			const updatedParents = user.parents.map(parent => {
+				if (counter > 1) {
+					counter = Math.floor(40 / 2 ** parent.distance);
+				}
 				let updateParent = User.findByIdAndUpdate(parent.ancestor, {$inc:{ponzBucks:counter}})
 
-				// .then(parentUser=>{
-				// 	parent.ancestor.ponzBucks += counter;
-				// })
-			
-				if (counter > 1) {
-					counter = Math.floor(counter / 2);
-				}
-				console.log("Line 53, counter = ", counter)
-				console.log("Line 54, parent.ancestor = ", parent.ancestor)
 				return updateParent
 			})
 //			console.log("line 52: updatedParents = ", updatedParents)
