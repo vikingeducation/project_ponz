@@ -35,7 +35,9 @@ const ensureAuthenticated = (req, res, next) => {
 function authenticate(passport) {
   //main page
   router.get("/", ensureAuthenticated, (req, res) => {
-    res.render("index");
+    const referPath = `${req.protocol}://${req.get("host")}/${req.user
+      .shortId}`;
+    res.render("index", { referPath });
   });
 
   //login view
