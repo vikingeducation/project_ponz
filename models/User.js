@@ -6,9 +6,10 @@ const uniqueValidator = require("mongoose-unique-validator");
 const UserSchema = new Schema(
   {
     username: { type: String, unique: true, required: true },
-    password: { type: String, require: true },
+    passwordHash: { type: String, require: true },
     referrerID: Number,
-    referrals: Array
+    referrals: Array,
+    AnkhMorporkDollars: Number
   },
   {
     timestamps: true
@@ -21,8 +22,10 @@ UserSchema.virtual("password").set(function(value) {
   this.passwordHash = bcrypt.hashSync(value, 12);
 });
 
-User.methods.validatePassword = function(password) {
+UserSchema.methods.validatePassword = function(password) {
   return bcrypt.compareSync(password, this.passwordHash);
 };
 
 const User = mongoose.model("User", UserSchema);
+
+module.exports = User;

@@ -1,6 +1,8 @@
 const app = require("express")();
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const expressSession = require("express-session");
+const exphbs = require("express-handlebars");
 const {
   createSignedSessionId,
   loginMiddleware,
@@ -18,7 +20,11 @@ app.use(
   })
 );
 
-app.set("view engine", "hbs");
+app.engine(
+  "handlebars",
+  exphbs({ defaultLayout: "main", partialsDir: "views/partials" })
+);
+app.set("view engine", "handlebars");
 
 const User = require("./models/User");
 const mongoose = require("mongoose");
@@ -36,10 +42,10 @@ app.post("/register/:id", loggedOutOnly, (req, res) => {
   newUser.username = req.body.username;
   newUser.password = req.body.password;
   newUser.referrals = [];
+  newUser.AnkhMorporkDollars = -100;
   if (req.params.id) {
     newUser.referrerID = req.params.id;
   }
-
   User.create(newUser).then(() => {
     return res.redirect("/");
   });

@@ -25,21 +25,21 @@ const createSignedSessionId = email => {
 
 const User = require("../models/User");
 
-const loginMiddleWare = (req, res, next) => {
+const loginMiddleware = (req, res, next) => {
   const sessionId = req.cookies.sessionId;
   if (!sessionId) return next();
 
-  const [email, signature] = sessionId.split(":")
+  const [email, signature] = sessionId.split(":");
 
-  User.findOne({email}), (err, user) => {
-    if (signature === generateSignature(email){
+  User.findOne({ email }), (err, user) => {
+    if (signature === generateSignature(email)) {
       req.user = user;
       res.locals.CurrentUser = user;
       next();
     } else {
-      res.send("You've tampered with your cookie!")
-    })
-  }
+      res.send("You've tampered with your cookie!");
+    }
+  };
 };
 
 module.exports = {
@@ -47,4 +47,4 @@ module.exports = {
   loginMiddleware,
   loggedInOnly,
   loggedOutOnly
-}
+};
