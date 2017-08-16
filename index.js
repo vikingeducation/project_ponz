@@ -4,7 +4,9 @@ const hbs = exphbs.create({
   partialsDir: "views/partials",
   defaultLayout: "main"
 });
+const mongoose = require("mongoose");
 const routes = require("./routes");
+const { User } = require("./models");
 
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
@@ -29,6 +31,14 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  if (mongoose.connection.readyState) {
+    next();
+  } else {
+    require("./mongo")().then(() => next());
+  }
+});
+
 
 // require Passport and the Local Strategy
 const passport = require("passport");
@@ -38,7 +48,7 @@ app.use(passport.session());
 const LocalStrategy = require("passport-local").Strategy;
 
 passport.use(
-  new LocalStrategy(function(username, password, done) {
+  new LocalStrategy("local", function(username, password, done) {
     User.findOne({ username }, function(err, user) {
       console.log(user);
       if (err) return done(err);
@@ -71,8 +81,17 @@ const isAuthenticated = (req, res, next) => {
 }
 
 app.get("/", isAuthenticated, (req, res) => {
-  res.render("index")
-})
+  res.render("./partials/index", {user: req.user});
+});
+
+app.post("/login",
+	passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+    failureFlash: true
+  })
+);  
+
 
 // mount routes
 app.use("/login", routes.login);

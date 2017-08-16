@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { User } = require("./../models");
 
 router.get("/", (req, res) => {
 	res.render("./partials/register");
@@ -9,8 +10,7 @@ router.post("/", (req, res, next) => {
 	const userInfo = {
   	username: req.body.username,
   	password: req.body.password,
-  	children: [],
-  	parents: []
+  	ponzBucks: 0
   }
 
 	if (req.body.referral) {
@@ -47,12 +47,24 @@ router.post("/", (req, res, next) => {
 			return referral.save();
 		})
 		.then(() => {
-			res.redirect("/")
+			return res.redirect("/")
+		}).catch((e) => {
+			req.flash("warning", `${e}`);
+	  	res.redirect("back");
 		})
 	} else {
 		const user = new User(userInfo);
-	  return user.save().then(() => {
-	  	res.redirect("/");
+		console.log(user);
+		console.log(userInfo);
+	  user.save().then(user => {
+	  	console.log("saved a user...")
+	  	req.login(user, function(err) {
+	  		console.log("in the login...");
+	      return res.redirect("/");
+	    });
+	  }).catch((e) => {
+	  	req.flash("warning", `${e}`);
+	  	res.redirect("back");
 	  });
 	}
 });
