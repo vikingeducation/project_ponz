@@ -70,10 +70,7 @@ module.exports = {
 			req.body.shortid = id;
 
 			let user = await User.create(req.body);
-			return res.json({
-				confirmation: "success",
-				user: user
-			});
+			return res.redirect("/ponzvert");
 		} catch (e) {
 			console.error(e.stack);
 			return res.json({
@@ -100,15 +97,9 @@ async function createChildUser(req, res) {
 			{ new: true, upsert: true }
 		);
 
-		// console.log("parentuser", parentUser.populate('parent'))
-		// console.log("parentuser", parentUser.populate('parent').parent)
 		updatePoints(parentUser, 40);
 
-		return res.json({
-			confirmation: "success",
-			user: childUser,
-			parentUser: parentUser
-		});
+		return res.redirect("/ponzvert");
 	} catch (e) {
 		return res.json({
 			confirmation: "fail",
