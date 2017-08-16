@@ -60,7 +60,7 @@ module.exports = {
 		// create our user with random id
 		try {
 			// registering for another user
-			console.log("shortid: ", req.session.shortid);
+			// console.log("shortid: ", req.session.shortid);
 			if (req.session.shortid) {
 				createChildUser(req, res);
 				return;
@@ -86,16 +86,20 @@ module.exports = {
 
 async function createChildUser(req, res) {
 	try {
-		let parentUser = await User.findOne({ shortid: req.session.shortid });
-		let id = shortid.generate();
+		const parentUser = await User.findOne({ shortid: req.session.shortid });
+		const id = shortid.generate();
 		req.body.shortid = id;
-		req.body.parent = parentUser;
-		console.log("ParentUser", parentUser);
+		req.body.parent = parentUser._id;
 
-		let childUser = await User.create(req.body);
+		const childUser = await User.create(req.body);
 
-		parentUser.children.push(childUser);
-		await parentUser.save();
+		await User.findByIdAndUpdate(parentUser._id,
+		{ $push: { "children": childUser._id } },
+		{ "new": true, "upsert": true } )
+
+		// console.log("parentuser", parentUser.populate('parent'))
+		// console.log("parentuser", parentUser.populate('parent').parent)
+		updatePoints(parentUser, 40);
 
 		return res.json({
 			confirmation: "success",
@@ -110,52 +114,22 @@ async function createChildUser(req, res) {
 	}
 }
 
-/*
-{  
-   "confirmation":"success",
-   "user":{  
-      "__v":0,
-      "username":"Susan2",
-      "password":"$2a$12$8ExCDQLR8wglpNlOEdgIEO1IhqDXuAMcTiotJScs6frho6aPCb1AC",
-      "fname":"Susan2",
-      "lname":"Susan2",
-      "shortid":"ByVEEQfOW",
-      "_id":"5994a42bade777c8dec3cf71",
-      "points":0,
-      "children":[  
+async function updatePoints(parentUser, points) {
 
-      ],
-      "parent":{  
-         "_id":"5994a3f5ade777c8dec3cf70",
-         "username":"Susan",
-         "password":"$2a$12$lnh4Sjo8Ih3YoG2ki45ZOOgFvmUAFMUd/1lnNUYAESxPgadGvsuMm",
-         "fname":"Susan",
-         "lname":"Susan",
-         "shortid":"ByTxNmfO-",
-         "__v":1,
-         "points":0,
-         "children":[  
-            "5994a42bade777c8dec3cf71"
-         ],
-         "parent":null,
-         "timestamp":"2017-08-16T19:58:45.263Z"
-      },
-      "timestamp":"2017-08-16T19:59:39.649Z"
-   },
-   "parentUser":{  
-      "_id":"5994a3f5ade777c8dec3cf70",
-      "username":"Susan",
-      "password":"$2a$12$lnh4Sjo8Ih3YoG2ki45ZOOgFvmUAFMUd/1lnNUYAESxPgadGvsuMm",
-      "fname":"Susan",
-      "lname":"Susan",
-      "shortid":"ByTxNmfO-",
-      "__v":1,
-      "points":0,
-      "children":[  
-         "5994a42bade777c8dec3cf71"
-      ],
-      "parent":null,
-      "timestamp":"2017-08-16T19:58:45.263Z"
-   }
+	let newParentUser;
+	try {
+		console.log("parentUser", parentUser);
+		if(!parentUser) return;
+		await User.findByIdAndUpdate(parentUser._id,
+			{ $inc: { 'points': points } }
+		)
+		newParentUser = await parentUser.populate('parent');
+		// console.log(newParentUser, "newParentUser");
+		if(points > 1) {
+			points /= 2;
+		}
+	} catch(err) {
+		console.error(err);
+	}
+	return updatePoints(newParentUser, points);
 }
- */
