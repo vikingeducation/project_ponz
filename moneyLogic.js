@@ -9,13 +9,13 @@ var payOut = async function(referrerId) {
   while (referrerId != 1) {
     let foundReferrer = await User.findOne({ _id: referrerId });
     console.log(foundReferrer);
-    let oldMoney = foundReferrer.AnkhMorporkDollars;
+    let newTotal = foundReferrer.AnkhMorporkDollars + currentPayout;
 
     try {
-      var z = await await User.update(
+      var z = await User.update(
         { _id: referrerId },
-        { AnkhMorporkDollars: oldMoney }
-      ).reject(30);
+        { AnkhMorporkDollars: newTotal }
+      );
     } catch (e) {
       console.log(e); // 30
     }
