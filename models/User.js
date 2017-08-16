@@ -11,7 +11,7 @@ const UserSchema = new Schema({
   },
   username: { type: String, required: true, unique: true },
   passwordHash: { type: String, required: true },
-  referrer: {
+  parent: {
     type: Schema.Types.ObjectId,
     ref: "User"
   }
@@ -28,8 +28,8 @@ UserSchema.virtual("password").set(function(value) {
 });
 
 UserSchema.virtual("id").set(function(value) {
-  mongoose.model("User").findById(value).then(referrer => {
-    this.referrer = referrer;
+  mongoose.model("User").findById(value).then(parent => {
+    this.parent = parent;
   });
 });
 

@@ -16,10 +16,6 @@ function authenticate(passport) {
     res.render("index");
   });
 
-  router.get("/:id", (req, res) => {
-    res.render("register", { id: req.params.id });
-  });
-
   //login view
   router.get(h.loginPath(), (req, res) => {
     res.render("login");
@@ -57,6 +53,11 @@ function authenticate(passport) {
   router.get(h.logoutPath(), function(req, res) {
     req.logout();
     res.redirect("/");
+  });
+
+  //referrer link handler
+  router.get("/:id", (req, res) => {
+    res.render("register", { id: req.params.id });
   });
 
   return router;
