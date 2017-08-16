@@ -1,5 +1,5 @@
 const models = {};
 
-models.User = require('./User');
+models.User = require('./user');
 
 module.exports = models;

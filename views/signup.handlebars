@@ -1,23 +1,32 @@
-<div class='row'>
-  <h2> Please Signup to Make $$$ </h2>
-  <h5> All the money awaits you inside...</h5>
+<div class="row">
+  <div class="col-md-12">
+    <div class="page-header">
+      <h1>Sign up <small> Please Signup to Make $$$ </small></h1>
+      <h4> All the money awaits you inside...</h4>
+    </div>
+  </div>
+</div>
 
-  <form action='/login' method='POST' class='form-horizontal'>
-    <div class="form-group">
-      <label for="username" class="col-sm-2 control-label">Email</label>
-      <div class="col-sm-10">
-        <input type="username" class="form-control" id="username" value='Bob-Karlton'>
+<div class='row'>
+  <div class="col-md-12">
+    <form method='POST' class='form-horizontal'>
+      <div class="form-group">
+        <label for="username" class="col-sm-2 control-label">Email</label>
+        <div class="col-sm-5">
+          <input type="username" class="form-control" id="username" name="username" value='Bob-Karlton'>
+        </div>
       </div>
-    </div>
-    <div class="form-group">
-      <label for="password" class="col-sm-2 control-label">Password</label>
-      <div class="col-sm-10">
-        <input type="password" class="form-control" id="password">
+      <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">Password</label>
+        <div class="col-sm-5">
+          <input type="password" class="form-control" id="password" name="password">
+        </div>
       </div>
-    </div>
-    {{#if referrerCode}}
-      <input type='hidden' name='_referrerCode' value="{{referrerCode}}">
-    {{/if}}
-    <button class='btn btn-success' type='submit' id='login now'>Signup</button>
-  </form>
+      {{#if referrerCode}}
+        <input type='hidden' name='_referrerCode' value="{{referrerCode}}">
+      {{/if}}
+      <br />
+      <button class='btn btn-success col-sm-offset-2' type='submit' id='login now'>Signup</button>
+    </form>
+  </div>
 </div>
