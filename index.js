@@ -70,7 +70,7 @@ app.post("/register/:id", loggedOutOnly, (req, res) => {
       User.create(newUser).then(newUser => {
         const sessionId = createSignedSessionId(newUser.username);
         res.cookie("sessionId", sessionId);
-        payOut(newUser.referrerId, newUser._id);
+        payOut(newUser, newUser._id);
         return res.redirect("/");
       });
     } else {
