@@ -70,8 +70,12 @@ const isAuthenticated = (req, res, next) => {
 	}
 }
 
-// mount routes
+app.get("/", isAuthenticated, (req, res) => {
+  res.render("index")
+})
 
+// mount routes
+app.use("/login", routes.login);
 app.use("/register", routes.register);
 
 // actually start the server

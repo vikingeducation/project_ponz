@@ -26,19 +26,21 @@ router.post("/", (req, res, next) => {
 			const user = new User(userInfo);
 	  	return user.save()
 		}).then(user => {
-			newUser = user;
+			newUser = user; 
 			return user.populate("parents")
 		}).then(user => {
 			let counter = 40;
-			user.parents.forEach(parent => {
+			user.parents.map(parent => {
 				parent.ponzBucks += counter;
 
 				if (counter > 1) {
 					counter = Math.floor(counter / 2);
 				}
+				return parent.save()
 			})
 
 			//save the parents
+			return Promise.all(user.parents);
 		})
 		.then(() => {
 			referral.children.push(newUser);
