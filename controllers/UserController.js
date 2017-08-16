@@ -60,8 +60,8 @@ module.exports = {
 		// create our user with random id
 		try {
 			// registering for another user
-			console.log("shortid: ", req.session.shortid)
-			if(req.session.shortid) {
+			console.log("shortid: ", req.session.shortid);
+			if (req.session.shortid) {
 				createChildUser(req, res);
 				return;
 			}
@@ -86,7 +86,7 @@ module.exports = {
 
 async function createChildUser(req, res) {
 	try {
-		let parentUser = await User.findOne({ shortid: req.session.shortid })
+		let parentUser = await User.findOne({ shortid: req.session.shortid });
 		let id = shortid.generate();
 		req.body.shortid = id;
 		req.body.parent = parentUser;
@@ -94,20 +94,68 @@ async function createChildUser(req, res) {
 
 		let childUser = await User.create(req.body);
 
-		await User.update({ shortid: req.session.shortid },
-			{ $push: { children: childUser } }
-		)
-
-		// parentUser.children(childUser);
+		parentUser.children.push(childUser);
+		await parentUser.save();
 
 		return res.json({
 			confirmation: "success",
-			user: childUser
+			user: childUser,
+			parentUser: parentUser
 		});
-	} catch(e){
+	} catch (e) {
 		return res.json({
 			confirmation: "fail",
 			message: e.message
 		});
 	}
 }
+
+/*
+{  
+   "confirmation":"success",
+   "user":{  
+      "__v":0,
+      "username":"Susan2",
+      "password":"$2a$12$8ExCDQLR8wglpNlOEdgIEO1IhqDXuAMcTiotJScs6frho6aPCb1AC",
+      "fname":"Susan2",
+      "lname":"Susan2",
+      "shortid":"ByVEEQfOW",
+      "_id":"5994a42bade777c8dec3cf71",
+      "points":0,
+      "children":[  
+
+      ],
+      "parent":{  
+         "_id":"5994a3f5ade777c8dec3cf70",
+         "username":"Susan",
+         "password":"$2a$12$lnh4Sjo8Ih3YoG2ki45ZOOgFvmUAFMUd/1lnNUYAESxPgadGvsuMm",
+         "fname":"Susan",
+         "lname":"Susan",
+         "shortid":"ByTxNmfO-",
+         "__v":1,
+         "points":0,
+         "children":[  
+            "5994a42bade777c8dec3cf71"
+         ],
+         "parent":null,
+         "timestamp":"2017-08-16T19:58:45.263Z"
+      },
+      "timestamp":"2017-08-16T19:59:39.649Z"
+   },
+   "parentUser":{  
+      "_id":"5994a3f5ade777c8dec3cf70",
+      "username":"Susan",
+      "password":"$2a$12$lnh4Sjo8Ih3YoG2ki45ZOOgFvmUAFMUd/1lnNUYAESxPgadGvsuMm",
+      "fname":"Susan",
+      "lname":"Susan",
+      "shortid":"ByTxNmfO-",
+      "__v":1,
+      "points":0,
+      "children":[  
+         "5994a42bade777c8dec3cf71"
+      ],
+      "parent":null,
+      "timestamp":"2017-08-16T19:58:45.263Z"
+   }
+}
+ */
