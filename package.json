@@ -4,6 +4,7 @@
   "description": "Building Ponz.io, with its endearingly upside-down-triangle-shaped business model.",
   "main": "index.js",
   "scripts": {
+    "start": "which nodemon > /dev/null && nodemon index.js || node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

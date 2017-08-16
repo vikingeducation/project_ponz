@@ -6,45 +6,18 @@ const exphbs = require("express-handlebars");
 const session = require("express-session");
 const passport = require("passport");
 
-// const { User } = require("./models");
-// const FacebookStrategy = require("passport-facebook");
-// const LocalStrategy = require('passport-local').Strategy
+const mongoose = require("mongoose");
+const Promise = require("bluebird");
+const { User } = require("./models");
 
-// const { facebookTools, linkedinTools } = require("./auth");
+const bcrypt = require("bcrypt");
+const LocalStrategy = require("passport-local").Strategy;
 
-// bluebird mongoose
-mongoose.Promise = Promise;
-
-// connect to mongoose
-const beginConnection = mongoose.connect(process.env.DB_URL, {useMongoClient: true});
-
-beginConnection.then(db => {
-
-  console.log("DB CONNECTION SUCCESS");
-}).catch(err => {
-  console.error(err);
-});
-
-
-const app = express();
 if (process.env.NODE_ENV !== "production") {
 	require("dotenv").config();
 }
 
-const mongoose = require("mongoose");
-const Promise = require("bluebird");
-
-// express session
-app.use(
-	session({
-		secret: "123fljwejflkkwjelk23jlkf23fl2k3jl23kfjlk23j329f4",
-		resave: false,
-		saveUninitialized: true,
-		cookie: {
-			maxAge: 24 * 60 * 60
-		}
-	})
-);
+// const { loginTool } = require("./auth");
 
 // bluebird mongoose
 mongoose.Promise = Promise;
@@ -61,6 +34,20 @@ beginConnection
 	.catch(err => {
 		console.error(err);
 	});
+
+const app = express();
+
+// express session
+app.use(
+	session({
+		secret: "123fljwejflkkwjelk23jlkf23fl2k3jl23kfjlk23j329f4",
+		resave: false,
+		saveUninitialized: true,
+		cookie: {
+			maxAge: 24 * 60 * 60
+		}
+	})
+);
 
 // handlebars view
 app.set("views", path.join(__dirname, "views"));
@@ -81,31 +68,29 @@ app.use(passport.session());
 
 // facebookTools.utilizePassport(passport, User);
 // linkedinTools.utilizePassport(passport, User);
-passport.use(new LocalStrategy(
-  (username, password, done) => {
-    let user = findUser(username);
-    if(!user) return done(null, false);
-    
-    bcrypt.compareSync(password, user.password, (err, isValid) => {
-      if(err) return done(err);
-      if(!isValid) return done(null, false);
-      return done(null, user);
-    })
-  }
-))
+passport.use(
+	new LocalStrategy((username, password, done) => {
+		let user = findUser(username);
+		if (!user) return done(null, false);
 
+		bcrypt.compareSync(password, user.password, (err, isValid) => {
+			if (err) return done(err);
+			if (!isValid) return done(null, false);
+			return done(null, user);
+		});
+	})
+);
 
 async function findUser(username) {
-  let user;
-  try {
-    user = await findOne({
-      username: username
-    })
-  }
-  catch(error) {
-    console.error(error)
-  }
-  return user;
+	let user;
+	try {
+		user = await User.findOne({
+			username: username
+		});
+	} catch (error) {
+		console.error(error);
+	}
+	return user;
 }
 
 // passport.serializeUser(function(user, done) {
@@ -119,7 +104,12 @@ async function findUser(username) {
 // });
 
 // routes
-// app.use("/", require("./routes/index"));
+app.use("/", require("./routes/index"));
+app.use("/api", require("./routes/api"));
+
+// post to /api/users => json data of all users
+// front end, ajax.egt(api/users) = data, parse it
+
 // app.use("/landing", require("./routes/landing"));
 
 // Facebook Routes
