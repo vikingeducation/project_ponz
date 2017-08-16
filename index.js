@@ -68,14 +68,12 @@ app.post("/register/:id", loggedOutOnly, (req, res) => {
       }
       console.log("foundUser");
       User.create(newUser).then(newUser => {
-        console.log("creating");
         const sessionId = createSignedSessionId(newUser.username);
         res.cookie("sessionId", sessionId);
-        //AddReferral(req.params.id, newUser);
+        payOut(newUser.referrerId, newUser._id);
         return res.redirect("/");
       });
     } else {
-      console.log("else");
       return res.redirect("/login");
     }
   });

@@ -3,7 +3,15 @@
 //>> the sytem then does a payout to all connected referrers
 //register>40>20>10>5>2>1
 const User = require("./models/User");
-var payOut = async function(referrerId) {
+var payOut = async function(referrerId, referralId) {
+  try {
+    var zref = await User.update(
+      { _id: referrerId },
+      { $push: { referrals: referralId } }
+    );
+  } catch (e) {
+    console.log(e); // 30
+  }
   console.log("look at all the money");
   let currentPayout = 40;
   while (referrerId != 1) {
