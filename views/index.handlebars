@@ -21,7 +21,7 @@ http://localhost:3000/register/{{user.referralCode}}</a>
         <div>
           {{#if user.children}}
             {{#each user.children as |child|}}  
-              {{child.name}} has earned you <str>40</str> PonzBucks! 
+              {{child.username}} has earned you <str>40</str> PonzBucks! 
              <i> ponverted at {{child.createdAt}}</i>
             {{/each}}
           {{else}}

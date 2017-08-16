@@ -3,11 +3,11 @@ const router = express.Router();
 const { User } = require("./../models");
 
 router.get("/", (req, res) => {
-	res.render("./partials/register");
+	res.render("./register");
 });
 
 router.get("/:username", (req, res) => {
-	res.render("./partials/register", {referral:req.params.username});
+	res.render("./register", {referral:req.params.username});
 });
 
 router.post("/", (req, res, next) => {
@@ -25,8 +25,11 @@ router.post("/", (req, res, next) => {
 		User.findOne({username: req.body.referral}).then(parent => {
 			referral = parent;
 
-			userInfo.parents = parent.parents;
-			userInfo.parents.unshift(parent);
+			userInfo.parents = parent.parents.slice(0).map(parent=>{
+					parent.distance+=1;
+					return parent;
+			});
+			userInfo.parents.unshift({distance:0, ancestor:referral});
 
 			const user = new User(userInfo);
 	  	return user.save()
@@ -35,8 +38,8 @@ router.post("/", (req, res, next) => {
 			return user.populate("parents")
 		}).then(user => {
 			let counter = 40;
-			user.parents.map(parent => {
-				parent.ponzBucks += counter;
+			const updatedParents = user.parents.map(parent => {
+				parent.ancestor.ponzBucks += counter;
 
 				if (counter > 1) {
 					counter = Math.floor(counter / 2);
@@ -45,7 +48,7 @@ router.post("/", (req, res, next) => {
 			})
 
 			//save the parents
-			return Promise.all(user.parents);
+			return Promise.all(updatedParents);
 		})
 		.then(() => {
 			referral.children.push(newUser);

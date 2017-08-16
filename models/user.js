@@ -9,15 +9,18 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require("bcrypt");
 const uniqueValidator = require("mongoose-unique-validator");
-
+//todo: alter parents, children for depth
 const UserSchema = new Schema(
   {
     username: {type: String, required: true, unique: true},
     passwordHash: {type: String, required: true},
     ponzBucks: Number,
     parents: [{
-    	type: Schema.Types.ObjectId,
-      ref: "User"
+      distance: Number,
+      ancestor: {
+      	type: Schema.Types.ObjectId,
+        ref: "User"
+        }
     }],
     children: [{
     	type: Schema.Types.ObjectId,

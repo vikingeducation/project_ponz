@@ -81,7 +81,11 @@ const isAuthenticated = (req, res, next) => {
 }
 
 app.get("/", isAuthenticated, (req, res) => {
-  res.render("./partials/index", {user: req.user});
+  User.findById(req.user.id)
+  .populate("children")
+  .then((user)=>{
+  return res.render("./index", {user:user});
+  })
 });
 
 app.post("/login",
