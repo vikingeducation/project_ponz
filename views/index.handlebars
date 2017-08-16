@@ -30,7 +30,9 @@
       <h2>Your Ponzverts</h2>
     </div>
     <div class="panel-body">
-      some folks
+      {{#if popUser.children }} {{> shared/_children children=popUser.children}} {{else}}
+      <h3>You have no ponzverts. SAD!</h3>
+      {{/if}}
     </div>
   </div>
 

@@ -32,12 +32,36 @@ const ensureAuthenticated = (req, res, next) => {
   else res.redirect(h.loginPath());
 };
 
+const constructPopulateConfigObj = (level, path) => {
+  const oneLevel = () => ({ path });
+  let obj = oneLevel();
+
+  while (level) {
+    if (level !== 1) {
+      obj.populate = Object.assign({}, obj);
+    }
+    obj = Object.assign({}, obj);
+    --level;
+  }
+
+  return obj;
+};
+
 function authenticate(passport) {
   //main page
   router.get("/", ensureAuthenticated, (req, res) => {
     const referPath = `${req.protocol}://${req.get("host")}/${req.user
       .shortId}`;
-    res.render("index", { referPath });
+
+    const obj = constructPopulateConfigObj(req.user.depth, "children");
+
+    User.findById(req.user.id)
+      .populate(obj)
+      .then(popUser => {
+        console.log(popUser);
+        res.render("index", { referPath, popUser });
+      })
+      .catch(e => res.status(500).end(e.stack));
   });
 
   //login view
