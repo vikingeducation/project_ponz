@@ -30,15 +30,19 @@ middleWare.database.persist = async (req, res, next) => {
 	}
 	next();
 };
-middleWare.database.exit = async function() {
+middleWare.database.exit = async (req, res, next) => {
 	if (mongoose.connection.readyState) {
 		await mongoose.disconnect();
 	}
+	next();
 };
 
 middleWare.login.authenticatedOnly = (req, res, next) => {
 	if (req.path[req.path.length - 1] === '/') req.path = req.path.slice(0, -1);
-	if (['/login', '/users/signup'].includes(req.path) || req.isAuthenticated()) {
+	if (
+		['/login', '/users/signup', '/users/signup/'].includes(req.path) ||
+		req.isAuthenticated()
+	) {
 		return next();
 	}
 	res.redirect('/login');

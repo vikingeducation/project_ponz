@@ -14,12 +14,14 @@ const UserSchema = new mongoose.Schema(
 		passwordHash: String,
 		parent: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'User'
+			ref: 'User',
+			alias: 'Referrer'
 		},
 		ponverts: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
-				ref: 'User'
+				ref: 'User',
+				alias: 'Ponverts'
 			}
 		],
 		points: {
@@ -34,9 +36,9 @@ const UserSchema = new mongoose.Schema(
 
 // Wrapper for find method so that we can gather children
 // recursively.
-UserSchema.statics.findRecursive = function(options) {
-	const user = this.findOne(options);
-	user.gatherPonverts();
+UserSchema.statics.findRecursive = async function(options) {
+	const user = await this.findOne(options);
+	await user.gatherPonverts();
 	return user;
 };
 
@@ -63,11 +65,11 @@ UserSchema.methods.addPonvert = function(user) {
 	this.save();
 };
 
-UserSchema.methods.gatherPonverts = function() {
-	this.ponverts = this.find({ _id: this.ponverts });
-	return this.ponverts.map(ponvert => {
-		return ponvert.gatherPonverts();
-	});
+UserSchema.methods.gatherPonverts = async function() {
+	this.ponverts = await User.find({ _id: this.ponverts });
+	for (let i = 0; i < this.ponverts.length; i++) {
+		await this.ponverts[i].gatherPonverts.call(this.ponverts[i]);
+	}
 };
 
 UserSchema.virtual('password')

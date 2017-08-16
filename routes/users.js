@@ -4,7 +4,7 @@ var router = express.Router();
 const { User } = require('../models');
 
 /* GET users listing. */
-router.get('/signup', (req, res) => {
+router.get('/signup', async (req, res) => {
 	let options = {};
 	if (req.query._referrerCode) {
 		options._referrerCode = req.query._referrerCode;
@@ -29,7 +29,9 @@ router.post('/signup', async (req, res, next) => {
 		return next(new Error('Unable to create user'));
 	}
 
-	formData.parent.addPonvert(user);
+	if (req.body._referrerCode) {
+		formData.parent.addPonvert(user);
+	}
 
 	// We have a user here.
 	try {

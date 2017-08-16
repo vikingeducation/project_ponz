@@ -5,12 +5,18 @@ const { User } = require('../models');
 
 /* GET home page. */
 router.get('/', async function(req, res, next) {
-	const user = await User.findById(req.user._id);
+	// test.
+	const user = await User.findRecursive({ _id: req.user._id });
+
+	//const user = await User.findById(req.user._id);
 	if (!user) {
 		return next(new Error('User not found...'));
 	}
 
-	res.render('index', { user });
+	res.render('index', {
+		user: user,
+		userString: JSON.stringify(user, null, 2)
+	});
 });
 
 router.get('/login', (req, res) => {
