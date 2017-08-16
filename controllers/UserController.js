@@ -38,28 +38,31 @@ module.exports = {
 
 	createUser: async (req, res) => {
 		// check if user exists
-		// try {
-		// 	let existingUser = await User.find({
-		// 			username: req.body.username
-		// 	});
-		// 	if (existingUser) {
-		// 		return res.json({
-		// 			confirmation: "fail",
-		// 			message: "user already exists"
-		// 		});
-		// 	}
-		// } catch (e) {
-		// 	return res.json({
-		// 		confirmation: "fail",
-		// 		message: e.message
-		// 	});
-		// }
-		// console.log("Made it here");
-		// if no user, create the user
+		let existingUser;
+		console.log("checking here/???");
+		try {
+			existingUser = await User.find({
+				username: req.body.username
+			});
+
+			if (existingUser) {
+				return res.json({
+					confirmation: "fail",
+					message: "user already exists"
+				});
+			}
+		} catch (e) {
+			return res.json({
+				confirmation: "fail",
+				message: e.message
+			});
+		}
+
+		// create our user with random id
 		try {
 			req.body.shortid = shortid.generate();
 			let user = await User.create(req.body);
- 			console.log("made it to the line 63");
+			console.log("made it to the line 63");
 			return res.json({
 				confirmation: "success",
 				user: user

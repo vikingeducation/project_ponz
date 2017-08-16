@@ -13,6 +13,8 @@ const { User } = require("./models");
 const bcrypt = require("bcrypt");
 const LocalStrategy = require("passport-local").Strategy;
 
+const app = express();
+
 if (process.env.NODE_ENV !== "production") {
 	require("dotenv").config();
 }
@@ -34,8 +36,6 @@ beginConnection
 	.catch(err => {
 		console.error(err);
 	});
-
-const app = express();
 
 // express session
 app.use(
@@ -68,6 +68,7 @@ app.use(passport.session());
 
 // facebookTools.utilizePassport(passport, User);
 // linkedinTools.utilizePassport(passport, User);
+
 passport.use(
 	new LocalStrategy((username, password, done) => {
 		let user = findUser(username);
@@ -93,6 +94,14 @@ async function findUser(username) {
 	return user;
 }
 
+function isLoggedIn(req, res, next) {
+	// if user is authenticated in the session, carry on
+	if (req.isAuthenticated()) return next();
+
+	// if they aren't redirect them to the home page
+	res.redirect("/");
+}
+
 // passport.serializeUser(function(user, done) {
 // 	done(null, user.id);
 // });
@@ -104,17 +113,22 @@ async function findUser(username) {
 // });
 
 // routes
-app.use("/", require("./routes/index"));
+// app.use("/", require("./routes/index"));
 app.use("/api", require("./routes/api"));
 
-// post to /api/users => json data of all users
-// front end, ajax.egt(api/users) = data, parse it
+app.get("/", (req, res) => {
+	res.render("landing/index");
+});
 
-// app.use("/landing", require("./routes/landing"));
+app.get("/ponzvert", isLoggedIn, (req, res) => {
+	res.send("the main page!");
+});
 
-// Facebook Routes
+// auth routes
+app.get("/auth/user");
+
 // app.get(
-// 	"/auth/facebook",
+// 	"/auth/user",
 // 	passport.authenticate("facebook", {
 // 		authType: "rerequest",
 // 		scope: ["public_profile"]
@@ -124,24 +138,6 @@ app.use("/api", require("./routes/api"));
 // app.get(
 // 	"/auth/facebook/callback",
 // 	passport.authenticate("facebook", { failureRedirect: "/login" }),
-// 	function(req, res) {
-// 		// Successful authentication, redirect home.
-// 		res.redirect("/landing"); // test
-// 	}
-// );
-
-// Linkedin routes
-// app.get(
-// 	"/auth/linkedin",
-// 	passport.authenticate("linkedin", {
-// 		authType: "rerequest",
-// 		scope: ['r_basicprofile', 'r_emailaddress']
-// 	})
-// );
-
-// app.get(
-// 	"/auth/linkedin/callback",
-// 	passport.authenticate("linkedin", { failureRedirect: "/login" }),
 // 	function(req, res) {
 // 		// Successful authentication, redirect home.
 // 		res.redirect("/landing"); // test
