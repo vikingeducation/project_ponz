@@ -3,15 +3,10 @@ const User = require("./models/User");
 var pyramidObject = {};
 var depth = 0;
 const pyramid = async function(currentUserId) {
-  console.log("empty array?");
-  console.log(currentUserId);
   let currentUser = await User.findOne({ _id: currentUserId }).populate(
     "referrals"
   );
-  console.log(currentUser);
   let referralArray = currentUser.referrals;
-  console.log(referralArray);
-  console.log(referralArray);
 
   while (makeObject(referralArray) !== false) {}
   return pyramidObject;
@@ -19,18 +14,21 @@ const pyramid = async function(currentUserId) {
 
 const makeObject = function(refArray) {
   let newArray = [];
+  pyramidObject[depth] = refArray;
+  depth++;
+  // TODO fix this promise issue - skipping the newArray.length validation below
   refArray.forEach(i => {
     let id = i._id;
-    let thisRef = User.findOne({ id: id }).populate("referrals");
-    if (thisRef.referrals !== []) {
-      newArray = newArray.concat(i.referrals);
-    }
+    let thisRef = User.findOne({ _id: id }).populate("referrals");
+    newArray = newArray.concat(i.referrals);
+    console.log(i.referrals);
   });
-  if (newArray !== []) {
+  if (newArray.length > 0) {
     pyramidObject[depth] = newArray;
     depth++;
     makeObject(newArray);
   } else {
+    depth = 0;
     return false;
   }
 };
