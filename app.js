@@ -46,11 +46,14 @@ app.use(
 app.use(middleWare.database.persist);
 
 const passport = require("passport");
-//const strategies = require('./auth-strategies');
+const strategies = require("./auth-strategies");
+passport.use(strategies.local);
+passport.serializeUser(strategies.serializeUser);
+passport.deserializeUser(strategies.deserializeUser);
 
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(middleWare.login.authenticatedOnly);
 app.use("/", index);
 app.use("/users", users);
 
