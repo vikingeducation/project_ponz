@@ -3,6 +3,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const expressSession = require("express-session");
 const exphbs = require("express-handlebars");
+const pyramid = require("./pyramid");
 const {
   createSignedSessionId,
   loginMiddleware,
@@ -33,6 +34,10 @@ mongoose.connect("mongodb://localhost/project_ponz");
 app.get("/", loggedInOnly, (req, res) => {
   User.findOne({ username: req.user.username }).then(user => {
     console.log(user);
+    console.log(user._id);
+    pyramid(user._id).then(results => {
+      console.log(results);
+    });
     return res.render("index", { user });
   });
 });
@@ -42,7 +47,7 @@ app.get("/login", loggedOutOnly, (req, res) => {
 });
 app.get("/money", loggedInOnly, (req, res) => {
   payOut(req.user.referrerId);
-  //res.render("login");
+  // res.render("login");
 });
 app.get("/logout", loggedInOnly, (req, res) => {
   res.cookie("sessionId", "");
@@ -66,11 +71,10 @@ app.post("/register/:id", loggedOutOnly, (req, res) => {
       } else {
         newUser.referrerId = 1;
       }
-      console.log("foundUser");
       User.create(newUser).then(newUser => {
         const sessionId = createSignedSessionId(newUser.username);
         res.cookie("sessionId", sessionId);
-        payOut(newUser, newUser._id);
+        payOut(newUser.referrerId, newUser.id);
         return res.redirect("/");
       });
     } else {
@@ -78,9 +82,7 @@ app.post("/register/:id", loggedOutOnly, (req, res) => {
     }
   });
 });
-// var AddReferral = function(referer, refered) {
-//   User.update({ _id: referer }, { $push: { referrals: refered } });
-// };
+
 app.post("/login", loggedOutOnly, (req, res) => {
   User.findOne({ username: req.body.username }).then(foundUser => {
     if (foundUser === null) {

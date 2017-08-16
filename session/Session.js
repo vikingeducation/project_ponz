@@ -30,13 +30,8 @@ const loginMiddleware = (req, res, next) => {
 
   //const username = sessionId;
   const [username, signature] = sessionId.split(":");
-  console.log("beforebefore");
-  console.log(username);
-  console.log(signature);
   User.findOne({ username: username }, (err, user) => {
-    console.log("before sig block");
     if (signature === generateSignature(username)) {
-      console.log("in sig block");
       req.user = user;
       res.locals.CurrentUser = user;
       next();

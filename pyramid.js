@@ -1,18 +1,26 @@
 const User = require("./models/User");
+
 var pyramidObject = {};
 var depth = 0;
 const pyramid = async function(currentUserId) {
-  let currentUser = await User.findOne({ _id: currentUserId });
+  console.log(currentUserId);
+  let currentUser = await User.find({ id: currentUserId }).populate(
+    "referrals"
+  );
+  console.log(currentUser);
   let referralArray = currentUser.referrals;
+  console.log(referralArray);
+  console.log(referralArray);
 
-while(makeObject(referralArray) !== false){}
-return pyramidObject
+  while (makeObject(referralArray) !== false) {}
+  return pyramidObject;
 };
 
-const makeObject = async function(refArray) {
+const makeObject = function(refArray) {
   let newArray = [];
   refArray.forEach(i => {
-    let thisRef = await User.findOne({ _id: i });
+    let id = i._id;
+    let thisRef = User.findOne({ id: id }).populate("referrals");
     if (thisRef.referrals !== []) {
       newArray = newArray.concat(i.referrals);
     }
