@@ -26,36 +26,41 @@ router.post("/", (req, res, next) => {
 		User.findOne({referralCode: req.body.referral}).then(parent => {
 			referral = parent;
 
+// Making a copy of the parent's parents
+
 			userInfo.parents = parent.parents.slice(0)
-
-			userInfo.parents = userInfo.parents.map(parent=>{
-				parent.distance+=1;
-				return parent;
+//			console.log("line 30", userInfo)
+// Increment the distance of all the parent's parents
+			const pars = userInfo.parents.map( p => {
+				p.distance+=1;
+				return p;
 			});
-			userInfo.parents.unshift({distance:0, ancestor:referral._id});
-
+			console.log("line 35", userInfo)
+//Add the new user's immediate parent to the front of the new user's parents array at distance 0
+			pars.unshift({distance:0, ancestor:referral._id});
+			userInfo.parents = pars.slice(0)
+			console.log("line 37", userInfo)
 			const user = new User(userInfo);
 	  	return user.save()
 		}).then(user => {
 			newUser = user; 
-			return user // .populate("parents.ancestor");
+			return user 
 		}).then(user => {
-//			console.log("line 41: user.parents = ", user.parents)
 			let counter = 40;
 			const updatedParents = user.parents.map(parent => {
+// For each ancestor, reduce the counter based on distance with a floor of 1
 				if (counter > 1) {
 					counter = Math.floor(40 / 2 ** parent.distance);
-				}
+				} 
+// Add the counter to the ancestor's score
 				let updateParent = User.findByIdAndUpdate(parent.ancestor, {$inc:{ponzBucks:counter}})
 
 				return updateParent
 			})
-//			console.log("line 52: updatedParents = ", updatedParents)
-			//save the parents
 			return Promise.all(updatedParents);
 		})
 		.then((promisedParents) => {
-//			console.log("promisedParents = ", promisedParents)
+//Add the new user to its (single) parent's children 
 			referral.children.push(newUser);
 			return referral.save();
 		})
@@ -69,8 +74,6 @@ router.post("/", (req, res, next) => {
 		})
 	} else {
 		const user = new User(userInfo);
-		// console.log(user);
-		// console.log(userInfo);
 	  user.save().then(user => {
 	  	req.login(user, function(err) {
 	      return res.redirect("/");

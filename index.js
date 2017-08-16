@@ -89,7 +89,19 @@ app.get("/", isAuthenticated, (req, res) => {
       model: "User",
       populate: {
         path: "children",
-        model: "User"
+        model: "User",
+        populate: {
+          path: "children",
+          model: "User",
+          populate: {
+            path: "children",
+            model: "User",
+            populate: {
+              path: "children",
+              model: "User"
+            }
+          }
+        }
       }
     }
   })
