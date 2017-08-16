@@ -6,18 +6,23 @@ router.get("/", (req, res) => {
 	res.render("./partials/register");
 });
 
+router.get("/:username", (req, res) => {
+	res.render("./partials/register", {referral:req.params.username});
+});
+
 router.post("/", (req, res, next) => {
 	const userInfo = {
   	username: req.body.username,
   	password: req.body.password,
-  	ponzBucks: 0
+  	ponzBucks: 0,
+  	referralCode: req.body.username	
   }
 
 	if (req.body.referral) {
 		let referral;
 		let newUser;
 
-		User.findById(req.body.referral).then(parent => {
+		User.findOne({username: req.body.referral}).then(parent => {
 			referral = parent;
 
 			userInfo.parents = parent.parents;

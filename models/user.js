@@ -22,7 +22,8 @@ const UserSchema = new Schema(
     children: [{
     	type: Schema.Types.ObjectId,
       ref: "User"
-    }]
+    }],
+    referralCode: String
   },
   {
     timestamps: true
@@ -43,6 +44,11 @@ UserSchema.virtual("password")
     this._password = value;
     this.passwordHash = bcrypt.hashSync(value, 12);
   });
+
+  // UserSchema.virtual("generateCode")
+  // .set(function(username) {
+  //   this.referralCode = bcrypt.hashSync(username, 2);
+  // });
 
 const User = mongoose.model("User", UserSchema);
 
