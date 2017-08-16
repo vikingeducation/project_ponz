@@ -17,10 +17,10 @@ const loggedOutOnly = (req, res, next) => {
   }
 };
 
-const generateSignature = email => md5(email + SECRET);
+const generateSignature = username => md5(username + SECRET);
 
-const createSignedSessionId = email => {
-  return `${email}:${generateSignature(email)}`;
+const createSignedSessionId = username => {
+  return `${username}:${generateSignature(username)}`;
 };
 
 const User = require("../models/User");
@@ -29,10 +29,15 @@ const loginMiddleware = (req, res, next) => {
   const sessionId = req.cookies.sessionId;
   if (!sessionId) return next();
 
-  const [email, signature] = sessionId.split(":");
-
-  User.findOne({ email }), (err, user) => {
-    if (signature === generateSignature(email)) {
+  //const username = sessionId;
+  const [username, signature] = sessionId.split(":");
+  console.log("beforebefore");
+  console.log(username);
+  console.log(signature);
+  User.find({ where: { username: username } }), (err, user) => {
+    console.log("before sig block");
+    if (signature === generateSignature(user)) {
+      console.log("in sig block");
       req.user = user;
       res.locals.CurrentUser = user;
       next();

@@ -25,7 +25,7 @@ app.engine(
   exphbs({ defaultLayout: "main", partialsDir: "views/partials" })
 );
 app.set("view engine", "handlebars");
-
+app.use(loginMiddleware);
 const User = require("./models/User");
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost/project_ponz");
@@ -37,31 +37,46 @@ app.get("/", loggedInOnly, (req, res) => {
 app.get("/login", loggedOutOnly, (req, res) => {
   res.render("login");
 });
-app.post("/register/:id", loggedOutOnly, (req, res) => {
-  let newUser = {};
-  newUser.username = req.body.username;
-  newUser.password = req.body.password;
-  newUser.referrals = [];
-  newUser.AnkhMorporkDollars = -100;
-  if (req.params.id) {
-    newUser.referrerID = req.params.id;
-  }
-  User.create(newUser).then(() => {
-    return res.redirect("/");
-  });
 
-  res.render("login");
+app.post("/register/:id", loggedOutOnly, (req, res) => {
+  User.findOne({ username: req.body.username }).then(foundUser => {
+    if (foundUser === null) {
+      console.log("didnt find a user");
+      let newUser = {};
+      newUser.username = req.body.username;
+      newUser.password = req.body.password;
+      newUser.referrals = [];
+      newUser.AnkhMorporkDollars = -100;
+      if (req.params.id !== "new") {
+        newUser.referrerID = req.params.id;
+      }
+      User.create(newUser).then(newUser => {
+        const sessionId = createSignedSessionId(newUser.username);
+        res.cookie("sessionId", sessionId);
+        console.log(sessionId);
+        console.log("created a bew yser");
+        return res.redirect("/");
+      });
+    } else {
+      console.log("found a user");
+      return res.redirect("/login");
+    }
+  });
+  console.log("im getting stuck");
 });
 app.post("/login", loggedOutOnly, (req, res) => {
   User.findOne({ username: req.body.username }).then(foundUser => {
-    if (foundUser === undefined) {
+    if (foundUser === null) {
+      console.log("didnt find a user");
       return res.redirect("/login");
     }
-    if (foundUser.validatePassword(req.body.password) === true) {
-      const sessionId = createSignedSessionId(email);
+    if (foundUser.validatePassword(req.body.password)) {
+      console.log("found a user");
+      const sessionId = createSignedSessionId(foundUser.username);
       res.cookie("sessionId", sessionId);
       return res.redirect("/");
     } else {
+      console.log("didnt validate");
       return res.redirect("/login");
     }
   });

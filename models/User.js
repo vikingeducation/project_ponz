@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+var bluebird = require("bluebird");
+mongoose.Promise = bluebird;
 const Schema = mongoose.Schema;
 const bcrypt = require("bcrypt");
 const uniqueValidator = require("mongoose-unique-validator");
@@ -19,7 +21,7 @@ const UserSchema = new Schema(
 UserSchema.plugin(uniqueValidator);
 
 UserSchema.virtual("password").set(function(value) {
-  this.passwordHash = bcrypt.hashSync(value, 12);
+  this.passwordHash = bcrypt.hashSync(value, 2);
 });
 
 UserSchema.methods.validatePassword = function(password) {
