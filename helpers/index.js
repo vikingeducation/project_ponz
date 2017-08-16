@@ -4,7 +4,7 @@ module.exports = {
 			chart: {
 				container: '#tree',
 				rootOrientation: 'WEST',
-				levelSeparation: 60,
+				levelSeparation: 50,
 				connectors: {
 					type: 'bCurve',
 					style: {

@@ -69,6 +69,7 @@ UserSchema.methods.addPonvert = function(user) {
 	this.addPoints(counter);
 	this.save();
 };
+
 UserSchema.methods.addPoints = async function(counter) {
 	if (counter < points.length) {
 		this.points += points[counter];

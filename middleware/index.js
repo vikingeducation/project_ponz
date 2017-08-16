@@ -14,6 +14,7 @@ middleWare.error.notFound = function(req, res, next) {
 	err.status = 404;
 	next(err);
 };
+
 middleWare.error.handler = function(err, req, res, next) {
 	// set locals, only providing error in development
 	res.locals.message = err.message;

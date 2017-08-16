@@ -12,7 +12,7 @@ router.get('/', async function(req, res, next) {
 	if (!user) {
 		return next(new Error('User not found...'));
 	}
-	const treeGraph = res.render('index', {
+	res.render('index', {
 		user: user,
 		treeGraph: JSON.stringify(makeTreeGraphStructure(user))
 	});

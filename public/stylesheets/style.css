@@ -25,3 +25,7 @@ a.collapse-switch {
 h2.panel-title {
 	font-size: 400%;
 }
+
+img.chain-link {
+	max-width: 150%;
+}
