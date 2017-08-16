@@ -9,7 +9,7 @@ const UserSchema = new Schema(
   {
     username: { type: String, unique: true, required: true },
     passwordHash: { type: String, require: true },
-    referrerID: Number,
+    referrerId: Number,
     referrals: Array,
     AnkhMorporkDollars: Number
   },

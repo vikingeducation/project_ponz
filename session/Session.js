@@ -1,5 +1,6 @@
 const SECRET = process.env["secret"] || "puppies";
 const md5 = require("md5");
+const User = require("./../models/User");
 
 const loggedInOnly = (req, res, next) => {
   if (req.user) {
@@ -23,8 +24,6 @@ const createSignedSessionId = username => {
   return `${username}:${generateSignature(username)}`;
 };
 
-const User = require("../models/User");
-
 const loginMiddleware = (req, res, next) => {
   const sessionId = req.cookies.sessionId;
   if (!sessionId) return next();
@@ -34,9 +33,9 @@ const loginMiddleware = (req, res, next) => {
   console.log("beforebefore");
   console.log(username);
   console.log(signature);
-  User.find({ where: { username: username } }), (err, user) => {
+  User.findOne({ username: username }, (err, user) => {
     console.log("before sig block");
-    if (signature === generateSignature(user)) {
+    if (signature === generateSignature(username)) {
       console.log("in sig block");
       req.user = user;
       res.locals.CurrentUser = user;
@@ -44,7 +43,7 @@ const loginMiddleware = (req, res, next) => {
     } else {
       res.send("You've tampered with your cookie!");
     }
-  };
+  });
 };
 
 module.exports = {
