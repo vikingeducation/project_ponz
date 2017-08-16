@@ -5,7 +5,7 @@ var depth = 0;
 const pyramid = async function(currentUserId) {
   console.log("empty array?");
   console.log(currentUserId);
-  let currentUser = await User.find({ id: currentUserId }).populate(
+  let currentUser = await User.findOne({ _id: currentUserId }).populate(
     "referrals"
   );
   console.log(currentUser);
