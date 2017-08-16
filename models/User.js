@@ -11,25 +11,40 @@ const UserSchema = new Schema({
   },
   username: { type: String, required: true, unique: true },
   passwordHash: { type: String, required: true },
-  parent: {
-    type: Schema.Types.ObjectId,
-    ref: "User"
-  }
+  parentUser: { type: Schema.Types.ObjectId, ref: "User" },
+  children: [
+    { level: Number, user: { type: Schema.Types.ObjectId, ref: "User" } }
+  ]
 });
 
 UserSchema.plugin(uniqueValidator);
 
+// Instance Methods
 UserSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.passwordHash);
 };
 
+UserSchema.methods.makeChild = function(child, level = 1) {
+  return mongoose.model("User").findById(this.parentUser).then(parentUser => {
+    if (parentUser) {
+      parentUser.children.push({
+        level: level,
+        user: child
+      });
+      return parentUser.save();
+    } else return null;
+  });
+};
+
+// Virtual Properties
 UserSchema.virtual("password").set(function(value) {
   this.passwordHash = bcrypt.hashSync(value, 8);
 });
 
 UserSchema.virtual("id").set(function(value) {
-  mongoose.model("User").findById(value).then(parent => {
-    this.parent = parent;
+  return mongoose.model("User").findById(value).then(parentUser => {
+    this.parentUser = parentUser;
+    return this.save();
   });
 });
 

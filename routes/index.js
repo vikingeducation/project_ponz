@@ -37,16 +37,24 @@ function authenticate(passport) {
   });
 
   //register handler
-  router.post(h.registerPath(), (req, res, next) => {
-    const { id, username, password } = req.body;
-    User.create({ id, username, password })
-      .then(user => {
-        req.login(user, err => {
-          if (err) next(err);
-          else res.redirect("/");
-        });
-      })
-      .catch(err => res.status(500).end(err.stack));
+  router.post(h.registerPath(), async (req, res, next) => {
+    try {
+      const { id, username, password } = req.body;
+      let user = await User.create({ id, username, password });
+      let level = 1;
+      let parentUser = await user.makeChild(user, level);
+      while (parentUser) {
+        console.log(parentUser.username);
+        level += 1;
+        parentUser = await parentUser.makeChild(user, level);
+      }
+      req.login(user, err => {
+        if (err) next(err);
+        else res.redirect("/");
+      });
+    } catch (error) {
+      res.status(500).end(error.stack);
+    }
   });
 
   //logout handler
