@@ -3,6 +3,7 @@ const User = require("./models/User");
 var pyramidObject = {};
 var depth = 0;
 const pyramid = async function(currentUserId) {
+  console.log("empty array?");
   console.log(currentUserId);
   let currentUser = await User.find({ id: currentUserId }).populate(
     "referrals"

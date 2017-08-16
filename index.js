@@ -36,6 +36,7 @@ app.get("/", loggedInOnly, (req, res) => {
     console.log(user);
     console.log(user._id);
     pyramid(user._id).then(results => {
+      console.log("empty array?");
       console.log(results);
     });
     return res.render("index", { user });
