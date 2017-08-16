@@ -10,18 +10,17 @@ const ensureAuthenticated = (req, res, next) => {
 };
 
 function authenticate(passport) {
+  //main page
   router.get("/", ensureAuthenticated, (req, res) => {
-    res.render("home");
+    res.render("index");
   });
 
+  //login view
   router.get(h.loginPath(), (req, res) => {
     res.render("login");
   });
 
-  router.get(h.registerPath(), (req, res) => {
-    res.render("register");
-  });
-
+  //login handler
   router.post(
     h.loginPath(),
     passport.authenticate("local", {
@@ -31,9 +30,15 @@ function authenticate(passport) {
     })
   );
 
+  //register view
+  router.get(h.registerPath(), (req, res) => {
+    res.render("register");
+  });
+
+  //register handler
   router.post(h.registerPath(), (req, res, next) => {
     const { username, password } = req.body;
-    User.createUser({ username, password })
+    User.create({ username, password })
       .then(user => {
         req.login(user, err => {
           if (err) next(err);
@@ -43,6 +48,7 @@ function authenticate(passport) {
       .catch(err => res.status(500).end(err.stack));
   });
 
+  //logout handler
   router.get(h.logoutPath(), function(req, res) {
     req.logout();
     res.redirect("/");

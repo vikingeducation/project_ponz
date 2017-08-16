@@ -44,11 +44,6 @@ const morgan = require("morgan");
 const morganToolkit = require("morgan-toolkit")(morgan);
 app.use(morganToolkit());
 
-// Method Overriding
-const methodOverride = require("method-override");
-const getPostSupport = require("express-method-override-get-post-support");
-app.use(methodOverride(getPostSupport.callback, getPostSupport.options));
-
 // Connect to Mongoose
 const mongoose = require("mongoose");
 app.use((req, res, next) => {
@@ -70,7 +65,7 @@ passport.deserializeUser(function(userId, done) {
   User.findById(userId, (err, user) => done(err, user));
 });
 
-passport.use(require("./strategies/local"));
+passport.use("local", require("./strategies/local"));
 
 // Add user to locals
 app.use((req, res, next) => {
