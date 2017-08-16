@@ -7,13 +7,18 @@ var payOut = async function(referrerId) {
   console.log("look at all the money");
   let currentPayout = 40;
   while (referrerId != 1) {
-    let foundReferrer = await User.find({ _id: referrerId });
+    let foundReferrer = await User.findOne({ _id: referrerId });
     console.log(foundReferrer);
     let oldMoney = foundReferrer.AnkhMorporkDollars;
-    let y = await User.update(
-      { _id: referrerId },
-      { AnkhMorporkDollars: oldMoney }
-    );
+
+    try {
+      var z = await await User.update(
+        { _id: referrerId },
+        { AnkhMorporkDollars: oldMoney }
+      ).reject(30);
+    } catch (e) {
+      console.log(e); // 30
+    }
     console.log("mo money");
     console.log(currentPayout);
     console.log(referrerId);
