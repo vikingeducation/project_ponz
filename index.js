@@ -12,6 +12,20 @@ const passport = require("passport");
 
 // const { facebookTools, linkedinTools } = require("./auth");
 
+// bluebird mongoose
+mongoose.Promise = Promise;
+
+// connect to mongoose
+const beginConnection = mongoose.connect(process.env.DB_URL, {useMongoClient: true});
+
+beginConnection.then(db => {
+
+  console.log("DB CONNECTION SUCCESS");
+}).catch(err => {
+  console.error(err);
+});
+
+
 const app = express();
 if (process.env.NODE_ENV !== "production") {
 	require("dotenv").config();
@@ -67,6 +81,32 @@ app.use(passport.session());
 
 // facebookTools.utilizePassport(passport, User);
 // linkedinTools.utilizePassport(passport, User);
+passport.use(new LocalStrategy(
+  (username, password, done) => {
+    let user = findUser(username);
+    if(!user) return done(null, false);
+    
+    bcrypt.compareSync(password, user.password, (err, isValid) => {
+      if(err) return done(err);
+      if(!isValid) return done(null, false);
+      return done(null, user);
+    })
+  }
+))
+
+
+async function findUser(username) {
+  let user;
+  try {
+    user = await findOne({
+      username: username
+    })
+  }
+  catch(error) {
+    console.error(error)
+  }
+  return user;
+}
 
 // passport.serializeUser(function(user, done) {
 // 	done(null, user.id);
