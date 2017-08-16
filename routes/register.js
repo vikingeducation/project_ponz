@@ -27,19 +27,20 @@ router.post("/", (req, res, next) => {
 			referral = parent;
 
 // Making a copy of the parent's parents
+			userInfo.parents = parent.parents.slice(0);
 
-			userInfo.parents = parent.parents.slice(0)
-//			console.log("line 30", userInfo)
 // Increment the distance of all the parent's parents
-			const pars = userInfo.parents.map( p => {
-				p.distance+=1;
-				return p;
+			userInfo.parents = userInfo.parents.map( p => {
+				newParent = {
+					distance: p.distance + 1,
+					ancestor: p.ancestor
+				}
+				return newParent;
 			});
-			console.log("line 35", userInfo)
+
 //Add the new user's immediate parent to the front of the new user's parents array at distance 0
-			pars.unshift({distance:0, ancestor:referral._id});
-			userInfo.parents = pars.slice(0)
-			console.log("line 37", userInfo)
+			userInfo.parents.unshift({distance:0, ancestor:referral._id});
+
 			const user = new User(userInfo);
 	  	return user.save()
 		}).then(user => {
