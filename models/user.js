@@ -68,7 +68,7 @@ UserSchema.methods.addPonvert = function(user) {
 UserSchema.methods.gatherPonverts = async function() {
 	this.ponverts = await User.find({ _id: this.ponverts });
 	for (let i = 0; i < this.ponverts.length; i++) {
-		await this.ponverts[i].gatherPonverts.call(this.ponverts[i]);
+		await this.ponverts[i].gatherPonverts();
 	}
 };
 
