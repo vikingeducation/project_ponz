@@ -1,5 +1,6 @@
 const { User } = require("../models");
 const shortid = require("shortid");
+const moment = require("moment");
 
 module.exports = {
 	index: async (req, res) => {
@@ -28,6 +29,21 @@ module.exports = {
 				confirmation: "success",
 				result: user
 			});
+		} catch (e) {
+			return res.json({
+				confirmation: "fail",
+				message: e.message
+			});
+		}
+	},
+
+	viewPonzvert: async (req, res) => {
+		let id = req.user._id;
+
+		try {
+			const user = await User.findById(id).populate("children");
+
+			return res.render("ponzvert/index", { user });
 		} catch (e) {
 			return res.json({
 				confirmation: "fail",

@@ -1,25 +1,13 @@
 const router = require("express").Router();
 const { isLoggedIn } = require("../middleware");
 const { User } = require("../models");
+const { users } = require("../controllers");
 
-router.get("/", isLoggedIn, async (req, res) => {
-	try {
-		const user = await User.findById(req.user._id).populate('children')
-		console.log("userInfo ", user)
-		return res.render("ponzvert/index", { user });
-	} catch(err) {
-		console.error(err);
-		return res.json({
-			confirmation: "fail",
-			message: err.message
-		});
-	}
-});
+router.get("/", isLoggedIn, users.viewPonzvert);
 
 router.get("/:shortid", (req, res) => {
 	req.session.shortid = req.params.shortid;
-
 	return res.redirect("/");
-})
+});
 
 module.exports = router;
