@@ -1,0 +1,64 @@
+<section class="col-sm-6 col-md-4">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">Passport Status</div>
+    <ul class="list-group">
+      {{#if user.facebook.id}}
+      <li class="list-group-item">Facebook connected!
+        <img src="{{user.facebook.photo}}" class="img-thumbnail">
+      </li>
+      {{else}}
+      <li class="list-group-item"><a href="{{ facebookPath }}" class="btn btn-primary">Facebook</a></li>
+      {{/if}} {{#if user.githubId}}
+      <li class="list-group-item">GitHub connected!
+        <img src="{{user.githubPhoto}}" class="img-thumbnail">
+      </li>
+      {{else}}
+      <li class="list-group-item"><a href="{{ githubPath }}" class="btn btn-primary">GitHub</a></li>
+      {{/if}} {{#if user.twitterId}}
+      <li class="list-group-item">Twitter connected!
+        <img src="{{user.twitterPhoto}}" class="img-thumbnail">
+      </li>
+      {{else}}
+      <li class="list-group-item"><a href="{{ twitterPath }}" class="btn btn-primary">Twitter</a></li>
+      {{/if}}
+    </ul>
+  </div>
+
+</section>
+
+{{#if user.facebook.data}}
+<section class="col-sm-6 col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">Facebook</div>
+    <div class="panel-body">
+      {{#each user.facebook.data as |data|}}
+      <img src="{{data}}" class="img-thumbnail"> {{/each}}
+    </div>
+  </div>
+</section>
+{{/if}} {{#if user.githubData}}
+<section class="col-sm-6 col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">Github</div>
+    <div class="panel-body">
+      <ul>
+        {{#each user.githubData as |data|}}
+        <li>{{data}}</li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</section>
+{{/if}} {{#if user.twitterData}}
+<section class="col-sm-6 col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">Twitter</div>
+    <div class="panel-body">
+      {{#each user.twitterData as |data|}}
+      <li>{{data}}</li>
+      {{/each}}
+    </div>
+  </div>
+</section>
+{{/if}}
