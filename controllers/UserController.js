@@ -1,4 +1,5 @@
-const User = require("./../models/sequelize").User;
+const { User } = require("../models");
+const shortid = require("shortid");
 
 module.exports = {
 	index: async (req, res) => {
@@ -21,9 +22,7 @@ module.exports = {
 		const id = req.params.id;
 
 		try {
-			const user = await User.findById(id, {
-				include: [{ model: Profile }]
-			});
+			const user = await User.findById(id);
 
 			return res.json({
 				confirmation: "success",
@@ -39,39 +38,34 @@ module.exports = {
 
 	createUser: async (req, res) => {
 		// check if user exists
-		try {
-			let existingUser = await User.find({
-				where: {
-					$or: {
-						username: req.body.username,
-						email: req.body.email
-					}
-				}
-			});
-		} catch (e) {
-			return res.json({
-				confirmation: "fail",
-				message: e.message
-			});
-		}
-
-		if (existingUser) {
-			return res.json({
-				confirmation: "fail",
-				message: "user already exists"
-			});
-		}
-
+		// try {
+		// 	let existingUser = await User.find({
+		// 			username: req.body.username
+		// 	});
+		// 	if (existingUser) {
+		// 		return res.json({
+		// 			confirmation: "fail",
+		// 			message: "user already exists"
+		// 		});
+		// 	}
+		// } catch (e) {
+		// 	return res.json({
+		// 		confirmation: "fail",
+		// 		message: e.message
+		// 	});
+		// }
+		// console.log("Made it here");
 		// if no user, create the user
 		try {
+			req.body.shortid = shortid.generate();
 			let user = await User.create(req.body);
-
+ 			console.log("made it to the line 63");
 			return res.json({
 				confirmation: "success",
-				user: user,
-				profile: profile
+				user: user
 			});
 		} catch (e) {
+			console.error(e.stack);
 			return res.json({
 				confirmation: "fail",
 				message: e.message

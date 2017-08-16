@@ -17,7 +17,7 @@ const UserSchema = mongoose.Schema({
 	points: { type: Number, default: 0 }
 });
 
-UserSchema.pre("save", async (next) => {
+UserSchema.pre("save", async function(next) {
 	let user = this;
 	let hash = await bcrypt.hashSync(user.password, 12);
 	user.password = hash;
