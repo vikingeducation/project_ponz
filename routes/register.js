@@ -36,22 +36,30 @@ router.post("/", (req, res, next) => {
 	  	return user.save()
 		}).then(user => {
 			newUser = user; 
-			return user.populate("parents.ancestor");
+			return user // .populate("parents.ancestor");
 		}).then(user => {
+//			console.log("line 41: user.parents = ", user.parents)
 			let counter = 40;
 			const updatedParents = user.parents.map(parent => {
-				parent.ancestor.ponzBucks += counter;
+				let updateParent = User.findByIdAndUpdate(parent.ancestor, {$inc:{ponzBucks:counter}})
 
+				// .then(parentUser=>{
+				// 	parent.ancestor.ponzBucks += counter;
+				// })
+			
 				if (counter > 1) {
 					counter = Math.floor(counter / 2);
 				}
-				return parent.save()
+				console.log("Line 53, counter = ", counter)
+				console.log("Line 54, parent.ancestor = ", parent.ancestor)
+				return updateParent
 			})
-
+//			console.log("line 52: updatedParents = ", updatedParents)
 			//save the parents
 			return Promise.all(updatedParents);
 		})
-		.then(() => {
+		.then((promisedParents) => {
+//			console.log("promisedParents = ", promisedParents)
 			referral.children.push(newUser);
 			return referral.save();
 		})
@@ -65,8 +73,8 @@ router.post("/", (req, res, next) => {
 		})
 	} else {
 		const user = new User(userInfo);
-		console.log(user);
-		console.log(userInfo);
+		// console.log(user);
+		// console.log(userInfo);
 	  user.save().then(user => {
 	  	req.login(user, function(err) {
 	      return res.redirect("/");
