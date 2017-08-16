@@ -1,0 +1,14 @@
+<a href="/logout"><button class="btn btn-default">Logout</button></a> 
+
+<h3>Your referral link is <a href="http://localhost:3000/ponzvert/{{user.shortid}}">http://localhost:3000/ponzvert/{{user.shortid}}</a></h3>
+
+<h2>Ponz Points&#8482;: ${{user.points}}</h2>
+
+<h3>Your Ponzverts</h3>
+{{#if user.children.length}}
+  {{#each user.children as |child|}}
+    <h5>Points: ${{child.points}}, User: {{child.fname}} {{child.lname}}, ponverted on {{child.timestamp}}</h5>
+
+
+  {{/each}}
+{{/if}}

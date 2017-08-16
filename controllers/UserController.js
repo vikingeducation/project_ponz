@@ -39,9 +39,8 @@ module.exports = {
 	createUser: async (req, res) => {
 		// check if user exists
 		let existingUser;
-		console.log("checking here/???");
 		try {
-			existingUser = await User.find({
+			existingUser = await User.findOne({
 				username: req.body.username
 			});
 
@@ -60,9 +59,17 @@ module.exports = {
 
 		// create our user with random id
 		try {
-			req.body.shortid = shortid.generate();
+			// registering for another user
+			console.log("shortid: ", req.session.shortid)
+			if(req.session.shortid) {
+				createChildUser(req, res);
+				return;
+			}
+
+			let id = shortid.generate();
+			req.body.shortid = id;
+
 			let user = await User.create(req.body);
-			console.log("made it to the line 63");
 			return res.json({
 				confirmation: "success",
 				user: user
@@ -76,3 +83,31 @@ module.exports = {
 		}
 	}
 };
+
+async function createChildUser(req, res) {
+	try {
+		let parentUser = await User.findOne({ shortid: req.session.shortid })
+		let id = shortid.generate();
+		req.body.shortid = id;
+		req.body.parent = parentUser;
+		console.log("ParentUser", parentUser);
+
+		let childUser = await User.create(req.body);
+
+		await User.update({ shortid: req.session.shortid },
+			{ $push: { children: childUser } }
+		)
+
+		// parentUser.children(childUser);
+
+		return res.json({
+			confirmation: "success",
+			user: childUser
+		});
+	} catch(e){
+		return res.json({
+			confirmation: "fail",
+			message: e.message
+		});
+	}
+}

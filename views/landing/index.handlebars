@@ -1,5 +1,9 @@
 <h3>Register</h3>
 <form action="/api/users" method="POST">
+  {{#if user}}
+    <input type="hidden" value="{{user.shortid}}" name="shortid" />
+  {{/if}}
+
   <div class="form-group">
 		<label for="username">Username:</label>
   	<input type="text" class="form-control" name="username" id="username" required="true" value="Susan">

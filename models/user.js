@@ -10,7 +10,7 @@ const UserSchema = mongoose.Schema({
 	password: { type: String, required: true },
 	fname: { type: String, required: true },
 	lname: { type: String, required: true },
-	shortid: { type: String, required: true, unique: true },
+	shortid: { type: String, required: true },
 	timestamp: { type: Date, default: Date.now },
 	parent: { type: Schema.Types.ObjectId, ref: "User", default: null },
 	children: [{ type: Schema.Types.ObjectId, ref: "User" }],
