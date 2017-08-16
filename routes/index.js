@@ -4,6 +4,28 @@ const mongoose = require("mongoose");
 const h = require("../helpers");
 const { User } = require("../models");
 
+const pointSystem = {
+  0: 40,
+  1: 20,
+  2: 10,
+  3: 5,
+  4: 2
+};
+
+const awardPoints = function(level) {
+  if (level > 4) {
+    return 1;
+  } else {
+    return pointSystem[level];
+  }
+};
+
+const updateAncestors = (anc, promises) => {
+  anc.user.ponzPoints += awardPoints(anc.level);
+  anc.user.depth += 1;
+  promises.push(anc.user.save());
+};
+
 // Authentication Middleware
 const ensureAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) next();
@@ -40,13 +62,30 @@ function authenticate(passport) {
   router.post(h.registerPath(), async (req, res, next) => {
     try {
       const { id, username, password } = req.body;
-      let user = await User.create({ id, username, password });
-      let level = 1;
-      let parentUser = await user.makeChild(user, level);
-      while (parentUser) {
-        console.log(parentUser.username);
-        level += 1;
-        parentUser = await parentUser.makeChild(user, level);
+      let createOps = [
+        User.create({ username, password }),
+        User.findOne({ shortId: id }).populate("ancestors.user")
+      ];
+      let [user, parent] = await Promise.all(createOps);
+      console.log(parent);
+      if (parent) {
+        let newAncestors = parent.ancestors.slice(0);
+        parent.children.push(user._id);
+        newAncestors.push({ level: 0, user: parent });
+        let promises = [];
+        newAncestors = newAncestors.map((a, ix) => {
+          return {
+            level: a.level + 1,
+            user: a.user
+          };
+        });
+        parent.ancestors.forEach(anc => {
+          updateAncestors(anc, promises);
+        });
+        updateAncestors({ level: 0, user: parent }, promises);
+        user.ancestors = newAncestors;
+        promises.push(user.save());
+        await Promise.all(promises);
       }
       req.login(user, err => {
         if (err) next(err);
