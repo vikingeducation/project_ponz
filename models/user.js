@@ -1,31 +1,30 @@
-// User
-// 	username
-// 	passwordHash
-// 	ponzBucks
-// 	parents: [nearest first]
-// 	children: [direct children as reference]
-
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require("bcrypt");
 const uniqueValidator = require("mongoose-unique-validator");
-//todo: alter parents, children for depth
+
 const UserSchema = new Schema(
   {
-    username: {type: String, required: true, unique: true},
-    passwordHash: {type: String, required: true},
+    username: { type: String, required: true, unique: true },
+    passwordHash: { type: String, required: true },
     ponzBucks: Number,
-    parents: [{
-      distance: Number,
-      ancestor: {
-      	type: Schema.Types.ObjectId,
-        ref: "User"
+    // all ancestors
+    parents: [
+      {
+        distance: Number,
+        ancestor: {
+          type: Schema.Types.ObjectId,
+          ref: "User"
         }
-    }],
-    children: [{
-    	type: Schema.Types.ObjectId,
-      ref: "User"
-    }],
+      }
+    ],
+    // only direct children
+    children: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+      }
+    ],
     referralCode: String
   },
   {
@@ -47,11 +46,6 @@ UserSchema.virtual("password")
     this._password = value;
     this.passwordHash = bcrypt.hashSync(value, 12);
   });
-
-  // UserSchema.virtual("generateCode")
-  // .set(function(username) {
-  //   this.referralCode = bcrypt.hashSync(username, 2);
-  // });
 
 const User = mongoose.model("User", UserSchema);
 
