@@ -1,19 +1,24 @@
+<div class="profile">
+	<h3 class="hello">Hello {{user.username}}!</h3>
+	<p>Your referral link is <a href="http://localhost:3000/ponzvert/{{user.shortid}}">http://localhost:3000/ponzvert/{{user.shortid}}</a></p>
 
-<h1 class="text-center hello">Hello {{user.username}}!</h1>
-<h3>Your referral link is <a href="http://localhost:3000/ponzvert/{{user.shortid}}">http://localhost:3000/ponzvert/{{user.shortid}}</a></h3>
+	<p>Ponz Points&#8482;: <money>${{user.points}}</money></p>
+	<div class="diamond">
+		<img src="./assets/diamond.png" alt="diamond">
+	</div>
+</div>
 
-<h2>Ponz Points&#8482;: <money>${{user.points}}</money></h2>
-<h3>Your Ponzverts</h3>
+<div class="text-center">
+	<h1 class="ponzvert-label">Your Ponzverts</h1>
+</div>
 
 
-<ul>
-  {{> ponzvertPartial children=user.children}}
-</ul>
+<div class="crazy-boxes">
+	<ul>
+  	{{> ponzvertPartial children=user.children}}
+	</ul>
+</div>
 
-
-<ul>
-  {{> ponzvertPartial}}
-</ul>
 
 
 
@@ -70,7 +75,7 @@
 		  .on("click", click);
 
 	  nodeEnter.append("circle")
-		  .attr("r", 1e-6)
+		  .attr("stroke", "black")
 		  .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
 	  nodeEnter.append("text")
@@ -148,4 +153,10 @@
 	  }
 	  update(d);
 	}
+
+	// Get random color
+	function randomColor() {
+		return '#' + Math.round(0xffffff * Math.random()).toString(16);
+	}
+
 </script>
