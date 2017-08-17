@@ -9,13 +9,8 @@ const pyramid = async function(currentUserId) {
     "referrals"
   );
   referralArray = currentUser.referrals;
-  // console.log(referralArray);
-  // console.log("here");
 
-  // while (keepLooping === true) {
   makeObject(referralArray);
-  // }
-  // keepLooping = false;
   return pyramidObject;
 };
 
