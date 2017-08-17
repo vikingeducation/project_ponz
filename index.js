@@ -3,6 +3,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const expressSession = require("express-session");
 const exphbs = require("express-handlebars");
+const shop = require("./routers/shop");
 const pyramid = require("./pyramid");
 const {
   createSignedSessionId,
@@ -31,13 +32,14 @@ const User = require("./models/User");
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost/project_ponz");
 
+app.use("/shop", shop);
+
 app.get("/", loggedInOnly, (req, res) => {
   User.findOne({ username: req.user.username }).then(user => {
     pyramid(user._id).then(results => {
-      console.log("root results");
       console.log(JSON.stringify(results, null, 2));
+      return res.render("index", { results, user });
     });
-    return res.render("index", { user });
   });
 });
 

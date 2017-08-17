@@ -1,6 +1,38 @@
-<h1>Welcome</h1>
+<div class="panel panel-success">
+  <div class=panel-body>
+    <h1>Refer Your Friends here!</h1>
+    <h3>Your referral link is <a href="/register/{{user._id}}">http://localhost:3000/register/{{user._id}}</a></h3>
+  </div>
+</div>
 
-Money: {{user.AnkhMorporkDollars}}
 
-<h2>Refer Your Friends here!</h2>
-<a href="/register/{{user._id}}">Ponzi/newUser</a>
+<div class="panel panel-default">
+  <div class='panel-heading'  style='background:lightgreen'>
+    <h1>Money: ${{user.AnkhMorporkDollars}}</h1>
+  </div>
+</div>
+
+<div class='panel panel-default'>
+  <div class='panel-heading'>
+    <h2>Your ponzverts</h2>
+  </div>
+  <div class='panel-body'>
+    {{#each results as |result|}}
+    <div class='panel panel-default'>
+      <div class='panel-heading'>
+        <h3>Level {{@key}} Ponverts</h3>
+      </div>
+        <div class='panel-body'>
+        {{#each result as |user|}}
+          <h4>{{user.username}}
+            <button type="button" class="btn btn-success">${{user.AnkhMorporkDollars}}</button>
+          </h4>
+        {{/each}}
+        </div>
+      </div>
+      {{/each}}
+    </div>
+    </div>
+  </div>
+</div>
+<br />
