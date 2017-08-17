@@ -1,0 +1,10 @@
+{{#each children as |child|}} {{! Each item is an "li" }}
+    <li class="list-group-item">
+        <p>${{child.points}} {{child.username}}</p>
+        {{#if child.children.length}} {{! Within the context of the current item }}
+        <ul class="list-group">
+          {{> ponzvertPartial children=child.children}} {{! Recursively render the partial }}
+        </ul>
+        {{/if}}
+    </li>
+{{/each}}

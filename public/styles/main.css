@@ -11,6 +11,7 @@ a:hover,
 a:focus {
 	text-decoration: none;
 	color: black;
+	font-weight: bold;
 }
 
 body {
@@ -150,6 +151,23 @@ p {
 	border: none;
 	font-family: 'Quicksand', sans-serif;
 	background-color: white;
+}
+
+money {
+	color: green;
+}
+
+.hello {
+	display: block;
+	width: 100%;
+}
+
+.test {
+	border: 1px solid black;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 /*.money-img {

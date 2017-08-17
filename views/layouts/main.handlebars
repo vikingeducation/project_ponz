@@ -44,7 +44,11 @@
 	  </div>
 
 	  <div class="side-section">
-	    <p class="login-link"><a href="#">login</a></p>
+      {{#if user}}
+        <p class="logout-link"><a href="/logout">logout</a></p>
+      {{else}}
+        <p class="login-link"><a href="#">login</a></p>
+      {{/if}}
 
 	    <p class="dot">&middot;</p>
 
@@ -60,9 +64,11 @@
   	<i class="fa fa-rss" aria-hidden="true"></i>
 
 	</div>
+
   <div class="container-fluid">
      {{{body}}}
-   </div>
+  </div>
+
    <footer class="footer-bar">
     hello
   </footer>
