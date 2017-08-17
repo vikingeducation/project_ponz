@@ -1,7 +1,7 @@
 const { User } = require("../models");
 const shortid = require("shortid");
 const moment = require("moment");
-
+const io = require("../io").getIO();
 
 module.exports = {
 	index: async (req, res) => {
@@ -67,7 +67,7 @@ module.exports = {
 		}
 	},
 
-	createUser: async (req, res) => {
+	createUser: async (req, res, next) => {
 		// check if user exists
 		let existingUser;
 		try {
@@ -76,7 +76,9 @@ module.exports = {
 			});
 
 			if (existingUser) {
-				req.session.message = "User Already Exists";
+				setTimeout(() => {
+					io.emit("user_exists");
+				}, 2000);
 				return res.redirect("/");
 			}
 		} catch (e) {
@@ -89,7 +91,6 @@ module.exports = {
 		// create our user with random id
 		try {
 			// registering for another user
-			req.session.message = "You are Registered!";
 			if (req.session.shortid) {
 				createChildUser(req, res);
 				return;
@@ -99,6 +100,10 @@ module.exports = {
 			req.body.shortid = id;
 
 			let user = await User.create(req.body);
+			setTimeout(() => {
+				io.emit("user_registered");
+			}, 2000);
+
 			return res.redirect("/ponzvert");
 		} catch (e) {
 			console.error(e.stack);
@@ -127,6 +132,10 @@ async function createChildUser(req, res) {
 		);
 
 		updatePoints(parentUser, 40);
+
+		setTimeout(() => {
+			io.emit("user_registered");
+		}, 2000);
 
 		return res.redirect("/ponzvert");
 	} catch (e) {

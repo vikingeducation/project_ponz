@@ -7,11 +7,14 @@ const exphbs = require("express-handlebars");
 const session = require("express-session");
 const passport = require("passport");
 const server = require("http").createServer(app);
+// const ioWrapper = require("./io");
 
-
-
-const io = require("socket.io")(server);
-app.use("/socket.io", express.static(__dirname + "node_modules/socket.io-client/dist/"));
+// const io = require("socket.io")(server);
+const io = require("./io")(server);
+app.use(
+	"/socket.io",
+	express.static(__dirname + "node_modules/socket.io-client/dist/")
+);
 console.log(__dirname, "node_modules/socket.io-client/dist/");
 
 app.use(
@@ -91,17 +94,7 @@ app.post(
 	})
 );
 
-
-io.on('connection', client => {
-	_client = client;
-	// update(client);
-
-	// client.on("test", (data) => {
-	// 	client.emit("happyStuff", "sfjfjf");
-	// }
-	client.emit("happyStuff", "sfjfjf");
-
-})
+// io.on("connection", ioWrapper(io));
 
 // listen to server
 server.listen(3000, () => {

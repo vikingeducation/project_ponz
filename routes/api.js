@@ -14,7 +14,7 @@ router.get("/:resource", (req, res, next) => {
 		return;
 	}
 
-	controller.index(req, res);
+	controller.index(req, res, next);
 });
 
 router.get("/:resource/:id", (req, res, next) => {
@@ -31,7 +31,7 @@ router.get("/:resource/:id", (req, res, next) => {
 		return;
 	}
 
-	controller.view(req, res);
+	controller.view(req, res, next);
 });
 
 router.post("/:resource", (req, res, next) => {
@@ -48,7 +48,7 @@ router.post("/:resource", (req, res, next) => {
 		return;
 	}
 
-	controller.createUser(req, res);
+	controller.createUser(req, res, next);
 });
 
 module.exports = router;

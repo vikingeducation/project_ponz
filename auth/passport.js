@@ -1,6 +1,7 @@
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 const { User } = require("../models");
+const io = require("../io").getIO();
 
 module.exports = function(passport) {
     passport.serializeUser(function(user, done) {
@@ -30,23 +31,18 @@ module.exports = function(passport) {
                     // if there are any errors, return the error before anything else
                     if (err) return done(err);
                     // if no user is found, return the message
-                    if (!user)
-                        return done(
-                            null,
-                            false
-                        ); // req.flash is the way to set flashdata using connect-flash
+                    if (!user) return done(null, false); // req.flash is the way to set flashdata using connect-flash
                     // if the user is found but the password is wrong
-                    console.log("input password", password);
-                    console.log("user password", user.password);
-                    console.log(
-                        bcrypt.compareSync(password, user.password),
-                        "????"
-                    );
-                    if (!bcrypt.compareSync(password, user.password))
-                        return done(
-                            null,
-                            false
-                        ); // create the loginMessage and save it to session as flashdata
+
+                    if (!bcrypt.compareSync(password, user.password)) {
+                        // setTimeout(() => {
+                        //     io.emit("invalid_login");
+                        // }, 2000);
+
+                        return done(null, false);
+                    }
+
+                    // create the loginMessage and save it to session as flashdata
                     // all is well, return successful user
                     return done(null, user);
                 });
