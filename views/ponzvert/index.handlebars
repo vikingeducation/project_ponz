@@ -56,6 +56,8 @@
 	d3.select(self.frameElement).style("height", "500px");
 
 	function update(source) {
+		let colorArray = makeColorArray();
+		console.log(colorArray);
 
 	  // Compute the new tree layout.
 	  var nodes = tree.nodes(root).reverse(),
@@ -75,7 +77,6 @@
 		  .on("click", click);
 
 	  nodeEnter.append("circle")
-		  .attr("stroke", "black")
 		  .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
 	  nodeEnter.append("text")
@@ -93,6 +94,16 @@
 	  nodeUpdate.select("circle")
 		  .attr("r", 10)
 		  .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+		// nodeUpdate.select("circle")
+		// 	.attr("fill", function(d) {
+		// 			return randomColorPostion(colorMat, d);
+		// 		}
+		// 	})
+		nodeUpdate.select("circle")
+			.style("fill", function(d) {
+				return randomColorPosition(colorArray, d);
+			});
 
 	  nodeUpdate.select("text")
 		  .style("fill-opacity", 1);
@@ -157,6 +168,34 @@
 	// Get random color
 	function randomColor() {
 		return '#' + Math.round(0xffffff * Math.random()).toString(16);
+	}
+
+	function makeColorArray() {
+		console.log("doing this");
+			let colorArray = [];
+			for(let i = 0; i < 10; i++) { colorArray.push(randomColor()) }
+			return colorArray;
+	}
+
+	// function makeCorandomColorPositionlorMatrix() {
+	// 	console.log("doing this");
+	// 		let colorMat = [];
+	// 		for(let i = 0; i < 10; i++) {
+	// 			colorMat.push([
+	// 					Math.floor(Math.random() * 256),
+	// 					Math.floor(Math.random() * 256),
+	// 					Math.floor(Math.random() * 256)
+	// 				])
+	// 		}
+	// 		return colorMat;
+	// }
+
+	function randomColorPosition(colorArray, d) {
+		console.log(colorArray[Math.floor(d.x) % 10]);
+		// console.log(typeof colorArray)
+		// console.log(colorArray)
+		// console.log(Math.floor(d.x) % 180);
+		return colorArray[Math.floor(d.x) % 10];
 	}
 
 </script>
