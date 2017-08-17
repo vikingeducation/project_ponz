@@ -12,7 +12,7 @@ router.get('/', async function(req, res, next) {
 	if (!user) {
 		return next(new Error('User not found...'));
 	}
-	res.render('index', {
+	const treeGraph = res.render('index', {
 		user: user,
 		treeGraph: JSON.stringify(makeTreeGraphStructure(user))
 	});
@@ -25,10 +25,14 @@ router.get('/login', (req, res) => {
 router.post(
 	'/login',
 	passport.authenticate('local', {
-		successRedirect: '/',
+		// successRedirect: '/',
 		failureRedirect: '/login',
 		failureFlash: true
-	})
+	}),
+	(req, res) => {
+		res.cookie('userId', req.user._id);
+		res.redirect('/');
+	}
 );
 
 router.get('/logout', (req, res) => {

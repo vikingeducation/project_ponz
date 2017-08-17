@@ -12,11 +12,6 @@ points
 //expedite heavy-lifting to mongoose
 
 
-Referral Links
-----------------
-hashed_name
-
-
 Traversals
 ----------------
 Up

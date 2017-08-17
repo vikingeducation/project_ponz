@@ -48,12 +48,13 @@ router.post('/signup', async (req, res, next) => {
 	}
 
 	if (req.body._referrerCode) {
-		await formData.parent.addPonvert(user);
+		formData.parent.addPonvert(user);
 	}
 
 	// We have a user here.
 	try {
 		await req.login(user, () => {});
+		res.cookie('userId', user._id);
 		res.redirect('/');
 	} catch (e) {
 		next(e);
