@@ -81,35 +81,43 @@ const isAuthenticated = (req, res, next) => {
 }
 
 app.get("/", isAuthenticated, (req, res) => {
-  // User.findById(req.user.id)
-
-  // .then((user)=>{
-  	deeplyPopulatedUser = deepPopulate(req.user)
-//  })
-//  .then(deeplyPopulatedUser => {
+	deepPopulate(req.user)
+  .then(deeplyPopulatedUser => {
     console.log("deeplyPopulatedUser, 89: ", deeplyPopulatedUser)
     return res.render("./index", {user:deeplyPopulatedUser});
-    })
-    
-  //});
+	});	
+});
 
-async function deepPopulate (user, counter=80) {
-  User.findById(user.id)
+function deepPopulate (user, counter=80) {
+  return User.findById(user.id)
   .populate({path: "children", model: "User"})
   .then(userWithChildren => {
-		console.log("98, user: ", userWithChildren);
-	  counter = Math.floor(counter/2)
-	  userWithChildren.children = userWithChildren.children.map(child=>{
-      console.log("101, child: ", child);
-	    if (child.children.length) {
-	      child = deepPopulate(child, counter) //get child back ; promisify
-	    }
-	    child.profit = counter
-      return await child; //will be promise
-	  });
-	  console.log("108, userWithChildren: ", userWithChildren);
-	  return await userWithChildren; //promisify
+  	let currentUser = userWithChildren;
+  	while(currentUser.children.length) {
+  		return populationRepeat(currentUser, counter)
+  		.then(currentChildsPopulatedChildren => {
+  			currentUser.children = currentChildsPopulatedChildren;
+  			
+  		})
+  	}
+  }).then((results) => {
+  	console.log("Results: ", results);
+  	return(results);
   })
+}
+
+function populationRepeat(userWithChildren, counter) => {
+	counter = Math.floor(counter/2)
+  return Promise.all(userWithChildren.children.map(child=>{
+  	child.profit = counter
+    if (child.children.length) {
+      return User.findById(child._id).populate({path: "children", model: "User"});
+    } else {
+    	return child;
+    }
+    
+     //will be promise
+  }))
 }
 
   // .populate({
