@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const exphbs = require("express-handlebars");
 const session = require("express-session");
 const passport = require("passport");
-const flash = require("connect-flash");
+const flash = require("express-flash-messages");
 
 app.use(
 	session({
@@ -51,7 +51,18 @@ beginConnection
 app.set("views", path.join(__dirname, "views"));
 
 // hbs
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.engine(
+	"handlebars",
+	exphbs({
+		defaultLayout: "main",
+		helpers: {
+			toJSON: function(object) {
+				return JSON.stringify(object);
+			}
+		}
+	})
+);
+
 app.set("view engine", "handlebars");
 
 // middleware
@@ -74,8 +85,6 @@ app.post(
 		failureFlash: true
 	})
 );
-
-
 
 // listen to server
 app.listen(3000, () => {

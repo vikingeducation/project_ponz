@@ -1,43 +1,34 @@
-<h3>Register</h3>
-<form action="/api/users" method="POST">
-  {{#if user}}
-    <input type="hidden" value="{{user.shortid}}" name="shortid" />
-  {{/if}}
 
-  <div class="form-group">
-		<label for="username">Username:</label>
-  	<input type="text" class="form-control" name="username" id="username" required="true" value="Susan">
+
+<div class="landing-page">
+
+  <form class="signin-form signin" action="/login" method="post" autocomplete="off">
+    <p class="signin-title">your dream vacation is waiting</p>
+    <hr class="line">
+    <div class="input-group">
+      <input type="text" placeholder="username" name="username" required="true">
+      <input type="password" placeholder="password" name="password" required="true">
+    </div>
+    <button class="login-register-btn">login</button>
+  </form>
+
+  <form class="signup-form signup" action="/api/users" method="post" autocomplete="off">
+    <p class="signin-title">time to swim in cash</p>
+    <hr class="line">
+    <div class="input-group">
+      <input type="text" placeholder="fname" name="fname" required="true">
+      <input type="text" placeholder="lname" name="lname" required="true">
+      <input type="text" placeholder="username" name="username" required="true">
+      <input type="password" placeholder="password" name="password" required="true">
+    </div>
+    <button class="login-register-btn">register</button>
+  </form>
+  <div>
+    <img src="./assets/savonne.png" alt="savonne" width="250">
   </div>
+  
 
-  <div class="form-group">
-  	<label for="pwd">Password:</label>
-  	<input type="password" class="form-control" name="password" id="pwd" required="true" value="Susan">
-  </div>
+</div>
 
-  <div class="form-group">
-  	<label for="pwd">First Name:</label>
-  	<input type="text" class="form-control" name="fname" id="pwd" required="true" value="Susan">
-  </div>
 
-  <div class="form-group">
-  	<label for="pwd">Last Name:</label>
-  	<input type="text" class="form-control" name="lname" id="pwd" required="true" value="Susan">
-  </div>
 
-  <button type="submit" class="btn btn-primary">Register</button>
-</form>
-
-<h3>Login</h3>
-<form action="/login" method="POST">
-	<div class="form-group">
-		<label for="username">Username:</label>
-  	<input type="text" class="form-control" name="username" id="username" required="true">
-  </div>
-
-  <div class="form-group">
-  	<label for="pwd">Password:</label>
-  	<input type="password" class="form-control" name="password" id="pwd" required="true">
-  </div>
-
-  <button type="submit" class="btn btn-success">Login</button>
-</form>

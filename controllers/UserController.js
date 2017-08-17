@@ -40,10 +40,24 @@ module.exports = {
 	viewPonzvert: async (req, res) => {
 		let id = req.user._id;
 
+		// do a map user on the first user's parent
+		// { user: 'Bob, parent: susan } { user:susna } 		//
 		try {
-			const user = await User.findById(id).populate("children");
+			const user = await User.findById(id)
+				.populate("children")
+				.populate("parent");
 
-			return res.render("ponzvert/index", { user });
+			console.log(user, "user");
+
+			const mapUser = user => {
+				return {
+					name: user.username,
+					parent: user.parent ? user.parent.username : "null",
+					children: user.children.map(mapUser)
+				};
+			};
+
+			return res.render("ponzvert/index", { user, tree: [mapUser(user)] });
 		} catch (e) {
 			return res.json({
 				confirmation: "fail",

@@ -5,15 +5,73 @@
   <meta charset="utf-8">
   <title></title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-</head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./styles/main.css">
+	<style>
+		.node {
+			cursor: pointer;
+		}
 
+		.node circle {
+		  fill: #fff;
+		  stroke: steelblue;
+		  stroke-width: 3px;
+		}
+
+		.node text {
+		  font: 12px sans-serif;
+		}
+
+		.link {
+		  fill: none;
+		  stroke: #ccc;
+		  stroke-width: 2px;
+		}
+	</style>
+</head>
 <body>
-  <div class="container">
-    <div class="page-header">
-    <div>
-      {{{body}}}
-    </div>
+	<header class="main-header">
+	  <div class="side-section">
+	    <p>team</p>
+
+	    <p class="dot">&middot;</p>
+
+	    <p>scheme</p>
+	  </div>
+
+	  <div class="main-pic">
+	    <h1>PONZE.IO</h1>
+	  </div>
+
+	  <div class="side-section">
+	    <p class="login-link"><a href="#">login</a></p>
+
+	    <p class="dot">&middot;</p>
+
+	    <p class="register-link"><a href="#">register</a></p>
+	  </div>
+	</header>
+	<div class="sub-header">
+  	<i class="fa fa-instagram" aria-hidden="true"></i>
+  	<i class="fa fa-facebook" aria-hidden="true"></i>
+  	<i class="fa fa-twitter" aria-hidden="true"></i>
+  	<i class="fa fa-instagram" aria-hidden="true"></i>
+  	<i class="fa fa-linkedin" aria-hidden="true"></i>
+  	<i class="fa fa-rss" aria-hidden="true"></i>
+
+	</div>
+  <div class="container-fluid">
+     {{{body}}}
+   </div>
+   <footer class="footer-bar">
+    hello
+  </footer>
   </div>
+  <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  <script src="./javascripts/script.js"></script>
 </body>
 
 </html>

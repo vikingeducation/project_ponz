@@ -2,7 +2,10 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const Schema = mongoose.Schema;
 
-// email, firstname, lastname, ids for each service
+const autoPopulateChildren = function(next) {
+	this.populate("children");
+	next();
+};
 
 // more id's per service
 const UserSchema = mongoose.Schema({
@@ -22,7 +25,11 @@ UserSchema.pre("save", async function(next) {
 	const hash = await bcrypt.hashSync(user.password, 12);
 	user.password = hash;
 	next();
-})
+});
 
+UserSchema.pre("findOne", autoPopulateChildren).pre(
+	"find",
+	autoPopulateChildren
+);
 
 module.exports = mongoose.model("User", UserSchema);

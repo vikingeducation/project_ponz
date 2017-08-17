@@ -1,5 +1,4 @@
 module.exports = function(req, res, next) {
-	console.log("here???");
 	// if user is authenticated in the session, carry on
 	if (req.isAuthenticated()) return next();
 
