@@ -1,0 +1,25 @@
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">Your purchase history</div>
+  <div class="panel-body">
+    <p>Here are all the items that you've purchased with your precious ponzPoints</p>
+  </div>
+
+  <!-- Table -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Purchases</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each user.goodies as |goody|}}
+      <tr>
+        <th>
+          {{goody}}
+        </th>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

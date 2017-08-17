@@ -11,7 +11,8 @@ const UserSchema = new Schema(
     passwordHash: { type: String, require: true },
     referrerId: String,
     referrals: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    AnkhMorporkDollars: Number
+    AnkhMorporkDollars: Number,
+    goodies: []
   },
   {
     timestamps: true
