@@ -85,9 +85,12 @@ app.get("/", isAuthenticated, (req, res) => {
 			const pyramid = ponzvertLevels(deeplyPopulatedUser);
 			pyramid.unshift(1);
 			console.log("Pyramid: ", pyramid);
+			let ponvertSum = pyramid.reduce(getSum)-1;
+			console.log("ponvertSum: ", ponvertSum)
 			return res.render("./index", {
 				user: deeplyPopulatedUser,
-				pyramid: pyramid
+				pyramid: pyramid,
+				ponvertSum:ponvertSum
 			});
 		});
 });
@@ -101,6 +104,10 @@ function ponzvertLevels(user, pyramid = [], level = 0) {
 		pyramid[level] += 1;
 	});
 	return pyramid;
+}
+
+function getSum(total, num) {
+    return total + num;
 }
 
 //////////////////////

@@ -2,7 +2,7 @@
 	<div class="col-sm-11 col-sm-offset-1">
 		{{#each children as |child|}}
 		  <div class="well well-sm">
-		    {{child.username}} has earned you <str>{{child.profit}}</str> PonzBucks! 
+		    {{child.username}} has earned you <span class="ponz-profit">{{child.profit}} PonzBucks!</span> 
 		   <i> ponverted at {{child.createdAt}}</i>
 		  </div>
 		  {{#if child.children}}
