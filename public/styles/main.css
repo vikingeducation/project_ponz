@@ -19,6 +19,7 @@ body {
 
 input {
 	border: none;
+	font-family: 'Quicksand', sans-serif;
 	background-color: #f6f6f6;
 	height: 40px;
 	margin-top: 10px;
