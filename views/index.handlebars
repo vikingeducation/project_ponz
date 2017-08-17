@@ -23,6 +23,7 @@ http://localhost:3000/register/{{user.referralCode}}</a>
   <div class="panel panel-default">
     <div class="panel-heading">Your Score: {{user.ponzBucks}}</div>
       <div class="panel-body">
+      <div>{{pyramid}}</div>
         <div>
           {{#if user.children}}
             {{#each user.children as |child|}}

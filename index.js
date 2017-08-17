@@ -77,33 +77,30 @@ const isAuthenticated = (req, res, next) => {
 };
 
 app.get("/", isAuthenticated, (req, res) => {
-	const pyramid = [];
-	deepPopulate(req.user, 40, pyramid, 0) // returns nestedly populated user
+	
+	deepPopulate(req.user, 40) // returns nestedly populated user
 		.then(deeplyPopulatedUser => {
-			console.log("deeplyPopulatedUser, 89: ", deeplyPopulatedUser);
-			return res.render("./index", { user: deeplyPopulatedUser });
+      const pyramid = ponzvertLevels(deeplyPopulatedUser);
+      pyramid.unshift(1);
+      console.log("Pyramid: ", pyramid);
+			return res.render("./index", { user: deeplyPopulatedUser, pyramid:pyramid });
 		});
 });
 
-// utils.depthOf() = function(object) {
-//   var level = 1;
-//   var key;
-//   for(key in object) {
-//   if (!object.hasOwnProperty(key)) continue;
 
-//   if(typeof object[key] == 'object'){
-//   var depth = utils.depthOf(object[key]) + 1;
-//   level = Math.max(depth, level);
-//   }
-//   }
-//   return level;
-// }
+function ponzvertLevels(user, pyramid=[], level=0) {
+ user.children.forEach(child => {
+  if (child.children.length) {
+    pyramid = ponzvertLevels(child, pyramid, level+1);
+    }
+  pyramid[level] = pyramid[level] || 0;
+  pyramid[level] += 1;
+   })
+  return pyramid;
+}
 
-// while(user.children.length) {
-// 	user.children.forEach(child => {
-// 		user = child
-// 	})
-// }
+//////////////////////
+//  WORKING VERSION
 
 function deepPopulate(user, counter = 40) {
 	return User.findById(user.id)
@@ -131,40 +128,7 @@ function deepPopulate(user, counter = 40) {
 		});
 }
 
-//populate children array
-//check populated children array members for children of their own
-//if grandchildren, populate them
 
-// function deepPopulate (user, counter=80) {
-//   return User.findById(user.id)
-//   .populate({path: "children", model: "User"})
-//   .then(userWithChildren => {
-//   	let currentUser = userWithChildren;
-//   	while(currentUser.children.length) {
-//   		return populationRepeat(currentUser, counter)
-//   		.then(currentChildsPopulatedChildren => {
-//   			currentUser.children = currentChildsPopulatedChildren;
-//   			currentUser = currentUser.children[0];
-
-//   		})
-//   	}
-//     return userWithChildren;
-//   }).then((results) => {
-//   	console.log("Results: ", results);
-//   	return(results);
-//   })
-// }
-// function populationRepeat(userWithChildren, counter) {
-// 	counter = Math.floor(counter/2)
-//   return Promise.all(userWithChildren.children.map(child=>{
-//   	child.profit = counter
-//     if (child.children.length) {
-//       return User.findById(child._id).populate({path: "children", model: "User"});
-//     } else {
-//     	return child;
-//     }
-//   }))
-// }
 
 // .populate({
 //   path: "children",
