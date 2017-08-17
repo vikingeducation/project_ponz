@@ -17,7 +17,7 @@ router.post("/", (req, res) => {
       { $push: { goodies: item }, $inc: { AnkhMorporkDollars: cost } }
     ).then(() => {
       req.flash("Success", `The cereal is yours!`);
-      res.redirect("show");
+      res.redirect("/shop/show");
     });
   } else {
     req.flash(

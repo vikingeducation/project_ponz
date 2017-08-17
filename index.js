@@ -48,12 +48,21 @@ app.get("/", loggedInOnly, (req, res) => {
     });
   });
 });
-
+app.get("/pyramid", loggedInOnly, (req, res) => {
+  console.log(req.user);
+  User.findOne({ username: req.user.username }).then(user => {
+    pyramid(user._id).then(results => {
+      console.log(JSON.stringify(results, null, 2));
+      return res.render("index", { results, user });
+    });
+  });
+});
 app.get("/login", loggedOutOnly, (req, res) => {
   res.render("login");
 });
 app.get("/money", loggedInOnly, (req, res) => {
   payOut(req.user.referrerId);
+
   // res.render("login");
 });
 app.get("/logout", loggedInOnly, (req, res) => {
