@@ -1,6 +1,6 @@
 <div class="profile">
 	<h3 class="hello">Hello {{user.username}}!</h3>
-	<p>Your referral link is <a href="http://localhost:3000/ponzvert/{{user.shortid}}">http://localhost:3000/ponzvert/{{user.shortid}}</a></p>
+	<p>Your referral link is <a href="http://localhost:3000/ponzvert/{{user.shortid}}" target="_blank">http://localhost:3000/ponzvert/{{user.shortid}}</a></p>
 
 	<p>Ponz Points&#8482;: <money>${{user.points}}</money></p>
 	<div class="diamond">
@@ -14,12 +14,17 @@
 
 
 <div class="crazy-boxes">
-	<ul>
-  	{{> ponzvertPartial children=user.children}}
-	</ul>
+	<div>
+		<ul>
+  		{{> ponzvertPartial children=user.children}}
+		</ul>
+	</div>
+	
 </div>
 
-
+<div class="svg-container">
+	
+</div>
 
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -28,7 +33,7 @@
 
 	// ************** Generate the tree diagram	 *****************
 	var margin = {top: 20, right: 120, bottom: 20, left: 120},
-		width = 960 - margin.right - margin.left + 4000,
+		width = 960 - margin.right - margin.left,
 		height = 500 - margin.top - margin.bottom;
 
 	var i = 0,
@@ -41,7 +46,8 @@
 	var diagonal = d3.svg.diagonal()
 		.projection(function(d) { return [d.y, d.x]; });
 
-	var svg = d3.select("body").append("svg")
+	var svg = d3.select(".svg-container").append("svg")
+		.attr("class", "animate-tree")
 		.attr("width", width + margin.right + margin.left)
 		.attr("height", height + margin.top + margin.bottom)
 	  .append("g")
@@ -95,13 +101,8 @@
 		  .attr("r", 10)
 		  .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
-		// nodeUpdate.select("circle")
-		// 	.attr("fill", function(d) {
-		// 			return randomColorPostion(colorMat, d);
-		// 		}
-		// 	})
 		nodeUpdate.select("circle")
-			.style("fill", function(d) {
+			.style("stroke", function(d) {
 				return randomColorPosition(colorArray, d);
 			});
 
@@ -177,25 +178,8 @@
 			return colorArray;
 	}
 
-	// function makeCorandomColorPositionlorMatrix() {
-	// 	console.log("doing this");
-	// 		let colorMat = [];
-	// 		for(let i = 0; i < 10; i++) {
-	// 			colorMat.push([
-	// 					Math.floor(Math.random() * 256),
-	// 					Math.floor(Math.random() * 256),
-	// 					Math.floor(Math.random() * 256)
-	// 				])
-	// 		}
-	// 		return colorMat;
-	// }
-
 	function randomColorPosition(colorArray, d) {
-		console.log(colorArray[Math.floor(d.x) % 10]);
-		// console.log(typeof colorArray)
-		// console.log(colorArray)
-		// console.log(Math.floor(d.x) % 180);
-		return colorArray[Math.floor(d.x) % 10];
+		return colorArray[ d.depth % 10 ];
 	}
 
 </script>

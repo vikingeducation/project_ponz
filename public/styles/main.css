@@ -147,6 +147,7 @@ p {
 
 .login-register-btn {
 	margin-top: 20px;
+	margin-bottom: 20px;
 	border: none;
 	font-family: 'Quicksand', sans-serif;
 	background-color: white;
@@ -157,16 +158,9 @@ money {
 }
 
 .hello {
+	margin-top: 25px;
 	display: block;
 	width: 100%;
-}
-
-.test {
-	border: 1px solid black;
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
 }
 
 .nested-line {
@@ -180,18 +174,38 @@ money {
 	align-items: center;
 	text-align: center;
 	width: 100%;
-	height: 280px;
+	height: 180px;
 	background-color: white;
 	margin-top: 30px;
 	margin-bottom: 30px;
 }
 
 .crazy-boxes {
+	display: flex;
+	justify-content: center;
 	margin-top: 30px;
+	border-bottom: 5px solid white;
+	padding-bottom: 30px;
+}
+
+.crazy-box div {
+	widows: 50%;
 }
 
 .diamond {
 	margin-top: 20px;
+	margin-bottom: 20px;
 	width: 100px;
 	height: 100px;
+}
+
+.diamond img {
+	width: 50px;
+}
+
+.svg-container {
+	width: 100%;
+	height: 550px;
+	overflow-x: scroll;
+	overflow-y: scroll;
 }
