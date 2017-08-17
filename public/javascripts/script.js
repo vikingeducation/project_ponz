@@ -48,10 +48,12 @@ $(function() {
 	});
 
 	socket.on(UPDATE_POINTS, data => {
-		console.log(data);
 		let { id, points, cash } = data;
+		if (data.root === true) {
+			$(`#ponz-points`).text(points);
+			$(`#ponz-cash`).text(cash);
+		}
 		$(`div#${id} p.node-title`).text(points);
-		$(`div#${id} p.node-desc`).text(cash);
 	});
 
 	// Set form listener.

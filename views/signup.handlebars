@@ -1,32 +1,34 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="page-header">
-      <h1>Sign Up <small> Please sign up to Make $$$ </small></h1>
-      <h4> All the money awaits you inside...</h4>
-    </div>
-  </div>
-</div>
+<div class="container">
+	<div class="row">
+	  <div class="col-md-12">
+	    <div class="page-header">
+	      <h1>Sign Up <small> Please sign up to Make $$$ </small></h1>
+	      <h4> All the money awaits you inside...</h4>
+	    </div>
+	  </div>
+	</div>
 
-<div class='row'>
-  <div class="col-md-12">
-    <form method='POST' class='form-horizontal'>
-      <div class="form-group">
-        <label for="username" class="col-sm-2 control-label">Username</label>
-        <div class="col-sm-5">
-          <input type="username" class="form-control" id="username" name="username" placeholder="Enter your username">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="password" class="col-sm-2 control-label">Password</label>
-        <div class="col-sm-5">
-          <input type="password" class="form-control" id="password" name="password">
-        </div>
-      </div>
-      {{#if _referrerCode}}
-        <input type='hidden' name='_referrerCode' value="{{_referrerCode}}">
-      {{/if}}
-      <br />
-      <button class='btn btn-success col-sm-offset-2' type='submit' id='login now'>Sign Up</button>
-    </form>
-  </div>
+	<div class='row'>
+	  <div class="col-md-12">
+	    <form method='POST' class='form-horizontal'>
+	      <div class="form-group">
+	        <label for="username" class="col-sm-2 control-label">Username</label>
+	        <div class="col-sm-5">
+	          <input type="username" class="form-control" id="username" name="username" placeholder="Enter your username">
+	        </div>
+	      </div>
+	      <div class="form-group">
+	        <label for="password" class="col-sm-2 control-label">Password</label>
+	        <div class="col-sm-5">
+	          <input type="password" class="form-control" id="password" name="password">
+	        </div>
+	      </div>
+	      {{#if _referrerCode}}
+	        <input type='hidden' name='_referrerCode' value="{{_referrerCode}}">
+	      {{/if}}
+	      <br />
+	      <button class='btn btn-success col-sm-offset-2' type='submit' id='login now'>Sign Up</button>
+	    </form>
+	  </div>
+	</div>
 </div>
