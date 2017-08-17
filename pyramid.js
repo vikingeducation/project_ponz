@@ -1,35 +1,39 @@
 const User = require("./models/User");
 
+let keepLooping = true;
 var pyramidObject = {};
 var depth = 0;
+
 const pyramid = async function(currentUserId) {
   let currentUser = await User.findOne({ _id: currentUserId }).populate(
     "referrals"
   );
   let referralArray = currentUser.referrals;
-
-  while (makeObject(referralArray) !== false) {}
+  makeObject();
+  while (keepLooping === true) {}
+  keepLooping = false;
   return pyramidObject;
 };
 
-const makeObject = function(refArray) {
+const makeObject = async function(refArray) {
   let newArray = [];
   pyramidObject[depth] = refArray;
   depth++;
   // TODO fix this promise issue - skipping the newArray.length validation below
-  refArray.forEach(i => {
+  for (let i = 0; i < refArray.length; i++) {
     let id = i._id;
-    let thisRef = User.findOne({ _id: id }).populate("referrals");
+    let thisRef = await User.findOne({ _id: id }).populate("referrals");
     newArray = newArray.concat(i.referrals);
-    console.log(i.referrals);
-  });
+    console.log("here");
+  }
+  console.log("after each");
   if (newArray.length > 0) {
     pyramidObject[depth] = newArray;
     depth++;
     makeObject(newArray);
   } else {
     depth = 0;
-    return false;
+    keepLooping = false;
   }
 };
 
