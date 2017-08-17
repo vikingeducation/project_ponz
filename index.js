@@ -1,3 +1,4 @@
+const express = require("express");
 const app = require("express")();
 const exphbs = require("express-handlebars");
 const hbs = exphbs.create({
@@ -10,6 +11,8 @@ const { User } = require("./models");
 
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
+
+app.use(express.static(__dirname + "/public"));
 
 // Requiring middleware
 const cookieParser = require("cookie-parser");
@@ -77,10 +80,11 @@ const isAuthenticated = (req, res, next) => {
 };
 
 app.get("/", isAuthenticated, (req, res) => {
-	deepPopulate(req.user) // returns nestedly populated user
+	deepPopulate(req.user, 40) // returns nestedly populated user
 		.then(deeplyPopulatedUser => {
 			const pyramid = ponzvertLevels(deeplyPopulatedUser);
-			console.log("deeplyPopulatedUser, 89: ", deeplyPopulatedUser);
+			pyramid.unshift(1);
+			console.log("Pyramid: ", pyramid);
 			return res.render("./index", {
 				user: deeplyPopulatedUser,
 				pyramid: pyramid
@@ -88,31 +92,19 @@ app.get("/", isAuthenticated, (req, res) => {
 		});
 });
 
-// utils.depthOf() = function(object) {
-//   var level = 1;
-//   var key;
-//   for(key in object) {
-//   if (!object.hasOwnProperty(key)) continue;
-
-//   if(typeof object[key] == 'object'){
-//   var depth = utils.depthOf(object[key]) + 1;
-//   level = Math.max(depth, level);
-//   }
-//   }
-//   return level;
-// }
-
 function ponzvertLevels(user, pyramid = [], level = 0) {
 	user.children.forEach(child => {
 		if (child.children.length) {
-			pyramid = ponzvertLevels(user, pyramid, level++);
-		} else {
-			pyramid[level] = pyramid[level] || 0;
-			pyramid[level] += 1;
+			pyramid = ponzvertLevels(child, pyramid, level + 1);
 		}
+		pyramid[level] = pyramid[level] || 0;
+		pyramid[level] += 1;
 	});
 	return pyramid;
 }
+
+//////////////////////
+//  WORKING VERSION
 
 function deepPopulate(user, counter = 40) {
 	return User.findById(user.id)
@@ -139,41 +131,6 @@ function deepPopulate(user, counter = 40) {
 			return user;
 		});
 }
-
-//populate children array
-//check populated children array members for children of their own
-//if grandchildren, populate them
-
-// function deepPopulate (user, counter=80) {
-//   return User.findById(user.id)
-//   .populate({path: "children", model: "User"})
-//   .then(userWithChildren => {
-//   	let currentUser = userWithChildren;
-//   	while(currentUser.children.length) {
-//   		return populationRepeat(currentUser, counter)
-//   		.then(currentChildsPopulatedChildren => {
-//   			currentUser.children = currentChildsPopulatedChildren;
-//   			currentUser = currentUser.children[0];
-
-//   		})
-//   	}
-//     return userWithChildren;
-//   }).then((results) => {
-//   	console.log("Results: ", results);
-//   	return(results);
-//   })
-// }
-// function populationRepeat(userWithChildren, counter) {
-// 	counter = Math.floor(counter/2)
-//   return Promise.all(userWithChildren.children.map(child=>{
-//   	child.profit = counter
-//     if (child.children.length) {
-//       return User.findById(child._id).populate({path: "children", model: "User"});
-//     } else {
-//     	return child;
-//     }
-//   }))
-// }
 
 // .populate({
 //   path: "children",

@@ -19,14 +19,21 @@ http://localhost:3000/register/{{user.referralCode}}</a>
 </div>
 </div>
 
-{{#each pyramid as |level|}}
-{{level}}
-{{/each}}
+
 
 <div class="col-sm-8 col-sm-offset-2">
   <div class="panel panel-default">
     <div class="panel-heading">Your Score: {{user.ponzBucks}}</div>
       <div class="panel-body">
+        <div class="pyramid-container">
+          <div class="triangle-left"></div>
+          <div class="triangle-right"></div>
+          {{#each pyramid as |level|}}
+            <div class="pyramid">
+              {{level}}
+            </div>
+          {{/each}}
+        </div>
         <div>
           {{#if user.children}}
             {{#each user.children as |child|}}
