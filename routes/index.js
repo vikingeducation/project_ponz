@@ -5,8 +5,13 @@ router.get("/", (req, res) => {
 	if (req.isAuthenticated()) {
 		return res.redirect("/ponzvert");
 	}
-
-	return res.render("landing/index");
+	let shortid;
+	let message;
+	shortid = req.session.shortid;
+	message = req.session.message;
+	console.log(message);
+	console.log("flashMessage: ", req.flash('message'));
+	return res.render("landing/index", { shortid, message: req.flash('message') });
 });
 
 module.exports = router;

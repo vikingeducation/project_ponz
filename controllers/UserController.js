@@ -2,6 +2,7 @@ const { User } = require("../models");
 const shortid = require("shortid");
 const moment = require("moment");
 
+
 module.exports = {
 	index: async (req, res) => {
 		try {
@@ -75,6 +76,7 @@ module.exports = {
 			});
 
 			if (existingUser) {
+				req.session.message = "working good";
 				return res.json({
 					confirmation: "fail",
 					message: "user already exists"
@@ -93,6 +95,7 @@ module.exports = {
 			// console.log("shortid: ", req.session.shortid);
 			if (req.session.shortid) {
 				createChildUser(req, res);
+				req.session.message = "working good";
 				return;
 			}
 
@@ -100,6 +103,7 @@ module.exports = {
 			req.body.shortid = id;
 
 			let user = await User.create(req.body);
+			req.session.message = "working good";
 			return res.redirect("/ponzvert");
 		} catch (e) {
 			console.error(e.stack);
