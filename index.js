@@ -110,6 +110,21 @@ app.get("/", isAuthenticated, (req, res) => {
   })
 });
 
+function deepPopulate (user, counter=80) {
+  user.populate("children")
+  .then(userWithChildren =>{
+    counter = Math.floor(counter/2)
+    userWithChildren.children.forEach(child=>{
+      if (child.children.length) {
+        deepPopulate(child, counter)
+      }
+      child.profit = counter
+    })
+    return user
+  })
+}
+
+
 app.post("/login",
 	passport.authenticate("local", {
     successRedirect: "/",
