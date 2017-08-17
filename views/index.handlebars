@@ -37,39 +37,3 @@
   </div>
 
 </section>
-
-{{#if user.facebook.data}}
-<section class="col-sm-6 col-md-4">
-  <div class="panel panel-default">
-    <div class="panel-heading">Facebook</div>
-    <div class="panel-body">
-      {{#each user.facebook.data as |data|}}
-      <img src="{{data}}" class="img-thumbnail"> {{/each}}
-    </div>
-  </div>
-</section>
-{{/if}} {{#if user.githubData}}
-<section class="col-sm-6 col-md-4">
-  <div class="panel panel-default">
-    <div class="panel-heading">Github</div>
-    <div class="panel-body">
-      <ul>
-        {{#each user.githubData as |data|}}
-        <li>{{data}}</li>
-        {{/each}}
-      </ul>
-    </div>
-  </div>
-</section>
-{{/if}} {{#if user.twitterData}}
-<section class="col-sm-6 col-md-4">
-  <div class="panel panel-default">
-    <div class="panel-heading">Twitter</div>
-    <div class="panel-body">
-      {{#each user.twitterData as |data|}}
-      <li>{{data}}</li>
-      {{/each}}
-    </div>
-  </div>
-</section>
-{{/if}}

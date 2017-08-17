@@ -16,10 +16,6 @@ const UserSchema = new Schema(
       type: Number,
       default: 0
     },
-    depth: {
-      type: Number,
-      default: 0
-    },
     elder: {
       type: Schema.Types.ObjectId,
       ref: "User"

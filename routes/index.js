@@ -25,7 +25,6 @@ const updateElders = async elder => {
     let level = 0;
     while (elder) {
       elder.ponzPoints += awardPoints(level++);
-      elder.depth++;
       promises.push(elder.save());
       elder = await User.findById(elder.elder);
     }
@@ -35,42 +34,41 @@ const updateElders = async elder => {
   }
 };
 
+const populateChildren = async user => {
+  try {
+    let popChildren = [];
+    for (let child of user.children) {
+      child = await User.findById(child);
+      child.children = populateChildren(child);
+      popChildren.push(child);
+    }
+    user.children = popChildren;
+    return user;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 // Authentication Middleware
 const ensureAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) next();
   else res.redirect(h.loginPath());
 };
 
-const constructPopulateConfigObj = (level, path) => {
-  const oneLevel = () => ({ path });
-  let obj = oneLevel();
-
-  while (level) {
-    if (level !== 1) {
-      obj.populate = Object.assign({}, obj);
-    }
-    obj = Object.assign({}, obj);
-    --level;
-  }
-
-  return obj;
-};
-
+// Route Handlers
 function authenticate(passport) {
   //main page
-  router.get("/", ensureAuthenticated, (req, res) => {
-    const referPath = `${req.protocol}://${req.get("host")}/${req.user
-      .shortId}`;
+  router.get("/", ensureAuthenticated, async (req, res) => {
+    try {
+      const referPath = `${req.protocol}://${req.get("host")}/${req.user
+        .shortId}`;
 
-    const obj = constructPopulateConfigObj(req.user.depth, "children");
-
-    User.findById(req.user.id)
-      .populate(obj)
-      .then(popUser => {
-        console.log(popUser);
-        res.render("index", { referPath, popUser });
-      })
-      .catch(e => res.status(500).end(e.stack));
+      let popUser = await User.findById(req.user.id);
+      popUser = await populateChildren(popUser);
+      res.render("index", { referPath, popUser });
+    } catch (e) {
+      res.status(500).end(e.stack);
+    }
   });
 
   //login view
