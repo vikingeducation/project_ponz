@@ -12,14 +12,6 @@ const UserSchema = new Schema(
     },
     username: { type: String, required: true, unique: true },
     passwordHash: { type: String, required: true },
-    ponzPoints: {
-      type: Number,
-      default: 0
-    },
-    elder: {
-      type: Schema.Types.ObjectId,
-      ref: "User"
-    },
     children: [{ type: Schema.Types.ObjectId, ref: "User" }]
   },
   {
@@ -42,17 +34,8 @@ UserSchema.statics.registerNewUser = async function(
     ];
     let [user, elder] = await Promise.all(createOps);
     if (elder) {
-      let promises = [];
-      let level = 0;
-      user.elder = elder;
-      promises.push(user.save());
       elder.children.push(user);
-      while (elder) {
-        elder.ponzPoints += Math.floor(40 / 2 ** level++) || 1;
-        promises.push(elder.save());
-        elder = await this.findById(elder.elder);
-      }
-      await Promise.all(promises);
+      await elder.save();
     }
     return user;
   } catch (e) {
@@ -65,17 +48,22 @@ UserSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.passwordHash);
 };
 
-UserSchema.methods.populateChildren = async function() {
-  const user = Object.assign({}, this._doc);
+UserSchema.methods.populateChildren = async function(level = 0) {
   try {
     let popChildren = [];
-    for (let child of user.children) {
+    for (let child of this.children) {
       child = await mongoose.model("User").findById(child);
-      child = await child.populateChildren();
+      child = await child.populateChildren(level + 1);
+      child.contribution = Math.floor(40 / 2 ** level) || 1;
       popChildren.push(child);
     }
-    user.children = popChildren;
-    return user;
+
+    this.earnings = popChildren.reduce((acc, child) => {
+      return acc + child.contribution + (child.earnings || 0);
+    }, 0);
+
+    this.children = popChildren;
+    return this;
   } catch (e) {
     console.error(e);
   }
