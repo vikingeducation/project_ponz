@@ -19,10 +19,20 @@ const awardPoints = function(level) {
   }
 };
 
-const updateAncestors = (anc, promises) => {
-  anc.user.ponzPoints += awardPoints(anc.level);
-  anc.user.depth += 1;
-  promises.push(anc.user.save());
+const updateElders = async elder => {
+  try {
+    let promises = [];
+    let level = 0;
+    while (elder) {
+      elder.ponzPoints += awardPoints(level++);
+      elder.depth++;
+      promises.push(elder.save());
+      elder = await User.findById(elder.elder);
+    }
+    return promises;
+  } catch (e) {
+    throw e;
+  }
 };
 
 // Authentication Middleware
@@ -89,26 +99,13 @@ function authenticate(passport) {
       const { id, username, password } = req.body;
       let createOps = [
         User.create({ username, password }),
-        User.findOne({ shortId: id }).populate("ancestors.user")
+        User.findOne({ shortId: id }).populate("elder")
       ];
-      let [user, parent] = await Promise.all(createOps);
-      console.log(parent);
-      if (parent) {
-        let newAncestors = parent.ancestors.slice(0);
-        parent.children.push(user._id);
-        newAncestors.push({ level: 0, user: parent });
-        let promises = [];
-        newAncestors = newAncestors.map((a, ix) => {
-          return {
-            level: a.level + 1,
-            user: a.user
-          };
-        });
-        parent.ancestors.forEach(anc => {
-          updateAncestors(anc, promises);
-        });
-        updateAncestors({ level: 0, user: parent }, promises);
-        user.ancestors = newAncestors;
+      let [user, elder] = await Promise.all(createOps);
+      if (elder) {
+        elder.children.push(user._id);
+        user.elder = elder;
+        let promises = await updateElders(elder);
         promises.push(user.save());
         await Promise.all(promises);
       }

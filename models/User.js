@@ -20,12 +20,10 @@ const UserSchema = new Schema(
       type: Number,
       default: 0
     },
-    ancestors: [
-      {
-        level: Number,
-        user: { type: Schema.Types.ObjectId, ref: "User" }
-      }
-    ],
+    elder: {
+      type: Schema.Types.ObjectId,
+      ref: "User"
+    },
     children: [{ type: Schema.Types.ObjectId, ref: "User" }]
   },
   {
