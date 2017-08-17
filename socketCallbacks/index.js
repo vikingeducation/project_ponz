@@ -1,4 +1,7 @@
 const helper = require("../helpers");
+const mongoose = require("mongoose");
+const connect = require("../mongo.js");
+const { User } = require("../models");
 
 //receive events
 const REGENERATE = "regenerate";
@@ -26,6 +29,7 @@ function curriedRegenerate(client) {
     await connect();
     let user = await User.findById(userId);
     helper.makeTreeGraphStructure(user, client);
+    await mongoose.disconnect();
   };
 }
 function _addNode(data) {}

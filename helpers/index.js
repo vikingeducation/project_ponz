@@ -34,8 +34,10 @@ function _createTreeGraphStructure(user, client) {
     HTMLclass: "panel panel-info tree-node"
   };
   client.emit(NEW_NODE, newObj);
+  console.log("user ", user);
+  console.log("user ", user.ponverts);
   newObj.children = user.ponverts.map(child => {
-    return _createTreeGraphStructure(child);
+    return _createTreeGraphStructure(child, client);
   });
   return newObj;
 }
