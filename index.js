@@ -85,12 +85,12 @@ app.get("/", isAuthenticated, (req, res) => {
 			const pyramid = ponzvertLevels(deeplyPopulatedUser);
 			pyramid.unshift(1);
 			console.log("Pyramid: ", pyramid);
-			let ponvertSum = pyramid.reduce(getSum)-1;
-			console.log("ponvertSum: ", ponvertSum)
+			let ponvertSum = pyramid.reduce(getSum) - 1;
+			console.log("ponvertSum: ", ponvertSum);
 			return res.render("./index", {
 				user: deeplyPopulatedUser,
 				pyramid: pyramid,
-				ponvertSum:ponvertSum
+				ponvertSum: ponvertSum
 			});
 		});
 });
@@ -107,7 +107,7 @@ function ponzvertLevels(user, pyramid = [], level = 0) {
 }
 
 function getSum(total, num) {
-    return total + num;
+	return total + num;
 }
 
 //////////////////////
@@ -180,6 +180,7 @@ app.get("/logout", isAuthenticated, (req, res) => {
 // mount routes
 app.use("/login", routes.login);
 app.use("/register", routes.register);
+app.use("/shop", isAuthenticated, routes.shop);
 
 // actually start the server
 
