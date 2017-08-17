@@ -67,6 +67,13 @@ module.exports = {
 		}
 	},
 
+	// viewScheme: async (req, res) => {
+	// 	let data = [ {
+	// 		key];
+	// 	
+	// 	return res.render("scheme/index", )
+	// },
+
 	createUser: async (req, res) => {
 		// check if user exists
 		let existingUser;

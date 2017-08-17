@@ -20,11 +20,11 @@
   		{{> ponzvertPartial children=user.children}}
 		</ul>
 	</div>
-	
+
 </div>
 
 <div class="svg-container">
-	
+
 </div>
 
 
@@ -63,8 +63,18 @@
 	d3.select(self.frameElement).style("height", "500px");
 
 	function update(source) {
-		let colorArray = makeColorArray();
-		console.log(colorArray);
+		let colorArray = [
+			"#e87d7d",
+			"#e8bd7d",
+			"#d3e87d",
+			"#92e87d",
+			"#7de8a8",
+			"#7de8e8",
+			"#7da8e8",
+			"#927de8",
+			"#d37de8",
+			"#e87dbd"
+		]
 
 	  // Compute the new tree layout.
 	  var nodes = tree.nodes(root).reverse(),
@@ -167,20 +177,17 @@
 	  update(d);
 	}
 
-	// Get random color
-	function randomColor() {
-		return '#' + Math.round(0xffffff * Math.random()).toString(16);
-	}
-
-	function makeColorArray() {
-		console.log("doing this");
-			let colorArray = [];
-			for(let i = 0; i < 10; i++) { colorArray.push(randomColor()) }
-			return colorArray;
-	}
 
 	function randomColorPosition(colorArray, d) {
+		printKeyValues(d);
 		return colorArray[ d.depth % 10 ];
+	}
+
+	function printKeyValues(d) {
+		let keys = Object.keys(d)
+		keys.forEach((key) => {
+			console.log(key, d[key]);
+		})
 	}
 
 </script>
