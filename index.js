@@ -6,8 +6,13 @@ const bodyParser = require("body-parser");
 const exphbs = require("express-handlebars");
 const session = require("express-session");
 const passport = require("passport");
-const flash = require("express-flash-messages");
-// const flash = require("express-flash");
+const server = require("http").createServer(app);
+
+
+
+const io = require("socket.io")(server);
+app.use("/socket.io", express.static(__dirname + "node_modules/socket.io-client/dist/"));
+console.log(__dirname, "node_modules/socket.io-client/dist/");
 
 app.use(
 	session({
@@ -19,7 +24,6 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
 
 const mongoose = require("mongoose");
 const Promise = require("bluebird");
@@ -87,7 +91,19 @@ app.post(
 	})
 );
 
+
+io.on('connection', client => {
+	_client = client;
+	// update(client);
+
+	// client.on("test", (data) => {
+	// 	client.emit("happyStuff", "sfjfjf");
+	// }
+	client.emit("happyStuff", "sfjfjf");
+
+})
+
 // listen to server
-app.listen(3000, () => {
+server.listen(3000, () => {
 	console.log(`Listening at port 3000`);
 });

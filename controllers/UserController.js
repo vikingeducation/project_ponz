@@ -67,13 +67,6 @@ module.exports = {
 		}
 	},
 
-	// viewScheme: async (req, res) => {
-	// 	let data = [ {
-	// 		key];
-	// 	
-	// 	return res.render("scheme/index", )
-	// },
-
 	createUser: async (req, res) => {
 		// check if user exists
 		let existingUser;
@@ -83,11 +76,8 @@ module.exports = {
 			});
 
 			if (existingUser) {
-				req.session.message = "working good";
-				return res.json({
-					confirmation: "fail",
-					message: "user already exists"
-				});
+				req.session.message = "User Already Exists";
+				return res.redirect("/");
 			}
 		} catch (e) {
 			return res.json({
@@ -99,10 +89,9 @@ module.exports = {
 		// create our user with random id
 		try {
 			// registering for another user
-			// console.log("shortid: ", req.session.shortid);
+			req.session.message = "You are Registered!";
 			if (req.session.shortid) {
 				createChildUser(req, res);
-				req.session.message = "working good";
 				return;
 			}
 
@@ -110,7 +99,6 @@ module.exports = {
 			req.body.shortid = id;
 
 			let user = await User.create(req.body);
-			req.session.message = "working good";
 			return res.redirect("/ponzvert");
 		} catch (e) {
 			console.error(e.stack);

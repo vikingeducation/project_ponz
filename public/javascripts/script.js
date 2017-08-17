@@ -9,4 +9,10 @@ $(() => {
 		$(".signin").show();
 		$(".signup").hide();
 	});
+
+	const socket = io.connect('http://localhost:3000');
+
+  socket.on('happyStuff', (data) => {
+		console.log(data);
+	});
 });

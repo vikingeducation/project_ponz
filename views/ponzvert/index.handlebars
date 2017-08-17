@@ -75,10 +75,10 @@
  //   .attr("preserveAspectRatio", "xMinYMin meet")
  //   .attr("viewBox", "0 0 600 400")
  //   //class to make it responsive
- //   .classed("svg-content-responsive", true); 
+ //   .classed("svg-content-responsive", true);
 
 	function update(source) {
-		 
+
 
 		var colorArray = [
 			"#e87d7d",
@@ -129,7 +129,7 @@
 			.attr("y", function(d) {
 				svgWidth = Math.max(svgWidth, d.y);
 
-				
+
 				console.log(svgWidth, 'what is svg width')
 
 				console.log(svg, 'what is svg')
@@ -208,10 +208,6 @@
 		d._children = null;
 	  }
 	  update(d);
-	}
-
-	function resize(previous, current) {
-
 	}
 
 	function randomColorPosition(colorArray, d) {
