@@ -12,6 +12,9 @@ const {
   loggedInOnly,
   loggedOutOnly
 } = require("./session/Session.js");
+
+var flash = require("express-flash-messages");
+app.use(flash());
 var payOut = require("./moneyLogic");
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -37,10 +40,11 @@ mongoose.connect("mongodb://localhost/project_ponz");
 app.use("/shop", shop);
 
 app.get("/", loggedInOnly, (req, res) => {
+  console.log(req.user);
   User.findOne({ username: req.user.username }).then(user => {
     pyramid(user._id).then(results => {
       console.log(JSON.stringify(results, null, 2));
-      return res.render("index", { results, user });
+      return res.render("index2", { results, user });
     });
   });
 });

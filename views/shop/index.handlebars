@@ -1,11 +1,63 @@
+  {{#each getMessages as |messages key| }}
+      {{#each messages as |message| }}
+    <div class="alert alert-danger alert-dismissible text-center" role="alert" style="border-radius: 0;">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {{/each }}
+  {{/each }}
+
+
 <div class='panel panel-default'>
-  <div class='panel-success'>
-    Spend your money
+  <div class='panel-heading'>
+    <h2>Welcome to the Ponz Shop<h2>
   </div>
-  <div class='panel-body'>
-    item1
+</div>
+<br />
+
+<div class='row'>
+  <div class='col-md-6'>
+    <div class="panel panel-default">
+      <div class='panel-heading'>
+        <h3>Nutty Nut Cereal</h3>
+      </div>
+      <div class='panel-body'>
+        <img src='http://fantasy-faction.com/wp-content/uploads/2015/06/2015-JUN-Nutty-Nuggets-box.jpg' style='height:200px;' class=center-block  />
+      </div>
+      <div class='panel-footer'>
+        <form action='/shop' method=POST>
+          <input type='hidden' name=item value='Nutty Nut Cereal' />
+          <input type='hidden' name=cost value='-100' />
+          <input type='hidden' name=quantity value='1' />
+          <button type="submit" class="btn btn-success center-block">
+            <h5>$100</h5>
+          </button>
+        </form>
+      </div>
+    </div>
   </div>
-  <div class='panel-body'>
-    item2
+
+  <div class='col-md-6'>
+    <div class="panel panel-default">
+      <div class='panel-heading'>
+        <h3>Apple Dapples</h3>
+      </div>
+      <div class='panel-body'>
+        <img style='height:200px;' class=center-block src='http://cdn.smosh.com/sites/default/files/ftpuploads/bloguploads/1113/publix-apple-dapples-cereal.jpg' />
+
+      </div>
+      <div class='panel-footer'>
+          <form action='/shop' method=POST>
+            <input type='hidden' name=item value='Nutty Nut Cereal' />
+            <input type='hidden' name=cost value='-300' />
+            <input type='hidden' name=quantity value='1' />
+            <button type="submit" class="btn btn-success center-block">
+              <h5>$300</h5>
+            </button>
+          </form>
+      </div>
+    </div>
   </div>
 </div>
