@@ -27,15 +27,15 @@
             <div class="col-sm-6 col-sm-offset-3">
               <label for="min" class="col-sm-1 col-sm-offset-1 control-label">Min</label>
               <div class="col-sm-2">
-                <input type="number" class="form-control col-sm-6" id="minInput" value="1">
+                <input type="number" class="form-control col-sm-6" id="minInput" value="3" max="5" min="0">
               </div>
       				<label for="max" class="col-sm-1 col-sm-offset-1 control-label">Max</label>
               <div class="col-sm-2">
-                <input type="number" class="form-control col-sm-6" id="maxInput" value="5">
+                <input type="number" class="form-control col-sm-6" id="maxInput" value="3" max="5" min="0">
               </div>
               <label for="max" class="col-sm-1 col-sm-offset-1 control-label">Depth</label>
               <div class="col-sm-2">
-                <input type="number" class="form-control col-sm-6" id="depthInput" placeholder="Depth" value="5">
+                <input type="number" class="form-control col-sm-6" id="depthInput" placeholder="Depth" value="3" max="10" min="1">
               </div>
     			</div>
           <div class="col-sm-3 text-right">
@@ -97,7 +97,4 @@
 </div>
 <div class="hidden">
   <script src="/javascripts/script.js"></script>"
-  <script>
-  const treeGraph = new Treant({{{treeGraph}}}, function() { }, $);
-  </script>
 </div>
