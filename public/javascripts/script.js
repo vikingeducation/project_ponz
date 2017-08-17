@@ -1,85 +1,93 @@
-const userId = getCookie('userId');
+const userId = getCookie("userId");
 
 //send events
-const REGENERATE = 'regenerate';
-const ADD_NODE = 'addNode';
+const REGENERATE = "regenerate";
+const ADD_NODE = "addNode";
+const LOAD_TREE = "loadTree";
+const GET_MORE_USERS = "getMoreUsers";
 
 //receive events
-const NEW_TREE = 'newTree';
-const NEW_NODE = 'newNode';
-const UPDATE_POINTS = 'updatePoints';
+const NEW_TREE = "newTree";
+const NEW_NODE = "newNode";
+const DISPLAY_TREE = "displayTree";
+const UPDATE_POINTS = "updatePoints";
 
 $(function() {
-	const socket = io.connect('http://localhost:3000');
-	let latestNode, treeGraph;
-	socket.on(NEW_TREE, data => {
-		const chartConfig = {
-			chart: {
-				container: '#tree',
-				rootOrientation: 'WEST',
-				levelSeparation: 50,
-				connectors: {
-					type: 'bCurve',
-					style: {
-						stroke: 'blue',
-						'stroke-width': '2px'
-					}
-				},
-				node: {
-					collapsable: true
-				},
-				animation: {
-					nodeSpeed: 50,
-					connectorsSpeed: 50
-				}
-			},
-			nodeStructure: data.node
-		};
-		treeGraph = new Treant(chartConfig, function() {}, $);
-		latestNode = treeGraph.tree.nodeDB.db[0];
-	});
+  const socket = io.connect("http://localhost:3000");
 
-	socket.on(NEW_NODE, async data => {
-		const id = '#' + data.parent._id;
-		const $parent = $(id);
+  //load this user's tree
+  socket.emit(LOAD_TREE, userId);
+  socket.on(DISPLAY_TREE, data => {
+    //test
+    treeGraph = new Treant(data, function() {}, $);
+  });
+  socket.on(NEW_TREE, data => {
+    const chartConfig = {
+      chart: {
+        container: "#tree",
+        rootOrientation: "WEST",
+        levelSeparation: 50,
+        connectors: {
+          type: "bCurve",
+          style: {
+            stroke: "blue",
+            "stroke-width": "2px"
+          }
+        },
+        node: {
+          collapsable: true
+        },
+        animation: {
+          nodeSpeed: 50,
+          connectorsSpeed: 50
+        }
+      },
+      nodeStructure: data.node
+    };
+    treeGraph = new Treant(chartConfig, function() {}, $);
+  });
 
-		const parentNode = $parent.data('treenode');
-		treeGraph.addNewNode(parentNode, data.node);
-	});
+  socket.on(NEW_NODE, async data => {
+    const id = "#" + data.parent._id;
+    const $parent = $(id);
 
-	socket.on(UPDATE_POINTS, data => {
-		let { id, points, cash } = data;
-		if (data.root === true) {
-			$(`#ponz-points`).text(points);
-			$(`#ponz-cash`).text(cash);
-		}
-		$(`div#${id} p.node-title`).text(points);
-	});
+    const parentNode = $parent.data("treenode");
+    treeGraph.addNewNode(parentNode, data.node);
+  });
 
-	// Set form listener.
-	$('#generate-button').on('click', function(e) {
-		e.preventDefault();
-		let $form = $('form');
+  socket.on(UPDATE_POINTS, data => {
+    let { id, points, cash } = data;
+    if (data.root === true) {
+      $(`#ponz-points`).text(points);
+      $(`#ponz-cash`).text(cash);
+    }
+    $(`div#${id} p.node-title`).text(points);
+  });
 
-		let [min, max, depth] = [
-			$('#minInput').val(),
-			$('#maxInput').val(),
-			$('#depthInput').val()
-		];
+  // Set form listener.
+  $("#generate-button").on("click", function(e) {
+    e.preventDefault();
+    let $form = $("form");
 
-		// Emit the event.
-		socket.emit(REGENERATE, { userId: userId, data: { min, max, depth } });
-	});
+    let [min, max, depth] = [
+      $("#minInput").val(),
+      $("#maxInput").val(),
+      $("#depthInput").val()
+    ];
 
-	// socket.emit(ADD_NODE,);
+    // Emit the event.
+    socket.emit(REGENERATE, { userId: userId, data: { min, max, depth } });
+  });
 
-	Treant.prototype.addNewNode = function(parent, nodeDef) {
-		return this.tree.addNode(parent, nodeDef);
-	};
+  // socket.emit(ADD_NODE,);
+
+  Treant.prototype.addNewNode = function(parent, nodeDef) {
+    return this.tree.addNode(parent, nodeDef);
+  };
 });
 
 function getCookie(name) {
-	var value = '; ' + document.cookie;
-	var parts = value.split('; ' + name + '=');
-	if (parts.length == 2) return parts.pop().split(';').shift();
+  var value = "; " + document.cookie;
+  var parts = value.split("; " + name + "=");
+  if (parts.length == 2) return parts.pop().split(";").shift();
 }
