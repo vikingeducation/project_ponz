@@ -9,44 +9,50 @@ const pyramid = async function(currentUserId) {
     "referrals"
   );
   referralArray = currentUser.referrals;
-  console.log(referralArray);
-  console.log("here");
+  // console.log(referralArray);
+  // console.log("here");
 
-  while (keepLooping === true) {
-    makeObject(referralArray);
-  }
-  keepLooping = false;
-  return pyramidObject;
+  // while (keepLooping === true) {
+  makeObject(referralArray);
+  // }
+  // keepLooping = false;
+  // return pyramidObject;
 };
 
 const makeObject = async function(refArray) {
   let newArray = [];
   pyramidObject[depth] = refArray;
+  console.log("before");
   depth++;
-  //console.log(refArray.length);
-  // TODO fix this promise issue - skipping the newArray.length validation below
   Promise.all(
     refArray.map(async function(i) {
       let user = await User.findOne({ _id: i._id }).populate("referrals");
+      console.log("inside of the promise.all array");
       return user.referrals;
     })
   ).then(resultArray => {
     let objects = [];
+    console.log("inside the then from promise all");
     resultArray.forEach(el => {
       objects = objects.concat(el);
     });
-    console.log(objects);
-    console.log("result array");
-    console.log(resultArray);
-  });
+    pyramidObject[depth] = objects;
 
-  // for (let i = 0; i < refArray.length; i++) {
-  //   //let id = i._id;
-  //
-  //   let thisRef = await User.findOne({ _id: refArray[i]._id }).populate(
-  //     "referrals"
-  //   );
-  //
+    if (objects.length > 0) {
+      console.log("this is objects");
+      console.log(objects);
+      console.log(pyramidObject);
+      depth++;
+      referralArray = objects;
+      makeObject(objects);
+    } else {
+      console.log("done");
+      depth = 0;
+      keepLooping = false;
+    }
+    // console.log(objects);
+    // console.log("result array");
+  });
   //   console.log("top of loop");
   //   console.log(thisRef);
   //   newArray = newArray.concat(thisRef.referrals);
@@ -54,18 +60,7 @@ const makeObject = async function(refArray) {
   //   console.log(newArray);
   // }
 
-  console.log("after each");
-  if (newArray.length > 0) {
-    //  console.log(newArray);
-    pyramidObject[depth] = newArray;
-    depth++;
-    referralArray = newArray;
-    makeObject(newArray);
-  } else {
-    console.log("done");
-    depth = 0;
-    keepLooping = false;
-  }
+  // console.log("after each");
 };
 
 module.exports = pyramid;

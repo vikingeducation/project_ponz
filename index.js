@@ -34,7 +34,7 @@ mongoose.connect("mongodb://localhost/project_ponz");
 app.get("/", loggedInOnly, (req, res) => {
   User.findOne({ username: req.user.username }).then(user => {
     pyramid(user._id).then(results => {
-      console.log("empty array?");
+      console.log("root results");
       console.log(JSON.stringify(results, null, 2));
     });
     return res.render("index", { user });
