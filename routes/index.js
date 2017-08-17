@@ -18,7 +18,10 @@ function authenticate(passport) {
 
   //login view
   router.get(h.loginPath(), (req, res) => {
-    res.render("login");
+    User.find().then(r => {
+      if (!r.length) res.redirect(h.registerPath());
+      else res.render("login");
+    });
   });
 
   //login handler
