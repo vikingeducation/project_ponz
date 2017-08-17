@@ -25,15 +25,34 @@ const makeObject = async function(refArray) {
   depth++;
   //console.log(refArray.length);
   // TODO fix this promise issue - skipping the newArray.length validation below
-  for (let i = 0; i < refArray.length; i++) {
-    //let id = i._id;
+  Promise.all(
+    refArray.map(async function(i) {
+      let user = await User.findOne({ _id: i._id }).populate("referrals");
+      return user.referrals;
+    })
+  ).then(resultArray => {
+    let objects = [];
+    resultArray.forEach(el => {
+      objects = objects.concat(el);
+    });
+    console.log(objects);
+    console.log("result array");
+    console.log(resultArray);
+  });
 
-    let thisRef = User.findOne({ _id: i._id }).populate("referrals");
-    console.log("top of loop");
-    newArray = newArray.concat(i.referrals);
-    console.log("newArray");
-    console.log(newArray);
-  }
+  // for (let i = 0; i < refArray.length; i++) {
+  //   //let id = i._id;
+  //
+  //   let thisRef = await User.findOne({ _id: refArray[i]._id }).populate(
+  //     "referrals"
+  //   );
+  //
+  //   console.log("top of loop");
+  //   console.log(thisRef);
+  //   newArray = newArray.concat(thisRef.referrals);
+  //   console.log("newArray");
+  //   console.log(newArray);
+  // }
 
   console.log("after each");
   if (newArray.length > 0) {
