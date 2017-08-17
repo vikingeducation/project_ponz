@@ -29,11 +29,7 @@ const UserSchema = new Schema(
 
 UserSchema.plugin(uniqueValidator);
 
-// Instance Methods
-UserSchema.methods.validPassword = function(password) {
-  return bcrypt.compareSync(password, this.passwordHash);
-};
-
+// Class Methods
 UserSchema.statics.registerNewUser = async function(
   username,
   password,
@@ -62,6 +58,11 @@ UserSchema.statics.registerNewUser = async function(
   } catch (e) {
     console.error(e);
   }
+};
+
+// Instance Methods
+UserSchema.methods.validPassword = function(password) {
+  return bcrypt.compareSync(password, this.passwordHash);
 };
 
 UserSchema.methods.populateChildren = async function() {
