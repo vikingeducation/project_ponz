@@ -77,11 +77,14 @@ const isAuthenticated = (req, res, next) => {
 };
 
 app.get("/", isAuthenticated, (req, res) => {
-	const pyramid = [];
-	deepPopulate(req.user, 40, pyramid, 0) // returns nestedly populated user
+	deepPopulate(req.user) // returns nestedly populated user
 		.then(deeplyPopulatedUser => {
+			const pyramid = ponzvertLevels(deeplyPopulatedUser);
 			console.log("deeplyPopulatedUser, 89: ", deeplyPopulatedUser);
-			return res.render("./index", { user: deeplyPopulatedUser });
+			return res.render("./index", {
+				user: deeplyPopulatedUser,
+				pyramid: pyramid
+			});
 		});
 });
 
@@ -99,11 +102,17 @@ app.get("/", isAuthenticated, (req, res) => {
 //   return level;
 // }
 
-// while(user.children.length) {
-// 	user.children.forEach(child => {
-// 		user = child
-// 	})
-// }
+function ponzvertLevels(user, pyramid = [], level = 0) {
+	user.children.forEach(child => {
+		if (child.children.length) {
+			pyramid = ponzvertLevels(user, pyramid, level++);
+		} else {
+			pyramid[level] = pyramid[level] || 0;
+			pyramid[level] += 1;
+		}
+	});
+	return pyramid;
+}
 
 function deepPopulate(user, counter = 40) {
 	return User.findById(user.id)
