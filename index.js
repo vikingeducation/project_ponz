@@ -88,14 +88,19 @@ app.get("/", isAuthenticated, (req, res) => {
 	});	
 });
 
-function deepPopulate (user) {
+function deepPopulate (user, counter=40) {
   return User.findById(user.id)
   .populate("children")
   .then(populatedUser => {
+  	console.log("Populated User: " + populatedUser);
     return Promise.all(
-      user.children.map(child => { 
+      populatedUser.children.map(child => {
+      	console.log("Child: " + child);
+      	child.profit = counter;
+      	lowerCounter = Math.floor(counter / 2);
         if (child.children.length) {
-          return deepPopulate(child)
+        	console.log("Child's children: " + child.children);
+          return deepPopulate(child, lowerCounter)
         } else {
           return child
         }
@@ -103,6 +108,7 @@ function deepPopulate (user) {
     )
   })
   .then(childArray=>{
+  	console.log("Child array: " + childArray);
     user.children = childArray
     return user;
   })
