@@ -82,45 +82,48 @@ const isAuthenticated = (req, res, next) => {
 
 app.get("/", isAuthenticated, (req, res) => {
   User.findById(req.user.id)
-  .populate({
-    path: "children",
-    populate: {
-      path: "children",
-      model: "User",
-      populate: {
-        path: "children",
-        model: "User",
-        populate: {
-          path: "children",
-          model: "User",
-          populate: {
-            path: "children",
-            model: "User",
-            populate: {
-              path: "children",
-              model: "User"
-            }
-          }
-        }
-      }
-    }
-  })
+  // .populate({
+  //   path: "children",
+  //   populate: {
+  //     path: "children",
+  //     model: "User",
+  //     populate: {
+  //       path: "children",
+  //       model: "User",
+  //       populate: {
+  //         path: "children",
+  //         model: "User",
+  //         populate: {
+  //           path: "children",
+  //           model: "User",
+  //           populate: {
+  //             path: "children",
+  //             model: "User"
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // })
   .then((user)=>{
-  return res.render("./index", {user:user});
+  	user = deepPopulate(user);
+  	return res.render("./index", {user:user});
   })
 });
 
 function deepPopulate (user, counter=80) {
-  user.populate("children")
+  User.findById(user.id).populate({path: "children", model: "User"})
   .then(userWithChildren =>{
-    counter = Math.floor(counter/2)
-    userWithChildren.children.forEach(child=>{
-      if (child.children.length) {
-        deepPopulate(child, counter)
-      }
-      child.profit = counter
-    })
-    return user
+		console.log(userWithChildren);
+	  counter = Math.floor(counter/2)
+	  userWithChildren.children = userWithChildren.children.forEach(child=>{
+	    if (child.children.length) {
+	      child = deepPopulate(child, counter) //get child back
+	    }
+	    child.profit = counter
+	  });
+	  console.log(userWithChildren);
+	  return userWithChildren;
   })
 }
 
