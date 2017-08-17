@@ -30,7 +30,7 @@ router.post(
 		failureFlash: true
 	}),
 	(req, res) => {
-		res.cookie('userId', req.user._id);
+		res.cookie('userId', req.user.id);
 		res.redirect('/');
 	}
 );

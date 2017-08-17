@@ -54,7 +54,7 @@ router.post('/signup', async (req, res, next) => {
 	// We have a user here.
 	try {
 		await req.login(user, () => {});
-		res.cookie('userId', user._id);
+		res.cookie('userId', user.id);
 		res.redirect('/');
 	} catch (e) {
 		next(e);
