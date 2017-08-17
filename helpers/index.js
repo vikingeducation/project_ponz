@@ -91,7 +91,7 @@ async function _generateTreeGraphStructure(user, client) {
 			ponverts: []
 		});
 		await user.addPonvert(child);
-		await user.addPoints();
+		user.points = await user.addPoints();
 
 		let newObj = {
 			parent: user,

@@ -84,6 +84,7 @@ UserSchema.methods.addPoints = async function(counter) {
 		let parent = await User.findById(this.parent);
 		await parent.addPoints(++counter);
 	}
+	return this.points;
 };
 
 //findRecursive
