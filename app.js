@@ -67,9 +67,15 @@ passport.deserializeUser(function(userId, done) {
 
 passport.use("local", require("./strategies/local"));
 
-// Add user to locals
-app.use((req, res, next) => {
-  res.locals.user = req.user;
+// Add populated user and referral URL to locals
+app.use(async (req, res, next) => {
+  if (req.user) {
+    const protocol = req.protocol;
+    const host = req.get("host");
+    const shortId = req.user.shortId;
+    res.locals.referralUrl = `${protocol}://${host}/${shortId}`;
+    res.locals.user = await req.user.populateChildren();
+  }
   next();
 });
 

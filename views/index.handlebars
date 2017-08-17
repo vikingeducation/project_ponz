@@ -6,7 +6,7 @@
     </div>
     <div class="panel-body">
       <h3>
-        Your referral link is <a href="{{ referPath }}">{{ referPath }}</a>
+        Your referral link is <a href="{{ referralUrl }}">{{ referralUrl }}</a>
       </h3>
     </div>
   </div>
@@ -30,7 +30,7 @@
       <h2>Your Ponzverts</h2>
     </div>
     <div class="panel-body">
-      {{#if popUser.children }} {{> shared/_children children=popUser.children}} {{else}}
+      {{#if user.children }} {{> shared/_children children=user.children}} {{else}}
       <h3>You have no ponzverts. SAD!</h3>
       {{/if}}
     </div>
