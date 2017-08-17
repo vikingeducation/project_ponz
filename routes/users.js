@@ -48,7 +48,7 @@ router.post('/signup', async (req, res, next) => {
 	}
 
 	if (req.body._referrerCode) {
-		formData.parent.addPonvert(user);
+		await formData.parent.addPonvert(user);
 	}
 
 	// We have a user here.
