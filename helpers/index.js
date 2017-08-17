@@ -36,7 +36,7 @@ module.exports = {
 				HTMLclass: 'panel panel-info tree-node'
 			}
 		};
-		client.emit(NEW_TREE, newObj);
+		client.emit(NEW_NODE, newObj);
 
 		process.stdout.write('Creating children');
 		await _generateTreeGraphStructure(user, client);
@@ -75,7 +75,7 @@ function _createTreeGraphStructure(user) {
 	let newObj = {
 		text: {
 			name: user.username,
-			title: '0'
+			title: user.points
 		},
 		stackChildren: true,
 		HTMLid: user.id,
