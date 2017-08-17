@@ -4,11 +4,13 @@ let keepLooping = true;
 var pyramidObject = {};
 var depth = 0;
 var referralArray = [];
+var objects = [];
 const pyramid = async function(currentUserId) {
   let currentUser = await User.findOne({ _id: currentUserId }).populate(
     "referrals"
   );
   referralArray = currentUser.referrals;
+<<<<<<< HEAD
 
   makeObject(referralArray);
   return pyramidObject;
@@ -30,33 +32,38 @@ const makeObject = async function(refArray) {
     //console.log("inside the then from promise all");
     resultArray.forEach(el => {
       objects = objects.concat(el);
+=======
+  objects = currentUser.referrals;
+  const makeObject = async function(refArray) {
+    pyramidObject[depth] = refArray;
+    depth++;
+    await Promise.all(
+      refArray.map(async function(i) {
+        let user = await User.findOne({ _id: i._id }).populate("referrals");
+        return user.referrals;
+      })
+    ).then(resultArray => {
+      objects = [];
+
+      resultArray.forEach(el => {
+        objects = objects.concat(el);
+      });
+      if (objects.length > 0) {
+        pyramidObject[depth] = objects;
+      }
+>>>>>>> 9a4f123792cbbd33bb3177cadf14bdf7ed6bd9b9
     });
-    pyramidObject[depth] = objects;
+  };
 
-    if (objects.length > 0) {
-      // console.log("this is objects");
-      // console.log(objects);
-      // console.log(pyramidObject);
-      //depth++;
-      referralArray = objects;
-      makeObject(objects);
-    } else {
-      //  console.log("done");
-      depth = 0;
-      keepLooping = false;
-    }
-    // console.log(objects);
-    // console.log("result array");
-  });
-  //   console.log("top of loop");
-  //   console.log(thisRef);
-  //   newArray = newArray.concat(thisRef.referrals);
-  //   console.log("newArray");
-  //   console.log(newArray);
+  while (objects.length > 0) {
+    await makeObject(objects);
+  }
+
+  depth = 0;
+  keepLooping = false;
   // }
-
-  // console.log("after each");
-  console.log(pyramidObject);
+  // keepLooping = false;
+  return pyramidObject;
 };
 
 module.exports = pyramid;
