@@ -1,4 +1,5 @@
-const app = require("express")();
+const express = require("express");
+const app = express();
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const expressSession = require("express-session");
@@ -14,6 +15,7 @@ const {
 var payOut = require("./moneyLogic");
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(`${__dirname}/public`));
 app.use(
   expressSession({
     secret: process.env.secret || "keyboard cat",

@@ -1,0 +1,52 @@
+#pyramidText {
+  position: relative;
+  float: left;
+  margin-left: 50%;
+}
+#trapezoid1 {
+  border: 50px solid rgba(0, 0, 0, 0);
+  border-top: 0 solid;
+  border-bottom: 100px solid #1abc9c;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  width: 50px;
+  margin: auto;
+}
+
+#trapezoid2 {
+  margin: auto;
+  border: 50px solid rgba(0, 0, 0, 0);
+  border-top: 0 solid;
+  border-bottom: 100px solid #1abc9c;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  width: 150px;
+}
+
+#trapezoid3 {
+  margin: auto;
+  border: 50px solid rgba(0, 0, 0, 0);
+  border-top: 0 solid;
+  border-bottom: 100px solid #1abc9c;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  width: 250px;
+}
+#trapezoid4 {
+  margin: auto;
+  border: 50px solid rgba(0, 0, 0, 0);
+  border-top: 0 solid;
+  border-bottom: 100px solid #1abc9c;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  width: 350px;
+}
+#trapezoid5 {
+  margin: auto;
+  border: 50px solid rgba(0, 0, 0, 0);
+  border-top: 0 solid;
+  border-bottom: 100px solid #1abc9c;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  width: 450px;
+}

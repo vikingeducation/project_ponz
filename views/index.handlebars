@@ -6,33 +6,16 @@
 </div>
 
 
-<div class="panel panel-default">
-  <div class='panel-heading'  style='background:lightgreen'>
-    <h1>Money: ${{user.AnkhMorporkDollars}}</h1>
-  </div>
-</div>
 
-<div class='panel panel-default'>
-  <div class='panel-heading'>
-    <h2>Your ponzverts</h2>
-  </div>
-  <div class='panel-body'>
+{{user.AnkhMorporkDollars}}
+
+
+
     {{#each results as |result|}}
-    <div class='panel panel-default'>
-      <div class='panel-heading'>
-        <h3>Level {{@key}} Ponverts</h3>
-      </div>
-        <div class='panel-body'>
+<div id="trapezoid{{@key}}">
+
         {{#each result as |user|}}
-          <h4>{{user.username}}
-            <button type="button" class="btn btn-success">${{user.AnkhMorporkDollars}}</button>
-          </h4>
+      <p id="pyramidText">{{user.username}}</p>
         {{/each}}
-        </div>
-      </div>
-      {{/each}}
-    </div>
-    </div>
-  </div>
 </div>
-<br />
+      {{/each}}
