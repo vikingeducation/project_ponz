@@ -1,9 +1,13 @@
-{{#each children as |child|}}
-  <div>
-    {{child.username}} has earned you <str>{{child.profit}}</str> PonzBucks! 
-   <i> ponverted at {{child.createdAt}}</i>
-  </div>
-  {{#if child.children}}
-    {{> childPartial children=child.children}}
-  {{/if}}
-{{/each}}
+<div class="row">
+	<div class="col-sm-11 col-sm-offset-1">
+		{{#each children as |child|}}
+		  <div>
+		    {{child.username}} has earned you <str>{{child.profit}}</str> PonzBucks! 
+		   <i> ponverted at {{child.createdAt}}</i>
+		  </div>
+		  {{#if child.children}}
+		    {{> childPartial children=child.children}}
+		  {{/if}}
+		{{/each}}
+	</div>
+</div>

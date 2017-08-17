@@ -97,7 +97,7 @@ function deepPopulate (user, counter=40) {
       populatedUser.children.map(child => {
       	console.log("Child: " + child);
       	child.profit = counter;
-      	lowerCounter = Math.floor(counter / 2);
+      	(counter > 1) ? lowerCounter = Math.floor(counter / 2) : lowerCounter = counter
         if (child.children.length) {
         	console.log("Child's children: " + child.children);
           return deepPopulate(child, lowerCounter)
