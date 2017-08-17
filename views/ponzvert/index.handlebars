@@ -10,7 +10,7 @@
 </div>
 
 <div class="text-center">
-	<h1 class="ponzvert-label">Your Stats</h1>
+	<h1 class="ponzvert-label">Your Ponzverts</h1>
 </div>
 
 
@@ -33,6 +33,8 @@
 	var treeData = {{{toJSON tree}}};
 
 	// ************** Generate the tree diagram	 *****************
+	var svgWidth = 960;
+
 	var margin = {top: 20, right: 120, bottom: 20, left: 120},
 		width = 960 - margin.right - margin.left,
 		height = 500 - margin.top - margin.bottom;
@@ -60,10 +62,25 @@
 
 	update(root);
 
-	d3.select(self.frameElement).style("height", "500px");
+	d3.select(self.frameElement)
+		.style("height", "900px")
+
+
+
+	// d3.select("div#chartId")
+ //   .append("div")
+ //   .classed("svg-container", true) //container class to make it responsive
+ //   .append("svg")
+ //   //responsive SVG needs these 2 attributes and no width and height attr
+ //   .attr("preserveAspectRatio", "xMinYMin meet")
+ //   .attr("viewBox", "0 0 600 400")
+ //   //class to make it responsive
+ //   .classed("svg-content-responsive", true); 
 
 	function update(source) {
-		let colorArray = [
+		 
+
+		var colorArray = [
 			"#e87d7d",
 			"#e8bd7d",
 			"#d3e87d",
@@ -107,6 +124,17 @@
 	  var nodeUpdate = node.transition()
 		  .duration(duration)
 		  .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+		nodeUpdate.select("circle")
+			.attr("y", function(d) {
+				svgWidth = Math.max(svgWidth, d.y);
+
+				
+				console.log(svgWidth, 'what is svg width')
+
+				console.log(svg, 'what is svg')
+				console.log(d, '???')
+			})
 
 	  nodeUpdate.select("circle")
 		  .attr("r", 10)
@@ -163,6 +191,11 @@
 		d.x0 = d.x;
 		d.y0 = d.y;
 	  });
+
+	  svg = d3.select("svg")
+			.attr("class", "animate-tree")
+			.attr("width", (svgWidth + 200) + margin.right + margin.left)
+			.attr("height", height + margin.top + margin.bottom)
 	}
 
 	// Toggle children on click.
@@ -177,9 +210,12 @@
 	  update(d);
 	}
 
+	function resize(previous, current) {
+
+	}
 
 	function randomColorPosition(colorArray, d) {
-		printKeyValues(d);
+		// printKeyValues(d);
 		return colorArray[ d.depth % 10 ];
 	}
 
