@@ -1,0 +1,82 @@
+#pyramidText {
+  text-align: right;
+  font-size: 3vw;
+  margin-top: 5%;
+  height: 10px;
+}
+#pyramidText2 {
+  width: 30px;
+  height: 30px;
+  float: left;
+  margin-left: 3px;
+}
+#pyramidText3 {
+  float: left;
+  text-align: center;
+}
+#trapezoid {
+  border: 50px solid rgba(0, 0, 0, 0);
+  border-top: 0 solid;
+  border-bottom: 100px solid gold;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  width: 40px;
+  margin: auto;
+  margin-bottom: 2%;
+}
+
+#trapezoid0 {
+  margin: auto;
+  border: 50px solid rgba(0, 0, 0, 0);
+  border-top: 0 solid;
+  border-bottom: 100px solid #1abc9c;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  width: 200px;
+}
+
+#trapezoid1 {
+  margin: auto;
+  border: 50px solid rgba(0, 0, 0, 0);
+  border-top: 0 solid;
+  border-bottom: 100px solid #1abc9c;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  width: 300px;
+}
+#trapezoid2 {
+  margin: auto;
+  border: 50px solid rgba(0, 0, 0, 0);
+  border-top: 0 solid;
+  border-bottom: 100px solid #1abc9c;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  width: 400px;
+}
+#trapezoid3 {
+  margin: auto;
+  border: 50px solid rgba(0, 0, 0, 0);
+  border-top: 0 solid;
+  border-bottom: 100px solid #1abc9c;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  width: 500px;
+}
+#trapezoid4 {
+  margin: auto;
+  border: 50px solid rgba(0, 0, 0, 0);
+  border-top: 0 solid;
+  border-bottom: 100px solid #1abc9c;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  width: 600px;
+}
+#trapezoid5 {
+  margin: auto;
+  border: 50px solid rgba(0, 0, 0, 0);
+  border-top: 0 solid;
+  border-bottom: 100px solid #1abc9c;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  width: 700px;
+}

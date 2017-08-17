@@ -1,0 +1,32 @@
+{
+  "name": "project_ponz",
+  "version": "1.0.0",
+  "description": "Building Ponz.io, with its endearingly upside-down-triangle-shaped business model.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gregfilipczak/project_ponz.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gregfilipczak/project_ponz/issues"
+  },
+  "homepage": "https://github.com/gregfilipczak/project_ponz#readme",
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.4",
+    "express-flash-messages": "^0.1.1",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.5",
+    "md5": "^2.2.1",
+    "mongoose": "^4.11.7",
+    "mongoose-unique-validator": "^1.0.5"
+  }
+}

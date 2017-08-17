@@ -1,0 +1,27 @@
+<div class="panel panel-success">
+  <div class=panel-body>
+    <h1>Refer Your Friends here!</h1>
+    <h3>Your referral link is <a href="/register/{{user._id}}">http://localhost:3000/register/{{user._id}}</a></h3>
+  </div>
+</div>
+Ankh Morpork Dollars: {{user.AnkhMorporkDollars}}
+
+<div class="panel panel-default">
+  <div class='panel-heading'  style='background:lightgreen'>
+    <a href='/'><button class='btn btn-success'>See the Chart</button></a>
+  </div>
+</div>
+
+
+<div id="trapezoid">
+  <p id="pyramidText">You!</p>
+</div>
+
+    {{#each results as |result|}}
+<div id="trapezoid{{@key}}">
+  <div id="pyramidText3" >
+  {{#each result as |user|}}
+<a  href="/register/{{user._id}}" id="pyramidText">I</a>
+  {{/each}}
+</div>
+</div>{{/each}}
