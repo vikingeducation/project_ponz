@@ -16,7 +16,6 @@
 
   <form class="signup-form signup" action="/api/users" method="post" autocomplete="off">
 
-    <!-- <input type="hidden" name="shortid" value=""/> -->
     <p class="signin-title">time to swim in cash</p>
     {{#if message}}
       <h1>{{message}}</h1>
@@ -29,7 +28,8 @@
     {{flash}}
 
     {{#if shortid}}
-      <p>Referral: {{shortid}}</p>
+      <p>Referral ID: {{shortid}}</p>
+      <p><a href="/clear" style="font-size: 0.9em; color: red">clear referral</a></p>
     {{/if}}
 
     <hr class="line">

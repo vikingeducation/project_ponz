@@ -1,6 +1,6 @@
 {{#each children as |child|}} {{! Each item is an "li" }}
     <li class="list-group-item">
-        <p class="nested-line">${{child.points}} {{child.username}}</p>
+        <p class="nested-line">{{child.points}}pz {{child.username}}</p>
         {{#if child.children.length}} {{! Within the context of the current item }}
         <ul class="list-group">
           {{> ponzvertPartial children=child.children}} {{! Recursively render the partial }}

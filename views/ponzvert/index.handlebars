@@ -1,15 +1,16 @@
 <div class="profile">
 	<h3 class="hello">Hello {{user.username}}!</h3>
-	<p>Your referral link is <a href="http://localhost:3000/ponzvert/{{user.shortid}}" target="_blank">http://localhost:3000/ponzvert/{{user.shortid}}</a></p>
 
-	<p>Ponz Points&#8482;: <money>${{user.points}}</money></p>
+	<p>Your referral link is <a class="under-line" href="http://localhost:3000/ponzvert/{{user.shortid}}" target="_blank">http://localhost:3000/ponzvert/{{user.shortid}}</a></p>
+
+	<p>Ponz Points&#8482;: <money>{{user.points}}pz</money></p>
 	<div class="diamond">
 		<img src="./assets/diamond.png" alt="diamond">
 	</div>
 </div>
 
 <div class="text-center">
-	<h1 class="ponzvert-label">Your Ponzverts</h1>
+	<h1 class="ponzvert-label">Your Stats</h1>
 </div>
 
 
