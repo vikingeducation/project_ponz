@@ -23,13 +23,14 @@ input {
 	background-color: #f6f6f6;
 	height: 40px;
 	margin-top: 10px;
-	padding-left: 20px;
+	text-align: center;
 }
 
 input::placeholder {
 	color: black;
 	font-family: 'Quicksand', sans-serif;
 	text-align: center;
+	padding-left: 20px;
 	padding-right: 20px;
 }
 
