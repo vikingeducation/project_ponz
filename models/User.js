@@ -48,21 +48,21 @@ UserSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.passwordHash);
 };
 
-UserSchema.methods.populateChildren = async function(level = 0) {
+UserSchema.methods.populateChildren = async function(level = 0, obj = {}) {
   try {
     let popChildren = [];
     for (let child of this.children) {
+      obj[level] = obj[level] + 1 || 1;
       child = await mongoose.model("User").findById(child);
-      child = await child.populateChildren(level + 1);
+      child = await child.populateChildren(level + 1, obj);
       child.contribution = Math.floor(40 / 2 ** level) || 1;
       popChildren.push(child);
     }
-
     this.earnings = popChildren.reduce((acc, child) => {
       return acc + child.contribution + (child.earnings || 0);
     }, 0);
-
     this.children = popChildren;
+    this.pyramid = obj;
     return this;
   } catch (e) {
     console.error(e);

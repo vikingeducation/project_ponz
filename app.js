@@ -75,6 +75,10 @@ app.use(async (req, res, next) => {
     const shortId = req.user.shortId;
     res.locals.referralUrl = `${protocol}://${host}/${shortId}`;
     res.locals.user = await req.user.populateChildren();
+    res.locals.pyramid = [];
+    for (let i = 0; i < Object.keys(req.user.pyramid).length; i++) {
+      res.locals.pyramid.push(req.user.pyramid[i]);
+    }
   }
   next();
 });

@@ -6,3 +6,63 @@ ul {
 li > ul {
   padding-left: 20px;
 }
+
+#pyramid {
+  overflow: hidden;
+  z-index: -1;
+  text-align: center;
+  color: white;
+  background: blue;
+  margin-bottom: 200px;
+  position: relative;
+}
+
+#pyramid:first-child {
+  padding-top: 30px;
+}
+
+.pyramid-row {
+  border-bottom: 5px solid white;
+  padding: 10px;
+  font-size: 20px;
+}
+
+#triangle-left {
+  height: 1000%;
+  width: 70%;
+  position: absolute;
+  background: white;
+  transform: skewX(-20deg);
+  right: 50%;
+  top: -500%;
+}
+
+#triangle-right {
+  height: 1000%;
+  width: 70%;
+  position: absolute;
+  background: white;
+  transform: skewX(20deg);
+  left: 50%;
+  top: -500%;
+}
+
+/*#triangle-left {
+  border-bottom: 41em solid rgba(0, 0, 0, 0);
+  border-left: 41em solid white;
+  height: 0;
+  width: 0;
+  z-index: 1000;
+  position: absolute;
+  left: 0;
+}
+
+#triangle-right {
+  border-bottom: 41em solid rgba(0, 0, 0, 0);
+  border-right: 41em solid white;
+  height: 0;
+  width: 0;
+  z-index: 1000;
+  position: absolute;
+  right: 0;
+}*/

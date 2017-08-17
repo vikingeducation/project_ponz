@@ -38,3 +38,19 @@
   </div>
 
 </section>
+
+{{#if pyramid}}
+<section class="col-xs-12">
+
+
+<div id="pyramid" class="row">
+  <div id="triangle-left"></div>
+  <div id="triangle-right"></div>
+  {{#each pyramid as |p|}}
+  <div class="col-xs-12 pyramid-row">
+    {{p}}
+  </div>
+  {{/each}}
+</div>
+</section>
+{{/if}}
