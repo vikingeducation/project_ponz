@@ -155,5 +155,4 @@ simple_chart_config = {
         ]
     }
 };
-
 */

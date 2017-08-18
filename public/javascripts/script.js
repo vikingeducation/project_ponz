@@ -18,36 +18,10 @@ $(function() {
 	//load this user's tree
 	socket.emit(LOAD_TREE, userId);
 	socket.on(DISPLAY_TREE, data => {
-		console.log(data.chart);
-		console.log(data.nodeStructure);
 		treeGraph = new Treant(data, function() {}, $);
 	});
-	socket.on(NEW_TREE, data => {
-		const chartConfig = {
-			chart: {
-				container: '#tree',
-				rootOrientation: 'WEST',
-				levelSeparation: 50,
-				connectors: {
-					type: 'bCurve',
-					style: {
-						stroke: 'blue',
-						'stroke-width': '2px'
-					}
-				},
-				node: {
-					collapsable: true
-				},
-				animation: {
-					nodeSpeed: 50,
-					connectorsSpeed: 50
-				}
-			},
-			nodeStructure: data.node
-		};
-		treeGraph = new Treant(chartConfig, function() {}, $);
-	});
 
+	// Add a new node to the graph.
 	socket.on(NEW_NODE, async data => {
 		const id = '#' + data.parent._id;
 		const $parent = $(id);
