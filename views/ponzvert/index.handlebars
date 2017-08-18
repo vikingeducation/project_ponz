@@ -50,7 +50,7 @@
 		.projection(function(d) { return [d.y, d.x]; });
 
 	var svg = d3.select(".svg-container").append("svg")
-		.attr("class", "animate-tree")
+		.attr("id", "svg")
 		.attr("width", width + margin.right + margin.left)
 		.attr("height", height + margin.top + margin.bottom)
 	  .append("g")
@@ -64,18 +64,6 @@
 
 	d3.select(self.frameElement)
 		.style("height", "900px")
-
-
-
-	// d3.select("div#chartId")
- //   .append("div")
- //   .classed("svg-container", true) //container class to make it responsive
- //   .append("svg")
- //   //responsive SVG needs these 2 attributes and no width and height attr
- //   .attr("preserveAspectRatio", "xMinYMin meet")
- //   .attr("viewBox", "0 0 600 400")
- //   //class to make it responsive
- //   .classed("svg-content-responsive", true);
 
 	function update(source) {
 
@@ -182,38 +170,43 @@
 
 	  // Stash the old positions for transition.
 	  nodes.forEach(function(d) {
-		d.x0 = d.x;
-		d.y0 = d.y;
+			d.x0 = d.x;
+			d.y0 = d.y;
 	  });
 
-	  svg = d3.select("svg")
-			.attr("class", "animate-tree")
-			.attr("width", (svgWidth + 200) + margin.right + margin.left)
-			.attr("height", height + margin.top + margin.bottom)
+	  var mySVG = document.getElementById("svg");
+	  console.log(mySVG, '???')
+	  mySVG.setAttribute("width",  svgWidth + 200);
+
+	 //  svg = d3.select("svg")
+		// .attr("class", "animate-tree")
+		// .attr("width", width + margin.right + margin.left)
+		// .attr("height", height + margin.top + margin.bottom)
+		// .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+	  // svg = d3.select("svg")
+			// .attr("class", "animate-tree")
+			// .attr("width", (svgWidth + 200) + margin.right + margin.left)
+			// .attr("height", height + margin.top + margin.bottom)
+			// .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 	}
 
 	// Toggle children on click.
 	function click(d) {
 	  if (d.children) {
-		d._children = d.children;
-		d.children = null;
+			d._children = d.children;
+			d.children = null;
 	  } else {
-		d.children = d._children;
-		d._children = null;
+			d.children = d._children;
+			d._children = null;
 	  }
 	  update(d);
 	}
 
 	function randomColorPosition(colorArray, d) {
-		// printKeyValues(d);
 		return colorArray[ d.depth % 10 ];
 	}
 
-	function printKeyValues(d) {
-		let keys = Object.keys(d)
-		keys.forEach((key) => {
-			console.log(key, d[key]);
-		})
-	}
 
 </script>

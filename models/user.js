@@ -32,4 +32,20 @@ UserSchema.pre("findOne", autoPopulateChildren).pre(
 	autoPopulateChildren
 );
 
+/*
+UserSchema.methods.getParents = async function(includeRoot) {
+    let parents = await _grabParent(this);
+    if (includeRoot) {
+        parents.push(this);
+    }
+    return parents;
+};
+
+async function _grabParent(user) {
+    if (!user.parent) return [];
+    const parent = await User.findById(user.parent);
+    return [parent].concat(await _grabParent(parent));
+}
+ */
+
 module.exports = mongoose.model("User", UserSchema);
