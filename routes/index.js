@@ -3,25 +3,33 @@ const { users } = require("../controllers");
 const io = require("../io").getIO();
 
 router.get("/", (req, res) => {
-	// if (req.session.error === "user_exists") {
-	// 	io.emit("user_exists");
-	// 	req.session.error = null;
-	// }
+  // if (req.session.error === "user_exists") {
+  // 	io.emit("user_exists");
+  // 	req.session.error = null;
+  // }
 
-	if (req.isAuthenticated()) {
-		return res.redirect("/ponzvert");
-	}
+  if (req.isAuthenticated()) {
 
-	let shortid = req.session.shortid;
 
-	return res.render("landing/index", {
-		shortid
-	});
+    return res.redirect("/ponzvert");
+  }
+
+
+
+
+  let shortid = req.session.shortid;
+
+
+
+
+  return res.render("landing/index", {
+    shortid
+  });
 });
 
 router.get("/clear", (req, res) => {
-	req.session.shortid = null;
-	res.redirect("/");
+  req.session.shortid = null;
+  res.redirect("/");
 });
 
 // router.get("/scheme", (req, res) => {

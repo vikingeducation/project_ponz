@@ -1,20 +1,21 @@
-const { User } = require("../models");
-const shortid = require("shortid");
-const moment = require("moment");
-const io = require("../io").getIO();
+const { User } = require('../models');
+const shortid = require('shortid');
+const moment = require('moment');
+const io = require('../io').getIO();
+// const client = require('../io').getClient();
 
 module.exports = {
 	index: async (req, res) => {
 		try {
-			const users = await User.findAll({ order: ["id"] });
+			const users = await User.findAll({ order: ['id'] });
 
 			return res.json({
-				confirmation: "success",
+				confirmation: 'success',
 				result: users
 			});
 		} catch (e) {
 			return res.json({
-				confirmation: "fail",
+				confirmation: 'fail',
 				message: e.message
 			});
 		}
@@ -27,12 +28,12 @@ module.exports = {
 			const user = await User.findById(id);
 
 			return res.json({
-				confirmation: "success",
+				confirmation: 'success',
 				result: user
 			});
 		} catch (e) {
 			return res.json({
-				confirmation: "fail",
+				confirmation: 'fail',
 				message: e.message
 			});
 		}
@@ -44,22 +45,20 @@ module.exports = {
 		// do a map user on the first user's parent
 		// { user: 'Bob, parent: susan } { user:susna } 		//
 		try {
-			const user = await User.findById(id)
-				.populate("children")
-				.populate("parent");
+			const user = await User.findById(id).populate('children').populate('parent');
 
 			const mapUser = user => {
 				return {
 					name: user.username,
-					parent: user.parent ? user.parent.username : "null",
+					parent: user.parent ? user.parent.username : 'null',
 					children: user.children.map(mapUser)
 				};
 			};
 
-			return res.render("ponzvert/index", { user, tree: [mapUser(user)] });
+			return res.render('ponzvert/index', { user, tree: [mapUser(user)] });
 		} catch (e) {
 			return res.json({
-				confirmation: "fail",
+				confirmation: 'fail',
 				message: e.message
 			});
 		}
@@ -74,13 +73,15 @@ module.exports = {
 			});
 
 			if (existingUser) {
-				io.emit("user_exists");
+				io.on('connection', client => {
+					client.emit('user_exists');
+				});
 
-				return res.redirect("/");
+				return res.redirect('/');
 			}
 		} catch (e) {
 			return res.json({
-				confirmation: "fail",
+				confirmation: 'fail',
 				message: e.message
 			});
 		}
@@ -98,15 +99,15 @@ module.exports = {
 
 			let user = await User.create(req.body);
 
-			setTimeout(() => {
-				io.emit("user_registered");
-			}, 2000);
+			io.on('connection', client => {
+				client.emit('user_registered');
+			});
 
-			return res.redirect("/ponzvert");
+			return res.redirect('/ponzvert');
 		} catch (e) {
 			console.error(e.stack);
 			return res.json({
-				confirmation: "fail",
+				confirmation: 'fail',
 				message: e.message
 			});
 		}
@@ -131,14 +132,14 @@ async function createChildUser(req, res) {
 
 		updatePoints(parentUser, 40);
 
-		setTimeout(() => {
-			io.emit("user_registered");
-		}, 2000);
+		io.on('connection', client => {
+			client.emit('user_registered');
+		});
 
-		return res.redirect("/ponzvert");
+		return res.redirect('/ponzvert');
 	} catch (e) {
 		return res.json({
-			confirmation: "fail",
+			confirmation: 'fail',
 			message: e.message
 		});
 	}
@@ -156,7 +157,7 @@ async function updatePoints(parentUser, points) {
 			points = Math.floor(points);
 		}
 
-		console.log(points, "what is points?");
+		console.log(points, 'what is points?');
 	} catch (err) {
 		console.error(err);
 	}

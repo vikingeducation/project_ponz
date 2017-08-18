@@ -1,7 +1,7 @@
-const LocalStrategy = require("passport-local").Strategy;
-const bcrypt = require("bcrypt");
-const { User } = require("../models");
-const io = require("../io").getIO();
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
+const { User } = require('../models');
+const io = require('../io').getIO();
 
 module.exports = function(passport) {
     passport.serializeUser(function(user, done) {
@@ -15,12 +15,12 @@ module.exports = function(passport) {
     });
 
     passport.use(
-        "local-login",
+        'local-login',
         new LocalStrategy(
             {
                 // local strategy uses username and password
-                usernameField: "username",
-                passwordField: "password",
+                usernameField: 'username',
+                passwordField: 'password',
                 passReqToCallback: true // allows us to pass back the entire request to the callback
             },
             function(req, username, password, done) {
@@ -32,14 +32,18 @@ module.exports = function(passport) {
                     if (err) return done(err);
                     // if no user is found, return the message
                     if (!user) {
-                        io.emit("invalid_login");
+                        io.on('connection', client => {
+                            client.emit('invalid_login');
+                        });
 
                         return done(null, false);
                     } // req.flash is the way to set flashdata using connect-flash
                     // if the user is found but the password is wrong
 
                     if (!bcrypt.compareSync(password, user.password)) {
-                        io.emit("invalid_login");
+                        io.on('connection', client => {
+                            client.emit('invalid_login');
+                        });
 
                         return done(null, false);
                     }
