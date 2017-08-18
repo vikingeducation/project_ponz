@@ -74,9 +74,8 @@ module.exports = {
 			});
 
 			if (existingUser) {
-				setTimeout(() => {
-					io.emit("user_exists");
-				}, 2000);
+				io.emit("user_exists");
+
 				return res.redirect("/");
 			}
 		} catch (e) {
@@ -98,6 +97,7 @@ module.exports = {
 			req.body.shortid = id;
 
 			let user = await User.create(req.body);
+
 			setTimeout(() => {
 				io.emit("user_registered");
 			}, 2000);

@@ -17,14 +17,17 @@ $(() => {
 	// });
 
 	socket.on("user_exists", () => {
-		swal("Oops...", "User exists!", "error");
+		alert("User exists!");
+		// await swal("Oops...", "User exists!", "error");
 	});
 
 	socket.on("user_registered", () => {
-		swal("Time to make some $$$$", "User Registered!", "success");
+		alert("User registered! Please login");
+		// swal("Time to make some $$$$", "User Registered!", "success");
 	});
 
 	socket.on("invalid_login", () => {
-		swal("Oops...", "Invalid Login!", "error");
+		alert("Invalid user credentials!");
+		// swal("Oops...", "Invalid Login!", "error");
 	});
 });

@@ -1,25 +1,18 @@
-var socket = require("socket.io");
-var io;
+const socket = require("socket.io");
+const app = require("express")();
+const server = require("http").createServer(app);
+let io = socket.listen(server);
+let client;
 
-// mysocketio.js
+io.on("connection", _client => {
+	client = _client;
+});
+
 // constructor function - should only be called once and passed the http server
-module.exports = function(server) {
-	if (!server) {
-		throw new Error(
-			"Must pass http server instance to mysocketio module constructor"
-		);
-	}
-	if (!io) {
-		io = socket.listen(server);
-	}
-	return io;
-};
+module.exports.getServer = () => server;
 
-module.exports.getIO = function() {
-	if (!io) {
-		throw new Error(
-			"Must call constructor of mysocketio module before getIO()"
-		);
-	}
-	return io;
-};
+module.exports.getApp = () => app;
+
+module.exports.getIO = () => io;
+
+module.exports.getClient = () => client;

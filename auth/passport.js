@@ -31,13 +31,15 @@ module.exports = function(passport) {
                     // if there are any errors, return the error before anything else
                     if (err) return done(err);
                     // if no user is found, return the message
-                    if (!user) return done(null, false); // req.flash is the way to set flashdata using connect-flash
+                    if (!user) {
+                        io.emit("invalid_login");
+
+                        return done(null, false);
+                    } // req.flash is the way to set flashdata using connect-flash
                     // if the user is found but the password is wrong
 
                     if (!bcrypt.compareSync(password, user.password)) {
-                        // setTimeout(() => {
-                        //     io.emit("invalid_login");
-                        // }, 2000);
+                        io.emit("invalid_login");
 
                         return done(null, false);
                     }

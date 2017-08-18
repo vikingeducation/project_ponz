@@ -24,8 +24,8 @@ router.get("/clear", (req, res) => {
 	res.redirect("/");
 });
 
-router.get("/scheme", (req, res) => {
-	res.render("scheme/index");
-});
+// router.get("/scheme", (req, res) => {
+// 	res.render("scheme/index");
+// });
 
 module.exports = router;

@@ -1,21 +1,23 @@
+const app = require("./io").getApp();
+const server = require("./io").getServer();
 const express = require("express");
-const app = express();
+// const express = require("express");
+// const app = express();
+
 const path = require("path");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
 const exphbs = require("express-handlebars");
 const session = require("express-session");
 const passport = require("passport");
-const server = require("http").createServer(app);
-// const ioWrapper = require("./io");
+// const server = require("http").createServer(app);
 
-// const io = require("socket.io")(server);
-const io = require("./io")(server);
+// const io = require("./io")(server);
+
 app.use(
 	"/socket.io",
 	express.static(__dirname + "node_modules/socket.io-client/dist/")
 );
-console.log(__dirname, "node_modules/socket.io-client/dist/");
 
 app.use(
 	session({
@@ -93,8 +95,6 @@ app.post(
 		failureFlash: true
 	})
 );
-
-// io.on("connection", ioWrapper(io));
 
 // listen to server
 server.listen(3000, () => {
