@@ -1,7 +1,7 @@
 {{#each children as |child|}} {{! Each item is an "li" }}
     <div class="nested-group">
     		<div class="nested-text">
-    			<p class="nested-line">{{child.points}}pz {{child.username}}</p>
+    			<p class="nested-line"><money>{{child.points}}pz</money> {{child.username}} {{child.timestamp}}</p>
     		</div>
         
         {{#if child.children.length}} {{! Within the context of the current item }}

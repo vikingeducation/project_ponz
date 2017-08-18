@@ -13,12 +13,17 @@
 	<h1 class="ponzvert-label">Your Ponzverts</h1>
 </div>
 
-
 <div class="crazy-boxes">
-	<div class="nested-box">
-  	{{> ponzvertPartial children=user.children}}
-	</div>
+	{{#if user.children.length}}
+		<div class="nested-box">
+			{{> ponzvertPartial children=user.children}}
+		</div>
+
+	{{else}}
+		<p>Start recuiting others to see that profit grow!</p>
+	{{/if}}
 </div>
+
 
 <div class="svg-container">
 
@@ -63,10 +68,9 @@
 	update(root);
 
 	d3.select(self.frameElement)
-		.style("height", "900px")
+		.style("height", "500px")
 
 	function update(source) {
-
 
 		var colorArray = [
 			"#e87d7d",
@@ -103,10 +107,23 @@
 
 	  nodeEnter.append("text")
 		  .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
+		  .attr("class", "node-text")
+		  .style("font-family", "Quicksand")
+		  .style("font-size", "14px")
 		  .attr("dy", ".35em")
 		  .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-		  .text(function(d) { return d.name; })
-		  .style("fill-opacity", 1e-6);
+		  .text(function(d) { return d.name; }).call(getBB);
+		  // .style("fill-opacity", 1e-6);
+
+		nodeEnter.insert("rect", "text")
+			.attr("x", function(d){return d.bbox.x})
+    	.attr("y", function(d){return d.bbox.y})
+			.attr("width", function(d){return d.bbox.width})
+			.attr("height", function(d){return d.bbox.height})
+			.attr("rx", 6)
+			.attr("ry", 6)
+			.style("fill", "white")
+			.style("border-radius", "50px");
 
 	  // Transition nodes to their new position.
 	  var nodeUpdate = node.transition()
@@ -116,6 +133,7 @@
 		nodeUpdate.select("circle")
 			.attr("y", function(d) {
 				svgWidth = Math.max(svgWidth, d.y);
+				svgHeight = Math.max(svgHeight, d.x);
 			})
 
 	  nodeUpdate.select("circle")
@@ -176,7 +194,14 @@
 
 	  var mySVG = document.getElementById("svg");
 
+	  // update our svg size dynamically
 	  mySVG.setAttribute("width", svgWidth + 200);
+	  mySVG.setAttribute("height", svgHeight + 100);
+	}
+
+	// get rectangles behind our text
+	function getBB(selection) {
+		selection.each(function(d){d.bbox = this.getBBox();})
 	}
 
 	// Toggle children on click.

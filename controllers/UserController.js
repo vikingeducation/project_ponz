@@ -48,8 +48,6 @@ module.exports = {
 				.populate("children")
 				.populate("parent");
 
-			console.log(user, "user");
-
 			const mapUser = user => {
 				return {
 					name: user.username,
@@ -57,8 +55,6 @@ module.exports = {
 					children: user.children.map(mapUser)
 				};
 			};
-
-			console.log(user.children);
 
 			return res.render("ponzvert/index", { user, tree: [mapUser(user)] });
 		} catch (e) {
@@ -151,15 +147,16 @@ async function createChildUser(req, res) {
 async function updatePoints(parentUser, points) {
 	let newParentUser;
 	try {
-		console.log(parentUser, "parentUser");
 		if (!parentUser) return;
 		await User.findByIdAndUpdate(parentUser._id, { $inc: { points: points } });
 		newParentUser = await User.findById(parentUser.parent);
 
-		console.log(newParentUser, "newParentUser");
 		if (points > 1) {
 			points /= 2;
+			points = Math.floor(points);
 		}
+
+		console.log(points, "what is points?");
 	} catch (err) {
 		console.error(err);
 	}

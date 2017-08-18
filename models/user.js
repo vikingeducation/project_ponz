@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const Schema = mongoose.Schema;
+const moment = require("moment");
 
 const autoPopulateChildren = function(next) {
 	this.populate("children");
@@ -23,6 +24,10 @@ const UserSchema = mongoose.Schema({
 UserSchema.pre("save", async function(next) {
 	const user = this;
 	const hash = await bcrypt.hashSync(user.password, 12);
+	const formattedDate = moment(user.timestamp).format("YYYY-MM-DD");
+
+	console.log(user.timestamp, "????", formattedDate);
+	user.timestamp = formattedDate;
 	user.password = hash;
 	next();
 });
