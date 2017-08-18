@@ -169,6 +169,28 @@ money {
 
 .nested-line {
 	margin-right: 20px;
+	width: 100%;
+}
+
+.nested-group {
+	padding: 20px 20px;
+	border-left: 3px solid white;
+	border-right: 3px solid white;
+}
+
+.nested-text {
+	padding: 5px;
+	background-color: white;
+}
+
+.nested-text-special {
+	border: 1px solid black;
+}
+
+.nested-box {
+	max-height: 500px;
+	overflow-x: scroll;
+	overflow-y: scroll;
 }
 
 .profile {
@@ -193,7 +215,7 @@ money {
 	display: flex;
 	justify-content: center;
 	margin-top: 30px;
-	border-bottom: 5px solid white;
+	margin-bottom: 30px;
 	padding-bottom: 30px;
 }
 
@@ -213,7 +235,7 @@ money {
 }
 
 .svg-container {
-	/*	width: 100%;*/
+	border-top: 5px solid white;
 	height: 100%;
 	width: 100%;
 	overflow-x: scroll;

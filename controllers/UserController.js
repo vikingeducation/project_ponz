@@ -58,6 +58,8 @@ module.exports = {
 				};
 			};
 
+			console.log(user.children);
+
 			return res.render("ponzvert/index", { user, tree: [mapUser(user)] });
 		} catch (e) {
 			return res.json({
