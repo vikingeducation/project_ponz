@@ -77,6 +77,7 @@ UserSchema.statics.getReferrer = async function(referrerCode) {
 // 		await _grabParent(parent);
 // 	}
 // };
+//
 // UserSchema.methods.getParents = async function(includeRoot) {
 // 	let parents = await _grabParent(this);
 // 	if (includeRoot) {
