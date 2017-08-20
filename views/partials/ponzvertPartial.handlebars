@@ -1,0 +1,15 @@
+{{#each children as |child|}} {{! Each item is an "li" }}
+    <div class="nested-group">
+    		<div class="nested-text">
+                <p>{{child.username}}</p>
+    			<p class="nested-line"><money>{{child.points}}pz</money></p>
+                <p>Recruited on {{child.timestamp}}</p>
+    		</div>
+        
+        {{#if child.children.length}} {{! Within the context of the current item }}
+        <div>
+          {{> ponzvertPartial children=child.children }} {{! Recursively render the partial }}
+        </div>
+        {{/if}}
+    </div>
+{{/each}}

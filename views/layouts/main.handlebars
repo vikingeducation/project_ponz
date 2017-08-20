@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./styles/main.css">
+  <link rel="stylesheet" type="text/css" href="./styles/sweetalert.css">
+
+  <script src="/socket.io/socket.io.js"></script>
+	<style>
+		.node {
+			cursor: pointer;
+		}
+
+		.node circle {
+		  fill: #fff;
+		  stroke-width: 3px;
+		}
+
+		.link {
+		  fill: none;
+		  stroke: #ccc;
+		  stroke-width: 2px;
+		}
+	</style>
+</head>
+<body>
+	<header class="main-header">
+	  <div class="side-section">
+	    <p>team</p>
+
+	    <p class="dot">&middot;</p>
+
+	    <a href="#"><p>scheme</p></a>
+	  </div>
+
+	  <div class="main-pic">
+	    <h1><a href="/ponzvert">PONZE.<span class="rainbow-text">IO</span></a></h1>
+	  </div>
+
+	  <div class="side-section">
+      {{#if user}}
+        <p class="logout-link"><a href="/logout">logout</a></p>
+      {{else}}
+        <p class="login-link"><a href="#">login</a></p>
+      {{/if}}
+
+	    <p class="dot">&middot;</p>
+			
+			{{#if user}}
+	    	<p class="register-link"><a href="#">platinum</a></p>
+	    {{else}}
+	    	<p class="register-link"><a href="#">register</a></p>
+	    {{/if}}
+
+	  </div>
+	</header>
+	<div class="sub-header">
+  	<i class="fa fa-instagram" aria-hidden="true"></i>
+  	<i class="fa fa-facebook" aria-hidden="true"></i>
+  	<i class="fa fa-twitter" aria-hidden="true"></i>
+  	<i class="fa fa-instagram" aria-hidden="true"></i>
+  	<i class="fa fa-linkedin" aria-hidden="true"></i>
+  	<i class="fa fa-rss" aria-hidden="true"></i>
+	</div>
+
+  <div class="container-fluid">
+     {{{body}}}
+  </div>
+
+  <footer class="footer-bar">
+    <p>Made by <a href="https://github.com/bsoung" style="color: white;">Benjamin Soung</a> And <a href="https://github.com/Alex-Willenbrink" style="color: white;">Alex Willenbrink</a></p>
+  </footer>
+  </div>
+  <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  <script src="./javascripts/script.js"></script>
+  <script src="./javascripts/sweetalert.min.js"></script>
+</body>
+
+</html>

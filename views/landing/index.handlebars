@@ -1,0 +1,49 @@
+
+
+<div class="landing-page">
+
+  <form class="signin-form signin" action="/login" method="post" autocomplete="off">
+
+
+    <p class="signin-title">your dream vacation is waiting</p>
+    <hr class="line">
+    <div class="input-group">
+      <input type="text" placeholder="username" name="username" required="true">
+      <input type="password" placeholder="password" name="password" required="true">
+    </div>
+    <button class="login-register-btn">login</button>
+  </form>
+
+  <form class="signup-form signup" action="/api/users" method="post" autocomplete="off">
+
+    <p class="signin-title">time to swim in cash</p>
+    {{#if message}}
+      <h1>{{message}}</h1>
+    {{/if}}
+
+    {{#if message}}
+      {{message}}
+    {{/if}}
+
+    {{flash}}
+
+    {{#if shortid}}
+      <p>Referral ID: {{shortid}}</p>
+      <p><a href="/clear" style="font-size: 0.9em; color: red">clear referral</a></p>
+    {{/if}}
+
+    <hr class="line">
+    <div class="input-group">
+      <input type="text" placeholder="first name" name="fname" required="true">
+      <input type="text" placeholder="last name" name="lname" required="true">
+      <input type="text" placeholder="username" name="username" required="true">
+      <input type="password" placeholder="password" name="password" required="true">
+    </div>
+    <button class="login-register-btn">register</button>
+  </form>
+  <div>
+    <img src="./assets/savonne.png" alt="savonne" width="250">
+  </div>
+
+
+</div>
