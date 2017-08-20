@@ -1,0 +1,18 @@
+Mongoose
+
+Users
+----------------
+_id
+name
+hashed_name (my link)
+parent
+ponverts: (direct children) [n-ary children]
+points
+
+//expedite heavy-lifting to mongoose
+
+
+Traversals
+----------------
+Up
+Down
