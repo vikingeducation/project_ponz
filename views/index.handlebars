@@ -1,0 +1,60 @@
+<div class="col-sm-8 col-sm-offset-2">
+  <div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-sm-6">
+        <h3>Hello, {{user.username}}!</h3>
+      </div>
+      <div class="col-sm-2 col-sm-offset-2">
+        <a href="/shop" class="btn btn-primary">PonzShop</a>
+      </div>
+      <div class="col-sm-2">
+        <a href="/logout" class="btn btn-danger">Log Out</a>
+      </div>
+    </div>
+  </div>
+<div class="panel-body">
+<h4>Your referral link: </h4>
+
+<a href="http://localhost:3000/register/{{user.referralCode}}">
+http://localhost:3000/register/{{user.referralCode}}</a>
+</div>
+</div>
+</div>
+
+
+
+<div class="col-sm-8 col-sm-offset-2">
+  <div class="panel panel-default">
+    <div class="panel-heading">Your Total PonzBucks: {{user.ponzBucks}}<br>
+    Your Total Ponzverts: {{ponvertSum}}
+    </div>
+      <div class="panel-body">
+        <div class="pyramid-container">
+          <div class="triangle-left"></div>
+          <div class="triangle-right"></div>
+          {{#each pyramid as |level|}}
+            <div class="pyramid">
+              {{level}}
+            </div>
+          {{/each}}
+        </div>
+        <div>
+          {{#if user.children}}
+            {{#each user.children as |child|}}
+              <div class="well well-sm">
+                {{child.username}} has earned you <span class="ponz-profit"><str>{{child.profit}}</str> PonzBucks! </span>
+               <i> ponverted at {{child.createdAt}}</i>
+              </div>
+              {{#if child.children}}
+                {{> childPartial children=child.children}}
+              {{/if}}
+            {{/each}}
+          {{else}}
+            You have no ponverts.  Are you really committed to this opportunity?
+          {{/if}}
+        </div>
+       </div>
+     </div>
+  </div>
+</div>
