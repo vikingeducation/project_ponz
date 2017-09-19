@@ -1,0 +1,36 @@
+body {
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+	color: #00b7ff;
+}
+
+.tree-node {
+	border-color: #77aadd;
+	background-color: #99ccff;
+	box-shadow: 1px 1px 2px #333;
+	padding-left: 1em;
+	padding-right: 1em;
+	padding-top: 10px;
+	margin-bottom: 0px;
+}
+
+a.collapse-switch {
+	border-radius: 1px;
+	border: 1px solid #f55 !important;
+	transform: scale(3, 3);
+}
+
+h2.panel-title {
+	font-size: 400%;
+}
+
+img.chain-link {
+	max-width: 150%;
+}
+
+.ponverts {
+	margin-left: 2em;
+	margin-right: 2em;
+}

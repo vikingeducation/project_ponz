@@ -1,0 +1,99 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="page-header">
+        <h1>Project Ponz Yo! <small>Stack that cash!</small></h1>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+  	<div class="col-md-12">
+  		<div class="well">
+  			<h2 class="text-center">
+  				http://localhost:3000/users/signup/?_referrerCode={{user.usernameEncoded}}
+  			</h2>
+  		</div>
+  	</div>
+  </div>
+  <div class="row">
+  	<div class="col-md-12">
+  		{{>_ponz-points}}
+  	</div>
+  </div>
+  <div class="row">
+  	<div class="col-md-12">
+  		<form class="form-horizontal">
+  			<div class="panel panel-primary col-sm-12">
+          <div class="panel-body row">
+            <div class="col-sm-6 col-sm-offset-3">
+              <label for="min" class="col-sm-1 col-sm-offset-1 control-label">Min</label>
+              <div class="col-sm-2">
+                <input type="number" class="form-control col-sm-6" id="minInput" value="3" max="5" min="0">
+              </div>
+      				<label for="max" class="col-sm-1 col-sm-offset-1 control-label">Max</label>
+              <div class="col-sm-2">
+                <input type="number" class="form-control col-sm-6" id="maxInput" value="3" max="5" min="0">
+              </div>
+              <label for="max" class="col-sm-1 col-sm-offset-1 control-label">Depth</label>
+              <div class="col-sm-2">
+                <input type="number" class="form-control col-sm-6" id="depthInput" placeholder="Depth" value="3" max="10" min="1">
+              </div>
+    			  </div>
+            <div class="col-sm-3 text-right">
+              <a id="generate-button" href="#" class="btn btn-default">Generate</a>
+            </div>
+          </div>
+        </div>
+  		</form>
+  	</div>
+  </div>
+</div>
+{{>_ponverts}}
+<!--
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h2 class="panel-title">Chain of Opportunity</h2>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-1 col-md-offset-1">
+            <img class="chain-link" src="/images/chain-link.png" />
+          </div>
+          <div class="col-md-1">
+            <img class="chain-link" src="/images/chain-link.png" />
+          </div>
+          <div class="col-md-1">
+            <img class="chain-link" src="/images/chain-link.png" />
+          </div>
+          <div class="col-md-1">
+            <img class="chain-link" src="/images/chain-link.png" />
+          </div>
+          <div class="col-md-1">
+            <img class="chain-link" src="/images/chain-link.png" />
+          </div>
+          <div class="col-md-1">
+            <img class="chain-link" src="/images/chain-link.png" />
+          </div>
+          <div class="col-md-1">
+            <img class="chain-link" src="/images/chain-link.png" />
+          </div>
+          <div class="col-md-1">
+            <img class="chain-link" src="/images/chain-link.png" />
+          </div>
+          <div class="col-md-1">
+            <img class="chain-link" src="/images/chain-link.png" />
+          </div>
+          <div class="col-md-1">
+            <img class="chain-link" src="/images/chain-link.png" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+-->
+<div class="hidden">
+  <script src="/javascripts/script.js"></script>"
+</div>
