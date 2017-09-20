@@ -1,0 +1,35 @@
+{
+  "name": "project_ponz",
+  "version": "1.0.0",
+  "description": "Definitely not a Ponzi scheme",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Avonyel/project_ponz.git"
+  },
+  "author": "Ed and Stephanie",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Avonyel/project_ponz/issues"
+  },
+  "homepage": "https://github.com/Avonyel/project_ponz#readme",
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.4",
+    "express-flash": "0.0.2",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.5",
+    "lodash": "^4.17.4",
+    "mongoose": "^4.11.7",
+    "mongoose-unique-validator": "^1.0.5",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "shortid": "^2.2.8"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "development": {
+    "database": "ponzio_development",
+    "host": "localhost"
+  },
+  "test": {
+    "database": "ponzio_test",
+    "host": "localhost"
+  },
+  "production": {
+    "use_env_variable": "MONGO_URL"
+  }
+}

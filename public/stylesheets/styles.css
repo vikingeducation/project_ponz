@@ -1,0 +1,37 @@
+.pyramid {
+	color: white;
+	font-weight: bold;
+	text-align: center;
+	background-color: #573368;
+	border-bottom: 2px solid #3a1f47;
+	padding: 10px 0 3px 0;
+}
+
+.pyramid-container {
+	position: relative;
+}
+
+.triangle-left {
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-color: white transparent transparent transparent;
+	top: 0;
+	left: 0;
+}
+
+.triangle-right {
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-color: transparent white transparent transparent;
+	top: 0;
+	right: 0;
+}
+
+.ponz-profit {
+	font-weight: bold;
+	color: #573368;
+}
