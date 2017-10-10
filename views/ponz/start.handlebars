@@ -1,0 +1,54 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-10 col-sm-offset-1" style="border: 2px solid blue; border-radius: 5px;">
+      <h4>Your referal link is <a href="/ponzvert/{{userPage.referalLink}}">http://localhost:3000/ponzvert/{{userPage.referalLink}}</a>.</h4>
+      <p>Share this link with your friends to <i>ponvert</i> them!</p>
+    </div>
+  </div>
+  <div class="row" style="margin-top:1em;">
+    <div class="col-sm-10 col-sm-offset-1" style="background-color: #76B566; border-radius: 5px;">
+      <h2 style="padding:.5em;"><span style="color:#AED29F;">Ponz Pointz<sup>TM</sup></span> <span style="color:white;">&nbsp; $ {{total}}.00</span></h2>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 1em;">
+    <div class="col-sm-10 col-sm-offset-1">
+      <table class="table table-bordered">
+        <thead>
+          <th>Your Ponzverts</th>
+        </thead>
+        <tbody>
+          {{#each referals.referals as |ref|}}
+          <tr>
+            <td>$40 &nbsp;{{ref.username}}</td>
+          </tr>
+            {{#each ref.referals as |ref2|}}
+            <tr>
+              <td>&nbsp;$20 &nbsp;{{ref2.username}}</td>
+            </tr>
+              {{#each ref2.referals as |ref3|}}
+              <tr>
+                <td>&nbsp;&nbsp;$10 &nbsp;{{ref3.username}}</td>
+              </tr>
+                {{#each ref3.referals as |ref4|}}
+                <tr>
+                  <td>&nbsp;&nbsp;&nbsp;$5 &nbsp;{{ref4.username}}</td>
+                </tr>
+                  {{#each ref4.referals as |ref5|}}
+                  <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;$1 &nbsp;{{ref5.username}}</td>
+                  </tr>
+                    {{#each ref5.referals as |ref6|}}
+                    <tr>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;$1 &nbsp;{{ref6.username}}</td>
+                    </tr>
+                    {{/each}}
+                  {{/each}}
+                {{/each}}
+              {{/each}}
+            {{/each}}
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
