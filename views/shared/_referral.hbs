@@ -1,0 +1,8 @@
+<ul class="ponverts">
+  {{#each user.referrals as |referral|}}
+    {{#if (directlyReferredBy referral ../referringUser)}}
+      <li><span class="label label-pill label-success">{{referral.pointsEarnedByOriginalReferrer}}</span> <b>{{referral.fullName}}</b> ponverted on {{displayDate referral.createdAt}}</li>
+      {{> shared/_referral referringUser=referral user=../user}}
+    {{/if}}
+  {{/each}}
+</ul>
