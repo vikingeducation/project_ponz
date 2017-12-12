@@ -12,7 +12,6 @@ const ViewHelper = {
   },
 
   directlyReferredBy: (referredUser, referringUser) => {
-    debugger;
     if (!referredUser.referredBy.equals(referringUser._id)) {
       return false;
     }
