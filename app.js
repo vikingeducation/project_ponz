@@ -174,9 +174,12 @@ app.post(
 app.post("/register/:referral", (req, res, next) => {
   const { fname, lname, email, password } = req.body;
   const parentId = req.params.referral;
-
   const user = new User({ fname, lname, email, password, parentId });
   user.save(err => {
+    User.findByIdAndUpdate(parentId, {
+      $push: { childIds: user._id }
+    });
+    console.log(User.findById(parentId));
     res.redirect("/login");
   });
 });
