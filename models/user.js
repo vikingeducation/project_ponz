@@ -24,7 +24,7 @@ const UserSchema = new Schema(
 );
 
 UserSchema.virtual("displayName").get(function() {
-  return this.fname + this.lname;
+  return this.fname + " " + this.lname;
 });
 
 UserSchema.plugin(uniqueValidator);
