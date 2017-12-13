@@ -6,15 +6,8 @@ const Schema = mongoose.Schema;
 const UserSchema = Schema({
   username: { type: String, required: true, unique: true },
   passwordHash: { type: String, required: true },
-  referrer: { type: Schema.Types.ObjectId },
-  referTree: [
-    {
-      id: String,
-      username: String,
-      points: Number,
-      date: { type: Date, default: Date.now }
-    }
-  ]
+  date: { type: Date, default: Date.now },
+  referrer: { type: Schema.Types.ObjectId, ref: 'User' }
 });
 
 UserSchema.plugin(uniqueValidator);

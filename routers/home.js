@@ -6,11 +6,27 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 
 // 1
-router.get('/', (req, res) => {
-  if (req.user) {
-    res.render('home', { user: req.user });
-  } else {
-    res.redirect('/login');
+router.get('/', async (req, res) => {
+  let user;
+  let referrer;
+  let userArr;
+  try {
+    user = await User.findById(req.user.id);
+    if (user.referrer) {
+      referrer = await User.findById(user.referrer);
+    }
+    userArr = await User.findAll({ referrer: user._id });
+
+    userArr.forEach(user => {
+      userArr1 = await User.findAll({referrer: user._id})
+      })
+
+  } finally {
+    if (req.user) {
+      res.render('home', { referrer, user });
+    } else {
+      res.redirect('/login');
+    }
   }
 });
 
@@ -36,67 +52,19 @@ router.post(
     failureFlash: true
   })
 );
+
 router.post('/register/:id', async (req, res, next) => {
-  try {
-    let { username, password } = req.body;
-    let currentUser = new User({ username, password });
-    currentUser.referrer = req.params.id;
-
-    console.log('========================CURRENTUSER', currentUser);
-    let user1 = await User.findById(req.params.id);
-
-    user1.referTree.push({
-      id: currentUser.id,
-      username: currentUser.username,
-      points: 40
+  let { username, password } = req.body;
+  let currentUser = new User({ username, password });
+  currentUser.referrer = req.params.id;
+  currentUser.save((err, user) => {
+    req.login(user, function(err) {
+      if (err) {
+        return next(err);
+      }
+      return res.redirect('/');
     });
-    await User.findByIdAndUpdate(user1.id, user1);
-    await user1.save();
-
-    console.log('========================CURRENTUSERafterpush', currentUser);
-
-    console.log('========================USER1', user1);
-    if (user1.referrer) {
-      let user2 = await User.findById(user1.referrer);
-
-      let user1index = user2.referTree.findIndex(x => {
-        return x.id === user1.id;
-      });
-
-      console.log('========================CURRENTUSERafterindex', currentUser);
-      console.log('========================USER1INDEX', user1index);
-      console.log(
-        '========================USER2REFER.length',
-        user2.referTree.length
-      );
-
-      let tempArray = user2.referTree.splice(user1index + 1);
-      user2.referTree.push({
-        id: currentUser.id,
-        username: currentUser.username,
-        points: 20
-      });
-
-      console.log('========================USER2', user2);
-
-      // if (user2.referrer) {
-      //   let user3 = await User.findById(user2.referrer);
-      //   if (user3.referrer) {
-      //     let user4 = await User.findById(user3.referrer);
-      //   }
-      // }
-    }
-    currentUser.save((err, user) => {
-      req.login(user, function(err) {
-        if (err) {
-          return next(err);
-        }
-        return res.redirect('/');
-      });
-    });
-  } catch (e) {
-    next(e);
-  }
+  });
 });
 
 // 4
