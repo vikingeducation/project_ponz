@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 
+
 // ----------------------------------------
 // App Variables
 // ----------------------------------------
@@ -76,29 +77,33 @@ const morganToolkit = require('morgan-toolkit')(morgan);
 
 app.use(morganToolkit());
 
+//-----------------------------------------
+//Mongoose Settings
+//-----------------------------------------
+const { User } = require('./models');
+const mongoose = require('mongoose');
+
+console.log('mongoose stuff intialized')
+
+app.use((req, res, next) => {
+  console.log('use for mongoose callback')
+  if (mongoose.connection.readyState) {
+    console.log('if (mongoose.connection.readyState)')
+    next();
+  } else {
+    console.log('else (mongoose.connection.readyState)')
+    require('./mongo')().then(() => next());
+    console.log('else (mongoose.connection.readyState)')
+  }
+});
+
 // ----------------------------------------
 // Local Passport
 // ----------------------------------------
 const passport = require('passport');
 app.use(passport.initialize());
 app.use(passport.session());
-
-//-----------------------------------------
-//Mongoose Settings
-//-----------------------------------------
-const { User } = require('./models');
-const mongoose = require('mongoose');
-const bluebird = require('bluebird');
-
-mongoose.Promise = bluebird;
-
-app.use((req, res, next) => {
-  if (mongoose.connection.readyState) {
-    next();
-  } else {
-    require('./mongo')().then(() => next());
-  }
-});
+console.log('passport stuff initialize')
 
 const LocalStrategy = require('passport-local').Strategy;
 

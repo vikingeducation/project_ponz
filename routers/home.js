@@ -11,44 +11,68 @@ const { User } = require('./../models');
 const passport = require('passport');
 
 // 1
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   //testing recursive listing
   console.log(1);
   try {
-    // var items = [
-    //   { name: 'foo1' },
-    //   { name: 'foo2' },
-    //   {
-    //     name: 'foo3',
-    //     items: [
-    //       { name: 'foo4' },
-    //       { name: 'foo5' },
-    //       {
-    //         name: 'foo6',
-    //         items: [{ name: 'foo7' }]
-    //       }
-    //     ]
-    //   },
-    //   { name: 'foo8' }
-    // ];
     if (req.user) {
       const user = await User.findById(req.user._id)
-        .populate('User')
-        .then(results => {
-          return results;
-        });
-      console.log(user);
+        .populate({
+          path : 'children',
+          populate : {
+            path : 'children',
+            populate : {
+              path : 'children',
+              populate : {
+                path : 'children',
+                populate : {
+                  path : 'children'
+                }}}}})
+        // .populate(
+        //   {path: 'children'}.populate({path: 'children'})
+        // )
+
+      console.log('user: ', user)
+
+      let pointsCalc = (children, divisor) => { //[{}]
+        if(!divisor){
+          var divisor = 1
+          console.log('divisor set!');
+        }
+
+        let points = 0;
+        if(divisor !== 1){
+          points += children.length / (2 * divisor)
+        } else {
+          console.log('points declared!')
+          points += 1
+        }
+
+        if(children.children){ //if
+          points += pointsCalc(children.children, divisor + 1)
+        }
+
+        return points
+      }
+
+      console.log('user.children: ' + user.children)
+      let count = pointsCalc(user.children)//[{}]
+
       res.render('home', {
         user: req.user,
         children: user.children, //needs to be a nested object
-        items: items,
-        link: `/ponvert/${req.user._id}`
-      });
-    } else {
+        link: `/ponvert/${req.user._id}`,
+        points: count
+      })
+    }
+    else {
       res.redirect('/login');
     }
-  } catch (err) {
+  }
+
+  catch (err) {
     console.log(err);
+    next(err)
   }
 });
 
@@ -93,45 +117,3 @@ router.get('/logout', function(req, res) {
 });
 
 module.exports = router;
-
-//some work on recursion
-// func = (ob, depth) => {
-//   if(obj.children == []){
-//       return obj
-//   }
-//
-//   depth = (typeOf depth === 'undefined') ? 0 : depth
-//   obj.children.forEach(child => {
-//     recursive(child, depth + 1)
-//   })
-// }
-//
-// obj = {}
-//
-// recurse(user, obj) => {
-//   user.children.forEach((child) => {
-//     if(!obj[child]){
-//       obj[child] = {}
-//       //get the child object then
-//       recurse(child, obj[child])
-//     }
-//   })
-//
-//   return obj
-// }
-//
-// arr = ['<ul><li>'obj.email</li><ul>`,]
-//
-// while(Object.keys(obj)){
-//   let childIds = Object.keys(obj)
-//   //find the object of each child ->
-//   childIds.forEach(childId => {
-//     arr.push(``)
-//   })
-// }
-// //display more comments
-// /*
-// -> post
-// */
-//
-// //[parent, childofparent, childofchildofparent, ]
