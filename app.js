@@ -141,8 +141,10 @@ passport.deserializeUser(function(id, done) {
 app.get("/", async (req, res) => {
   try {
     if (req.session.passport && req.session.passport.user) {
-      let currentUser = await User.findById(req.session.passport.user).populate(
-        "childIds"
+      let currentUser = await User.findById(
+        req.session.passport.user
+      ).deepPopulate(
+        "childIds.childIds.childIds.childIds.childIds.childIds.childIds.childIds"
       );
       res.render("welcome/index", {
         currentUser: currentUser
@@ -185,7 +187,8 @@ app.post("/register/:referral", (req, res, next) => {
     const user = new User({ fname, lname, email, password, parentId });
     user.save(async err => {
       await User.findByIdAndUpdate(parentId, {
-        $push: { childIds: user._id }
+        $push: { childIds: user._id },
+        $inc: { depth: 1 }
       });
       res.redirect("/login");
     });

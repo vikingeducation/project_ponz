@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const uniqueValidator = require("mongoose-unique-validator");
 const Schema = mongoose.Schema;
 
+const deepPopulate = require("mongoose-deep-populate")(mongoose);
+
 const UserSchema = new Schema(
   {
     fname: { type: String, required: true },
@@ -16,12 +18,15 @@ const UserSchema = new Schema(
         ref: "User"
       }
     ],
-    ponzPoints: Number
+    ponzPoints: Number,
+    depth: { type: Number, default: 0 }
   },
   {
     timestamps: true
   }
 );
+
+UserSchema.plugin(deepPopulate /* more on options below */);
 
 UserSchema.virtual("displayName").get(function() {
   return this.fname + " " + this.lname;
