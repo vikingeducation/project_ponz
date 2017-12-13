@@ -10,18 +10,6 @@ const mongoose = require('mongoose');
 const User = require('./../models/User');
 const passport = require('passport');
 
-// 1
-router.get('/:id', (req, res) => {
-  if (req.user) {
-    res.render('home', {
-      user: req.user
-    });
-  } else {
-    req.session.parentId = req.params.id
-    res.redirect('/ponvert/register');
-  }
-});
-
 // 2
 router.get('/register', (req, res) => {
   res.render('ponvert-register');
@@ -36,7 +24,7 @@ router.post('/register', async (req, res, next) => {
     const parentId = req.session.parentId
 
     //create a new user from referral link
-    const user = new User({
+    let user = new User({
       email: email,
       password: password,
       parent: parentId
@@ -51,7 +39,7 @@ router.post('/register', async (req, res, next) => {
     await parent.save()
 
     //login the new user
-    req.login(userObj, function(err) {
+    req.login(user, function(err) {
       if (err) {
         return next(err);
       }
@@ -65,5 +53,19 @@ router.post('/register', async (req, res, next) => {
   }
 
 });
+
+// 1
+router.get('/:id', (req, res) => {
+  // if (req.user) {
+  //   res.render('home', {
+  //     user: req.user
+  //   });
+  // } else {
+    req.session.parentId = req.params.id
+    res.redirect('/ponvert/register');
+  // }
+});
+
+
 
 module.exports = router;

@@ -11,30 +11,40 @@ const User = require('./../models/User');
 const passport = require('passport');
 
 // 1
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   //testing recursive listing
-  var items = [
-      { name: "foo1" },
-      { name: "foo2" },
-      { name: "foo3", items: [
-          { name: "foo4" },
-          { name: "foo5" },
-          { name: "foo6", items: [
-              { name: "foo7" }
-          ]}
-      ]},
-      { name: "foo8" }
-  ];
+  try{
+    var items = [
+        { name: "foo1" },
+        { name: "foo2" },
+        { name: "foo3", items: [
+            { name: "foo4" },
+            { name: "foo5" },
+            { name: "foo6", items: [
+                { name: "foo7" }
+            ]}
+        ]},
+        { name: "foo8" }
+    ];
 
-  if (req.user) {
-    res.render('home', {
-      user: req.user,
-      items: items,
-      link: ''
-    });
-  } else {
-    res.redirect('/login');
+    const user = await User.findById(req.user._id).populate('User').then(results => {console.log(results)})
+
+    if (req.user) {
+      res.render('home', {
+        user: req.user,
+        children: user.children, //needs to be a nested object
+        items: items,
+        link: `/ponvert/${req.user._id}`
+      });
+    } else {
+      res.redirect('/login');
+    }
   }
+
+  catch(err){
+    console.log(err)
+  }
+
 });
 
 // 2
