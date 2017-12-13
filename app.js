@@ -158,7 +158,8 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/register/:referral", (req, res) => {
-  res.render("register");
+  let path = req.params.referral;
+  res.render("register", { path });
 });
 
 app.post(
@@ -171,9 +172,10 @@ app.post(
 );
 
 app.post("/register/:referral", (req, res, next) => {
-  const { email, password } = req.body;
-  const parent = req.params.referral;
-  const user = new User({ email, password });
+  const { fname, lname, email, password } = req.body;
+  const parentId = req.params.referral;
+
+  const user = new User({ fname, lname, email, password, parentId });
   user.save(err => {
     res.redirect("/login");
   });
