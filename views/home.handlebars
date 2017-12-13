@@ -12,8 +12,7 @@
     <div class='panel-heading'>
       <h4>Your Ponzverts</h4>
     </div>
-    <div class='panel-body'>
+    <div class='panel-body' style="white-space: pre">
       {{#each userArray as |userguy|}}
-      {{userguy.[0]}}
-      <span class="badge badge-success">${{userguy.[1]}}</span>
-      {{/each}}
+       {{userguy.[2]}}{{userguy.[0]}}<span class="badge badge-success">${{userguy.[1]}}</span>
+     {{/each}}

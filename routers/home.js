@@ -69,6 +69,10 @@ router.get('/', async (req, res) => {
       userArray
     );
 
+    userArray.forEach(
+      (x, i) => (userArray[i][2] = '   '.repeat(userArray[i][1]))
+    );
+
     userArray.forEach((x, i) => (userArray[i][1] = calcPoints(x[1])));
 
     userArray.forEach(x => (sum += x[1]));
