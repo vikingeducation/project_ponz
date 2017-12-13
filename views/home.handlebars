@@ -13,6 +13,6 @@
       <h4>Your Ponzverts</h4>
     </div>
     <div class='panel-body'>
-      {{#each userArray as |user|}}
-      <span class="badge badge-success">${{points}}</span>
+      {{#each userArray as |userguy|}}
+      <span class="badge badge-success">${{userguy.[0].[0]}}</span>
       {{/each}}
