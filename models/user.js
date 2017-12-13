@@ -13,28 +13,6 @@ const UserSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-/*
-<script id="list" type="x-handlebars-template">
-    {{#each items}} {{! Each item is an "li" }}
-    <li>
-        {{name}}
-        {{#if items}} {{! Within the context of the current item }}
-        <ul>
-        {{> list}} {{! Recursively render the partial }}
-        </ul>
-        {{/if}}
-    </li>
-    {{/each}}
-</script>
-
-<script id="main" type="x-handlebars-template">
-    <ul>
-    {{> list}}
-    </ul>
-</script>
-
-*/
-
 UserSchema.plugin(uniqueValidator);
 
 UserSchema.methods.validPassword = function(password) {

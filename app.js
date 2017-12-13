@@ -2,10 +2,6 @@ const express = require('express');
 const app = express();
 
 // ----------------------------------------
-// Mongoose
-// ----------------------------------------
-
-// ----------------------------------------
 // App Variables
 // ----------------------------------------
 app.locals.appName = 'Ponzi.io';
@@ -87,10 +83,22 @@ const passport = require('passport');
 app.use(passport.initialize());
 app.use(passport.session());
 
-// 1
-const User = require('./models/User');
+//-----------------------------------------
+//Mongoose Settings
+//-----------------------------------------
+const { User } = require('./models');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/ponzie_test');
+const bluebird = require('bluebird');
+
+mongoose.Promise = bluebird;
+
+app.use((req, res, next) => {
+  if (mongoose.connection.readyState) {
+    next();
+  } else {
+    require('./mongo')().then(() => next());
+  }
+});
 
 const LocalStrategy = require('passport-local').Strategy;
 
@@ -124,8 +132,6 @@ app.use('/', home);
 
 const ponversion = require('./routers/ponversion');
 app.use('/ponvert', ponversion);
-
-
 
 // ----------------------------------------
 // Template Engine

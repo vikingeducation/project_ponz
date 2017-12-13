@@ -7,29 +7,37 @@
 const Express = require('express');
 const router = Express.Router();
 const mongoose = require('mongoose');
-const User = require('./../models/User');
+const { User } = require('./../models');
 const passport = require('passport');
 
 // 1
 router.get('/', async (req, res) => {
   //testing recursive listing
-  try{
-    var items = [
-        { name: "foo1" },
-        { name: "foo2" },
-        { name: "foo3", items: [
-            { name: "foo4" },
-            { name: "foo5" },
-            { name: "foo6", items: [
-                { name: "foo7" }
-            ]}
-        ]},
-        { name: "foo8" }
-    ];
-
-    const user = await User.findById(req.user._id).populate('User').then(results => {console.log(results)})
-
+  console.log(1);
+  try {
+    // var items = [
+    //   { name: 'foo1' },
+    //   { name: 'foo2' },
+    //   {
+    //     name: 'foo3',
+    //     items: [
+    //       { name: 'foo4' },
+    //       { name: 'foo5' },
+    //       {
+    //         name: 'foo6',
+    //         items: [{ name: 'foo7' }]
+    //       }
+    //     ]
+    //   },
+    //   { name: 'foo8' }
+    // ];
     if (req.user) {
+      const user = await User.findById(req.user._id)
+        .populate('User')
+        .then(results => {
+          return results;
+        });
+      console.log(user);
       res.render('home', {
         user: req.user,
         children: user.children, //needs to be a nested object
@@ -39,12 +47,9 @@ router.get('/', async (req, res) => {
     } else {
       res.redirect('/login');
     }
+  } catch (err) {
+    console.log(err);
   }
-
-  catch(err){
-    console.log(err)
-  }
-
 });
 
 // 2
@@ -88,7 +93,6 @@ router.get('/logout', function(req, res) {
 });
 
 module.exports = router;
-
 
 //some work on recursion
 // func = (ob, depth) => {
