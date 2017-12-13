@@ -1,48 +1,48 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 const router = express.Router();
-const User = require("./../models/User");
-const mongoose = require("mongoose");
-const passport = require("passport");
+const User = require('./../models/User');
+const mongoose = require('mongoose');
+const passport = require('passport');
 
 // 1
-router.get("/", (req, res) => {
+router.get('/', (req, res) => {
   if (req.user) {
-    res.render("home", { user: req.user });
+    res.render('home', { user: req.user });
   } else {
-    res.redirect("/login");
+    res.redirect('/login');
   }
 });
 
 // 2
-router.get("/login", (req, res) => {
-  res.render("login");
+router.get('/login', (req, res) => {
+  res.render('login');
 });
 
-router.get("/register", (req, res) => {
-  res.render("register");
+router.get('/register', (req, res) => {
+  res.render('register');
 });
 
-router.get("/register/:id", (req, res) => {
-  res.render("register");
+router.get('/register/:id', (req, res) => {
+  res.render('register');
 });
 
 // 3
 router.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
+  '/login',
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
     failureFlash: true
   })
 );
-router.post("/register/:id", async (req, res, next) => {
+router.post('/register/:id', async (req, res, next) => {
   try {
     let { username, password } = req.body;
     let currentUser = new User({ username, password });
     currentUser.referrer = req.params.id;
 
-    console.log("========================CURRENTUSER", currentUser);
+    console.log('========================CURRENTUSER', currentUser);
     let user1 = await User.findById(req.params.id);
 
     user1.referTree.push({
@@ -53,9 +53,9 @@ router.post("/register/:id", async (req, res, next) => {
     await User.findByIdAndUpdate(user1.id, user1);
     await user1.save();
 
-    console.log("========================CURRENTUSERafterpush", currentUser);
+    console.log('========================CURRENTUSERafterpush', currentUser);
 
-    console.log("========================USER1", user1);
+    console.log('========================USER1', user1);
     if (user1.referrer) {
       let user2 = await User.findById(user1.referrer);
 
@@ -63,10 +63,10 @@ router.post("/register/:id", async (req, res, next) => {
         return x.id === user1.id;
       });
 
-      console.log("========================CURRENTUSERafterindex", currentUser);
-      console.log("========================USER1INDEX", user1index);
+      console.log('========================CURRENTUSERafterindex', currentUser);
+      console.log('========================USER1INDEX', user1index);
       console.log(
-        "========================USER2REFER.length",
+        '========================USER2REFER.length',
         user2.referTree.length
       );
 
@@ -76,22 +76,8 @@ router.post("/register/:id", async (req, res, next) => {
         username: currentUser.username,
         points: 20
       });
-      console.log(
-        "----------------" + user2.referTree + "----------------------"
-      );
-      console.log("----------------" + tempArray + "------------");
-      tempArray.forEach(x => {
-        user2.referTree.push(x);
-      });
-      // user2.referTree.push(tempArray.splice(0));
-      await User.findByIdAndUpdate(user2.id, user2);
 
-      console.log(
-        "========================CURRENTUSERaftersplice",
-        currentUser
-      );
-
-      console.log("========================USER2", user2);
+      console.log('========================USER2', user2);
 
       // if (user2.referrer) {
       //   let user3 = await User.findById(user2.referrer);
@@ -105,7 +91,7 @@ router.post("/register/:id", async (req, res, next) => {
         if (err) {
           return next(err);
         }
-        return res.redirect("/");
+        return res.redirect('/');
       });
     });
   } catch (e) {
@@ -114,7 +100,7 @@ router.post("/register/:id", async (req, res, next) => {
 });
 
 // 4
-router.post("/register", (req, res, next) => {
+router.post('/register', (req, res, next) => {
   const { username, password } = req.body;
   const user = new User({ username, password });
   user.save((err, user) => {
@@ -122,15 +108,15 @@ router.post("/register", (req, res, next) => {
       if (err) {
         return next(err);
       }
-      return res.redirect("/");
+      return res.redirect('/');
     });
   });
 });
 
 // 5
-router.get("/logout", function(req, res) {
+router.get('/logout', function(req, res) {
   req.logout();
-  res.redirect("/");
+  res.redirect('/');
 });
 
 module.exports = router;
