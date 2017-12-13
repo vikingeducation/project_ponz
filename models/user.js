@@ -9,7 +9,7 @@ const UserSchema = new Schema(
     lname: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     passwordHash: { type: String, required: true },
-    parentId: { type: String, required: true },
+    parentId: String,
     childIds: [
       {
         type: Schema.Types.ObjectId,

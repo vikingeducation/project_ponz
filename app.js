@@ -176,14 +176,20 @@ app.post(
 app.post("/register/:referral", (req, res, next) => {
   const { fname, lname, email, password } = req.body;
   const parentId = req.params.referral;
-  const user = new User({ fname, lname, email, password, parentId });
-  user.save(async err => {
-    await User.findByIdAndUpdate(parentId, {
-      $push: { childIds: user._id }
+  if (parentId === 0) {
+    const user = new User({ fname, lname, email, password });
+    user.save(err => {
+      res.redirect("/login");
     });
-    console.log(User.findById(parentId));
-    res.redirect("/login");
-  });
+  } else {
+    const user = new User({ fname, lname, email, password, parentId });
+    user.save(async err => {
+      await User.findByIdAndUpdate(parentId, {
+        $push: { childIds: user._id }
+      });
+      res.redirect("/login");
+    });
+  }
 });
 
 app.get("/logout", function(req, res) {
