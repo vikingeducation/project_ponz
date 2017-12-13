@@ -17,7 +17,32 @@ UtilsHelper.json = obj => JSON.stringify(obj, null, 2);
 
 
 UtilsHelper.eq = (a, b) => a == b;
+/*
+example usage
+{{#if (eq ../session.category category.id)}}...nonhandlebars...{{/if}}
 
+explanation
+{{#if (utilshelpername argument argument)}}...nonhandlebars...{{/if}}
+
+explanation
+../session.category
+../ means access all variables passed to handlebars and session is one of them
+*/
+
+// some thinking
+// UtilsHelper.recursive = (obj) => {
+//   if(obj.children == []){
+//     return obj
+//   }
+//
+//   obj.children.forEach(child => {
+//     recursive(child)
+//   })
+// }
+
+/*
+
+*/
 
 UtilsHelper.eql = (a, b) => a === b;
 
@@ -79,15 +104,3 @@ UtilsHelper.times = function(n, options) {
 
 
 module.exports = UtilsHelper;
-
-
-
-
-
-
-
-
-
-
-
-

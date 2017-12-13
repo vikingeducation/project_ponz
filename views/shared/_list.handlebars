@@ -1,0 +1,10 @@
+{{#each children as |child|}} {{! Each item is an "li" }}
+<li>
+    {{child.email}}
+    {{#if child.children.length}} {{! Within the context of the current item }}
+    <ul>
+    {{> shared/_list}} {{! Recursively render the partial }}
+    </ul>
+    {{/if}}
+</li>
+{{/each}}

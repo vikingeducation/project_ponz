@@ -8,7 +8,7 @@ const app = express();
 // ----------------------------------------
 // App Variables
 // ----------------------------------------
-app.locals.appName = 'My App';
+app.locals.appName = 'Ponzi.io';
 
 // ----------------------------------------
 // ENV
@@ -120,8 +120,12 @@ passport.deserializeUser(function(id, done) {
 // Routes
 // ----------------------------------------
 const home = require('./routers/home');
-
 app.use('/', home);
+
+const ponversion = require('./routers/ponversion');
+app.use('/ponvert', ponversion);
+
+
 
 // ----------------------------------------
 // Template Engine
@@ -131,7 +135,7 @@ const helpers = require('./helpers');
 
 const hbs = expressHandlebars.create({
   helpers: helpers,
-  partialsDir: 'views/',
+  partialsDir: 'views/', //this is how to use partials - any file in views can be rendered as a partial
   defaultLayout: 'application'
 });
 
