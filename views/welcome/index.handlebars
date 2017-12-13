@@ -28,10 +28,14 @@
     <tbody>
       {{#each currentUser.childIds as |ponzvert| }}
         <tr>
-          40 points: <strong>{{ponzvert.displayName}} </strong> <em>ponzverted on {{ponzvert.createdAt}}</em>
+          <td>
+            40 points: <strong>{{ponzvert.displayName}} </strong> <em>ponzverted on {{ponzvert.createdAt}}</em>
+          </td>
         </tr>
         <tr>
-          <span>     </span>20 points: <strong>{{ponzvert.displayName}} </strong> <em>ponzverted on {{ponzvert.createdAt}}</em>
+          <td>
+            <span class="tab">20 points: <strong>{{ponzvert.displayName}} </strong> <em>ponzverted on {{ponzvert.createdAt}}</em></span>
+          </td>
         </tr>
       {{/each }}
     </tbody>
