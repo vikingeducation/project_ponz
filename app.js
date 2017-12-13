@@ -176,7 +176,7 @@ app.post(
 app.post("/register/:referral", (req, res, next) => {
   const { fname, lname, email, password } = req.body;
   const parentId = req.params.referral;
-  if (parentId === 0) {
+  if (parentId === "0") {
     const user = new User({ fname, lname, email, password });
     user.save(err => {
       res.redirect("/login");
