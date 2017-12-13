@@ -7,22 +7,25 @@ const UserSchema = new Schema(
   {
     fname: { type: String, required: true },
     lname: { type: String, required: true },
-    displayName: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     passwordHash: { type: String, required: true },
-    parentId: { type: Integer, required: true },
+    parentId: { type: Number, required: true },
     childIds: [
       {
         type: Schema.Types.ObjectId,
         ref: "User"
       }
     ],
-    ponzPoints: Integer
+    ponzPoints: Number
   },
   {
     timestamps: true
   }
 );
+
+UserSchema.virtual("displayName").get(function() {
+  return this.fname + this.lname;
+});
 
 UserSchema.plugin(uniqueValidator);
 

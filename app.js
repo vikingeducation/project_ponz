@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const User = require("./models/user");
 
 // ----------------------------------------
 // Passport
@@ -156,7 +157,7 @@ app.get("/login", (req, res) => {
   res.render("login");
 });
 
-app.get("/register", (req, res) => {
+app.get("/register/:referral", (req, res) => {
   res.render("register");
 });
 
@@ -169,8 +170,9 @@ app.post(
   })
 );
 
-app.post("/register", (req, res, next) => {
+app.post("/register/:referral", (req, res, next) => {
   const { email, password } = req.body;
+  const parent = req.params.referral;
   const user = new User({ email, password });
   user.save(err => {
     res.redirect("/login");

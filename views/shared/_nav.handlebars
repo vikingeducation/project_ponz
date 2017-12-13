@@ -16,24 +16,24 @@
 
       {{!-- Nav Links Dropdown --}}
       <ul class="nav navbar-nav navbar-right">
+        {{#if currentUser}}
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             {{{ glyphicon "option-vertical" }}}
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="{{ rootPath }}">Link</a></li>
+            <li><a href="/logout">Logout</a></li>
           </ul>
         </li>
+        {{/if}}
       </ul>
 
       {{!-- Links --}}
-      <ul class="nav navbar-nav navbar-right">
+      <!-- <ul class="nav navbar-nav navbar-right">
         <li><a href="{{ rootPath }}">Link</a></li>
-      </ul>
+      </ul> -->
 
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-
-
