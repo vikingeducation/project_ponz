@@ -6,7 +6,7 @@
     <h4> Your referrer is {{referrer.username}} </h4>
   </div>
 <div class='panel'>
-    <h1>Ponz Pointz ${{points}}</h1>
+    <h1>Ponz Pointz ${{sum}}</h1>
   </div>
   <div class='panel'>
     <div class='panel-heading'>
@@ -14,5 +14,6 @@
     </div>
     <div class='panel-body'>
       {{#each userArray as |userguy|}}
-      <span class="badge badge-success">${{userguy.[0].[0]}}</span>
+      {{userguy.[0]}}
+      <span class="badge badge-success">${{userguy.[1]}}</span>
       {{/each}}
