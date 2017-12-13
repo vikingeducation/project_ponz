@@ -1,0 +1,10 @@
+<tr>
+  <td>
+    40 points: <strong>{{ponzvert.displayName}} </strong> <em>ponzverted on {{ponzvert.createdAt}}</em>
+  </td>
+</tr>
+{{#if ponzvert.childIds.length }}
+ {{#each ponzvert.childIds as |ponzvert|}}
+    {{>referral ponzvert=ponzvert}}
+ {{/each}}
+{{/if}}

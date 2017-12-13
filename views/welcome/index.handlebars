@@ -27,15 +27,16 @@
   <table class="table">
     <tbody>
       {{#each currentUser.childIds as |ponzvert| }}
-        <tr>
-          <td>
+        <!-- <tr> -->
+          <!-- <td>
             40 points: <strong>{{ponzvert.displayName}} </strong> <em>ponzverted on {{ponzvert.createdAt}}</em>
-          </td>
-        </tr>
+          </td> -->
+          {{>referral ponzvert=ponzvert}}
+        <!-- </tr> -->
         <tr>
-          <td>
+          <!-- <td>
             <span class="tab">20 points: <strong>{{ponzvert.displayName}} </strong> <em>ponzverted on {{ponzvert.createdAt}}</em></span>
-          </td>
+          </td> -->
         </tr>
       {{/each }}
     </tbody>
