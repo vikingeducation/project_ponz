@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-const uniqueValidator = require("mongoose-unique-validator");
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const uniqueValidator = require('mongoose-unique-validator');
 const Schema = mongoose.Schema;
 
 const UserSchema = Schema({
@@ -9,11 +9,10 @@ const UserSchema = Schema({
   referrer: { type: Schema.Types.ObjectId },
   referTree: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      name: String,
+      id: String,
+      username: String,
       points: Number,
-      date: Date
+      date: { type: Date, default: Date.now }
     }
   ]
 });
@@ -24,7 +23,7 @@ UserSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.passwordHash);
 };
 
-UserSchema.virtual("password")
+UserSchema.virtual('password')
   .get(function() {
     return this._password;
   })
@@ -33,6 +32,6 @@ UserSchema.virtual("password")
     this.passwordHash = bcrypt.hashSync(value, 8);
   });
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model('User', UserSchema);
 
 module.exports = User;

@@ -1,10 +1,10 @@
 <h1>Welcome {{user.username}}</h1>
 
-<div class='container-fluid'>
+ <div class='container-fluid'>
   <div class='card'>
-    Your referall link is <a href='/ponzvert/{{user.id}}'>http://localhost:3000/ponzvert/{{user.id}}</a>
+    Your referral link is <a href='/ponzvert/{{user.id}}'>http://localhost:3000/ponzvert/{{user.id}}</a>
   </div>
-  <div class='panel'>
+<div class='panel'>
     <h1>Ponz Pointz ${{points}}</h1>
   </div>
   <div class='panel'>
@@ -14,5 +14,4 @@
     <div class='panel-body'>
       {{#each userArray as |user|}}
       <span class="badge badge-success">${{points}}</span>
-  
-
+      {{/each}} 
