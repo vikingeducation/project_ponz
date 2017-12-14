@@ -1,18 +1,27 @@
-<h1>Welcome {{user.username}}</h1>
-
- <div class='container-fluid'>
-  <div class='card'>
-    <h2>Your referral link is <a href='/ponzvert/{{user.id}}'>http://localhost:3000/ponzvert/{{user.id}}</a></h2>
-    <h4> Your referrer is {{referrer.username}} </h4>
-  </div>
-<div class='panel'>
-    <h1>Ponz Pointz ${{sum}}</h1>
-  </div>
-  <div class='panel'>
-    <div class='panel-heading'>
-      <h4>Your Ponzverts</h4>
+<div class='container'>
+    <div class='panel panel-primary'>
+      <div class='container'>
+        <h3>Your referral link is <a href='/ponzvert/{{user.id}}'>http://localhost:3000/ponzvert/{{user.id}}</a></h3>
+        <p> Share this link with your friends to <i>ponvert</i> them!</p>
+      </div>
     </div>
-    <div class='panel-body' style="white-space: pre">
-      {{#each userArray as |userguy|}}
-       {{userguy.[2]}}{{userguy.[0]}}<span class="badge badge-success">${{userguy.[1]}}</span>
-     {{/each}}
+    <div class='panel' style='background: #5CB85C; color:#FFFFFF'>
+      <div class='container'>
+        <h1>Ponz Pointz: ${{sum}}</h1>
+      </div>
+    </div>
+    <div class='panel panel-default'>
+        <div class='panel-heading'>
+            <h4>Your Ponzverts</h4>
+        </div>
+        <div class='panel-body' style="white-space: pre">
+          {{#if userArray}}
+          {{#each userArray as |userguy|}}
+          {{userguy.[3]}}<span class="label label-success">${{userguy.[1]}}</span>  <b>{{userguy.[0]}}</b> <i>Ponzverted on: {{userguy.[2]}}</i><br>
+          {{/each}}
+        {{else}}
+          You have yet to ponzvert anyone.
+          {{/if}}
+        </div>
+    </div>
+</div>

@@ -26,7 +26,11 @@ const findTree = async function(user, distance) {
     //   let y = await findTree(x, distance + 1);
     //   return y;
     // });
-    recursiveArray.unshift([user.username, distance]);
+    recursiveArray.unshift([
+      user.username,
+      distance,
+      user.date.toString().substring(4, 15)
+    ]);
     return recursiveArray;
   }
 };
@@ -70,7 +74,7 @@ router.get("/", async (req, res) => {
     );
 
     userArray.forEach(
-      (x, i) => (userArray[i][2] = "   ".repeat(userArray[i][1]))
+      (x, i) => (userArray[i][3] = "    ".repeat(userArray[i][1]))
     );
 
     userArray.forEach((x, i) => (userArray[i][1] = calcPoints(x[1])));
