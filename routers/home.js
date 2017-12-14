@@ -7,7 +7,9 @@ const passport = require("passport");
 
 // 1
 const findTree = async function(user, distance) {
-  let usrArr = await User.find({ referrer: user._id });
+  let usrArr = await User.find({
+    referrer: user._id
+  });
   console.log("user", user, "userid", user._id);
   console.log(usrArr);
   if (usrArr === []) {
@@ -17,11 +19,9 @@ const findTree = async function(user, distance) {
     let temp;
     for (let i = 0; i < usrArr.length; i++) {
       temp = await findTree(usrArr[i], distance + 1);
-      temp.map(x => {
-        recursiveArray.push(x);
-      });
+      recursiveArray = recursiveArray.concat(temp);
     }
-    console.log("========================RECURSIVEARRAY", recursiveArray);
+    // console.log("========================RECURSIVEARRAY", recursiveArray);
     // let recursiveArray = await usrArr.map(async function(x) {
     //   let y = await findTree(x, distance + 1);
     //   return y;
@@ -36,7 +36,6 @@ const findTree = async function(user, distance) {
 };
 
 const calcPoints = distance => {
-  console.log(typeof distance);
   switch (distance) {
     case 1:
       return 40;
@@ -64,35 +63,50 @@ router.get("/", async (req, res) => {
   let userArray;
   let pointsArray;
   let sum = 0;
+  let levels;
   try {
     user = await User.findById(req.user.id);
     userArray = await findTree(user, 0);
     userArray.shift();
-    console.log(
-      "---------------------------------------------------------------------",
-      userArray
-    );
+    // console.log(
+    //   "---------------------------------------------------------------------",
+    //   userArray
+    // );
 
     userArray.forEach(
       (x, i) => (userArray[i][3] = "    ".repeat(userArray[i][1]))
     );
 
+    levels = [];
+    levels[0] = [0, 0, 1];
+    userArray.forEach(x => {
+      levels[x[1]] = levels[x[1]] || [0, 0, 0];
+      levels[x[1]][2] += 1;
+      // console.log(levels);
+    });
+    levels.forEach((x, i) => {
+      levels[i][0] = (i + 1) * 50;
+      levels[i][1] = ((levels.length - i) * 25);
+      levels[i][3] = ((levels.length + 1) * 25) - 5;
+    });
     userArray.forEach((x, i) => (userArray[i][1] = calcPoints(x[1])));
 
     userArray.forEach(x => (sum += x[1]));
+    sum -= user.pointsSpent;
 
     if (user.referrer) {
       referrer = await User.findById(user.referrer);
     }
 
-    // userArr = await User.findAll({ referrer: user._id });
-
-    // userArr.forEach(user => {
-    //   userArr1 = await User.findAll({referrer: user._id})
-    //   })
   } finally {
     if (req.user) {
-      res.render("home", { referrer, user, userArray, sum });
+      res.render("home", {
+        referrer,
+        user,
+        userArray,
+        sum,
+        levels
+      });
     } else {
       res.redirect("/login");
     }
@@ -123,8 +137,14 @@ router.post(
 );
 
 router.post("/register/:id", async (req, res, next) => {
-  let { username, password } = req.body;
-  let currentUser = new User({ username, password });
+  let {
+    username,
+    password
+  } = req.body;
+  let currentUser = new User({
+    username,
+    password
+  });
   currentUser.referrer = req.params.id;
   currentUser.save((err, user) => {
     req.login(user, function(err) {
@@ -138,8 +158,14 @@ router.post("/register/:id", async (req, res, next) => {
 
 // 4
 router.post("/register", (req, res, next) => {
-  const { username, password } = req.body;
-  const user = new User({ username, password });
+  const {
+    username,
+    password
+  } = req.body;
+  const user = new User({
+    username,
+    password
+  });
   user.save((err, user) => {
     req.login(user, function(err) {
       if (err) {

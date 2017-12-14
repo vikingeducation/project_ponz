@@ -1,14 +1,14 @@
 <div class='container'>
     <div class='panel panel-primary'>
-      <div class='container'>
-        <h3>Your referral link is <a href='/ponzvert/{{user.id}}'>http://localhost:3000/ponzvert/{{user.id}}</a></h3>
-        <p> Share this link with your friends to <i>ponvert</i> them!</p>
-      </div>
+        <div class='container'>
+            <h3>Your referral link is <a href='/ponzvert/{{user.id}}'>http://localhost:3000/ponzvert/{{user.id}}</a></h3>
+            <p> Share this link with your friends to <i>ponvert</i> them!</p>
+        </div>
     </div>
     <div class='panel' style='background: #5CB85C; color:#FFFFFF'>
-      <div class='container'>
-        <h1>Ponz Pointz: ${{sum}}</h1>
-      </div>
+        <div class='container'>
+            <h1>Ponz Pointz: ${{sum}}</h1>
+        </div>
     </div>
     <div class='panel panel-default'>
         <div class='panel-heading'>
@@ -16,12 +16,19 @@
         </div>
         <div class='panel-body' style="white-space: pre">
           {{#if userArray}}
-          {{#each userArray as |userguy|}}
-          {{userguy.[3]}}<span class="label label-success">${{userguy.[1]}}</span>  <b>{{userguy.[0]}}</b> <i>Ponzverted on: {{userguy.[2]}}</i><br>
-          {{/each}}
-        {{else}}
-          You have yet to ponzvert anyone.
+            {{#each userArray as |userguy|}}
+            {{userguy.[3]}} <span class="label label-success">${{userguy.[1]}}</span> <b>{{userguy.[0]}}</b> <i>Ponzverted on: {{userguy.[2]}}</i><br>
+            {{/each}}
+          {{else}}
+            You have yet to ponzvert anyone.
           {{/if}}
         </div>
     </div>
+    {{#each levels as |level|}}
+    <div style='border-bottom:25px solid blue; border-left:25px solid transparent; border-right: 25px solid transparent; width:{{level.[0]}}px; position: relative; left:{{level.[1]}}px;'>
+    </div>
+    <div style='z-axis: 9; color: #FFFFFF; position:relative; top: -20px; left:{{level.[3]}}px; height: 2px'>
+        {{level.[2]}}
+    </div>
+    {{/each}}
 </div>

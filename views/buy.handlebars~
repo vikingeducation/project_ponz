@@ -1,0 +1,8 @@
+<div class='container'>
+<h1>Isn't it delicious?</h1>
+<img height="160" width="160" src="/images/{{cereal.id}}.jpg">
+<h2>Om nom nom...<h2>
+<form action='/' method='get'>
+<input type='submit' class='btn btn-primary' value='Back Home'>
+</form>
+</div>

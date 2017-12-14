@@ -1,0 +1,10 @@
+<div class='container'>
+    <header class="page-header">
+        <h1>Cereal: {{ cereal.name }}</h1>
+        <h2>Price: {{ cereal.price }}</h2>
+        <img height="160" width="160" src="/images/{{cereal.id}}.jpg">
+        <br><br>
+        <form action='/shop/{{cereal.id}}/buy' method='get'>
+            <button class="btn btn-primary btn-sm">Buy</button>
+        </form>
+</div>
