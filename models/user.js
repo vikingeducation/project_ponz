@@ -1,16 +1,17 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const uniqueValidator = require('mongoose-unique-validator');
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const uniqueValidator = require("mongoose-unique-validator");
+var deepPopulate = require("mongoose-deep-populate")(mongoose);
 const Schema = mongoose.Schema;
 
 const UserSchema = mongoose.Schema(
   {
-    email: { type: String, required: false, unique: true },
-    passwordHash: { type: String, required: true },
-    parent: { type: Schema.Types.ObjectId, ref: 'User' },
-    children: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+    email: {type: String, required: false, unique: true},
+    passwordHash: {type: String, required: true},
+    parent: {type: Schema.Types.ObjectId, ref: "User"},
+    children: [{type: Schema.Types.ObjectId, ref: "User"}]
   },
-  { timestamps: true }
+  {timestamps: true}
 );
 
 UserSchema.plugin(uniqueValidator);
@@ -19,7 +20,7 @@ UserSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.passwordHash);
 };
 
-UserSchema.virtual('password')
+UserSchema.virtual("password")
   .get(function() {
     return this._password;
   })
@@ -28,6 +29,8 @@ UserSchema.virtual('password')
     this.passwordHash = bcrypt.hashSync(value, 8);
   });
 
-const User = mongoose.model('User', UserSchema);
+PostSchema.plugin(deepPopulate);
+
+const User = mongoose.model("User", UserSchema);
 
 module.exports = User;
