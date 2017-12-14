@@ -28,29 +28,31 @@ router.get('/', async (req, res, next) => {
                 populate : {
                   path : 'children'
                 }}}}})
-        // .populate(
-        //   {path: 'children'}.populate({path: 'children'})
-        // )
+        // repl test
+        // User.findById('5a31a8e52b0be70e6240ce30').populate({path : 'children', populate : {path : 'children', populate : { path : 'children', populate : { path : 'children', populate : { path : 'children'}}}}}).then(lg)
 
       console.log('user: ', user)
 
       let pointsCalc = (children, divisor) => { //[{}]
-        if(!divisor){
-          var divisor = 1
-          console.log('divisor set!');
+
+        if(children === undefined){
+          return 0
         }
 
         let points = 0;
-        if(divisor !== 1){
-          points += children.length / (2 * divisor)
+        if(!divisor){
+          var divisor = 1
+          console.log('divisor set!');
+          points += children.length
         } else {
-          console.log('points declared!')
-          points += 1
+          points += children.length / (divisor)
         }
 
-        if(children.children){ //if
-          points += pointsCalc(children.children, divisor + 1)
-        }
+        children.forEach((child) => {
+          console.log("\x1b[33m", 'child: ' + child)
+          //if
+          points += pointsCalc(child.children, divisor * 2)
+        })
 
         return points
       }
