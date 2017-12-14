@@ -175,17 +175,17 @@ app.post(
   })
 );
 
-app.post("/register/:referral", (req, res, next) => {
+app.post("/register/:referral", async (req, res, next) => {
   const { fname, lname, email, password } = req.body;
   const parentId = req.params.referral;
   if (parentId === "0") {
     const user = new User({ fname, lname, email, password });
-    user.save(err => {
+    await user.save(err => {
       res.redirect("/login");
     });
   } else {
     const user = new User({ fname, lname, email, password, parentId });
-    user.save(async err => {
+    await user.save(async err => {
       await User.findByIdAndUpdate(parentId, {
         $push: { childIds: user._id },
         $inc: { depth: 1 }
