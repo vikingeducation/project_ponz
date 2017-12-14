@@ -34,3 +34,8 @@ PostSchema.plugin(deepPopulate);
 const User = mongoose.model("User", UserSchema);
 
 module.exports = User;
+
+/*
+connecting to the mongodb database on heroku
+
+heroku addons:open MONGODB_URI
