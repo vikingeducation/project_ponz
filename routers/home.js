@@ -28,6 +28,17 @@ router.get('/', async (req, res, next) => {
                 populate : {
                   path : 'children'
                 }}}}})
+                .populate({
+                  path : 'parent',
+                  populate : {
+                    path : 'parent',
+                    populate : {
+                      path : 'parent',
+                      populate : {
+                        path : 'parent',
+                        populate : {
+                          path : 'parent'
+                        }}}}})
         // repl test
         // User.findById('5a31a8e52b0be70e6240ce30').populate({path : 'children', populate : {path : 'children', populate : { path : 'children', populate : { path : 'children', populate : { path : 'children'}}}}}).then(lg)
 
@@ -49,7 +60,6 @@ router.get('/', async (req, res, next) => {
         }
 
         children.forEach((child) => {
-          console.log("\x1b[33m", 'child: ' + child)
           //if
           points += pointsCalc(child.children, divisor * 2)
         })
@@ -57,8 +67,55 @@ router.get('/', async (req, res, next) => {
         return points
       }
 
-      console.log('user.children: ' + user.children)
-      let count = pointsCalc(user.children)//[{}]
+      let depth = async (obj) => {
+
+        try {
+          let depthNum = 0
+
+          let parent = obj.parent
+
+          if(parent){
+            depthNum += 1
+          } else {
+            depthNum += await depth(parent)
+          }
+
+          return depthNum
+          //
+          // let parent;
+          // console.log("\x1b[33m", 'parentid is ' + parentid)
+          // while(parentid){
+          //   parent = await User.findById(parentid)
+          //   parentid = parent.id
+          //   depthNum += 1
+          // }
+          //
+          // return depthNum
+        }
+
+        catch(err){
+          console.log(err);
+        }
+
+      }
+
+
+      // let num = await depth(user)
+      //
+      // let count;
+      // if(num === 0){
+      //   console.log("\x1b[33m", 'num is 0')
+      //   //[{}]
+      // } else {
+      //   console.log("\x1b[33m", num)
+      //   count = pointsCalc(user.children, num)//[{}]
+      // }
+      // //console.log("\x1b[33m", num);
+
+      let count = pointsCalc(user.children)
+
+      let somenum = await depth(user)
+      console.log("\x1b[33m", somenum);
 
       res.render('home', {
         user: req.user,
