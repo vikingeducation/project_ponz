@@ -107,8 +107,26 @@ console.log('passport stuff initialize')
 
 const LocalStrategy = require('passport-local').Strategy;
 
+//see this post on why local strategy was changed
+//https://stackoverflow.com/questions/34511021/passport-js-missing-credentials
+//old local strategy
+// passport.use(
+//   new LocalStrategy(function(email, password, done) {
+//     User.findOne({ email }, function(err, user) {
+//       if (err) return done(err);
+//       if (!user || !user.validPassword(password)) {
+//         return done(null, false, { message: 'Invalid email/password' });
+//       }
+//       return done(null, user);
+//     });
+//   })
+// );
+
 passport.use(
-  new LocalStrategy(function(email, password, done) {
+  new LocalStrategy({
+    usernameField: 'email',    
+    passwordField: 'password'
+  },function(email, password, done) {
     User.findOne({ email }, function(err, user) {
       if (err) return done(err);
       if (!user || !user.validPassword(password)) {
