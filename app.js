@@ -77,15 +77,6 @@ const morganToolkit = require('morgan-toolkit')(morgan)
 app.use(morganToolkit())
 
 // ----------------------------------------
-// Routes
-// ----------------------------------------
-// require Passport and the Local Strategy
-const passport = require('passport')
-app.use(passport.initialize())
-app.use(passport.session())
-
-const User = require('./models/User')
-// ----------------------------------------
 // Mongoose
 // ----------------------------------------
 var mongoose = require('mongoose')
@@ -96,6 +87,17 @@ app.use((req, res, next) => {
     require('./mongo')().then(() => next())
   }
 })
+
+// ----------------------------------------
+// Routes
+// ----------------------------------------
+// require Passport and the Local Strategy
+const passport = require('passport')
+app.use(passport.initialize())
+app.use(passport.session())
+
+// USER HAS TO BE AFTER MONGO
+const User = require('./models/User')
 
 // 2
 const LocalStrategy = require('passport-local').Strategy

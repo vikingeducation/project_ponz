@@ -22,21 +22,3 @@ require('./mongo')().then(() => {
     console.log(data)
   }
 })
-
-// ----------------------------------------
-// Libs
-// ----------------------------------------
-repl.context.lodash = lodash
-
-// ----------------------------------------
-// Helpers
-// ----------------------------------------
-repl.context.helpers = helpers
-Object.keys(helpers).forEach(key => {
-  repl.context[key] = helpers[key]
-})
-
-// ----------------------------------------
-// Logging
-// ----------------------------------------
-repl.context.lg = console.log

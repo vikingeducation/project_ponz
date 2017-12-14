@@ -5,8 +5,9 @@ const { User, Order, OrderItem, Product } = require('./../models')
 const mongoose = require('mongoose')
 const passport = require('passport')
 
-router.get('/shop', (req, res) => {
-  res.render('/shop')
+router.get('/', async (req, res) => {
+  let productArr = await Product.find({})
+  res.render('shop', { products: productArr })
 })
 
 module.exports = router

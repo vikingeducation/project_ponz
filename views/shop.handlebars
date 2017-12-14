@@ -1,0 +1,45 @@
+
+<header class="page-header text-center">
+  <h1>Products</h1>
+</header>
+
+<!-- <form action="/shop">
+  {{!-- Search --}}
+  <div class="form-group">
+    <label for="search_q">Search</label>
+    <input type="text" name="search[q]" id="search_q" class="form-control" value="{{ query.search.q }}">
+  </div>
+
+  {{!-- Submit --}}
+  <div class="form-group">
+    <input type="submit" class="btn btn-primary" value="Search Products">
+    {{#unless (isEmpty query) }}
+      <a href="{{ productsPath }}" class="btn btn-primary">Show All Products</a>
+    {{/unless }}
+  </div>
+</form> -->
+
+{{#if products.length }}
+<div class="row">
+  {{#each products as |product| }}
+    <div class="product text-center col-xs-4">
+      <h4>
+        <a href="/product{{id}}">
+        {{ product.name }}
+        </a>
+      </h4>
+      <h4 class="price">
+        ${{ product.price }}.00
+      </h4>
+      <p>{{ product.description }}</p>
+      <p>SKU:{{ product.sku }}</p>
+        <a href='#' class="btn btn-primary">
+          Add to Cart
+        </a>
+    </div>
+  {{/each }}
+</div>
+
+{{else }}
+  <h2 class="text-danger">No Products Yet. Check Back Later</h2>
+{{/if }}
