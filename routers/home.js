@@ -49,6 +49,8 @@ router.get("/", async (req, res, next) => {
       // User.findById('5a32b7dcdf1c7b0004a94d0d').populate({path : 'parent', populate : {path : 'parent', populate : { path : 'parent', populate : { path : 'parent', populate : { path : 'parent'}}}}}).populate({path: "children",populate: { path: "children", populate: { path: "children", populate: { path: "children", populate: { path: "children" } } } } }).then(lg)
       // new id: 5a32a490c302790004b2d67c
       // User.findById('5a32a490c302790004b2d67c').populate({path : 'parent', populate : {path : 'parent', populate : { path : 'parent', populate : { path : 'parent', populate : { path : 'parent'}}}}}).populate({path: "children",populate: { path: "children", populate: { path: "children", populate: { path: "children", populate: { path: "children" } } } } }).then(lg)
+      // User.deepPopulate('children parent').then(lg);
+
       let depthCount = user => {
         let depth = 0;
         if (user.parent) {
