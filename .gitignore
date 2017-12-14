@@ -7,8 +7,5 @@ npm-debug.log
 
 
 # ----------------------------------------
-# ENV
+# ENV now included for heroku deployment
 # ----------------------------------------
-.env
-
-
