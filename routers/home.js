@@ -8,8 +8,9 @@ const passport = require('passport');
 // 1
 const findTree = async function(user, distance) {
   let usrArr = await User.find({ referrer: user._id });
-  console.log('user', user, 'userid', user._id);
-  console.log(usrArr);
+  console.log('====================User', user, 'userid', user._id);
+  console.log('============================UserArray', usrArr);
+  //Base case means usrArr is empty, or there is no referrer
   if (usrArr === []) {
     return [user.username, distance];
   } else {
@@ -17,16 +18,24 @@ const findTree = async function(user, distance) {
     let temp;
     for (let i = 0; i < usrArr.length; i++) {
       temp = await findTree(usrArr[i], distance + 1);
+      //need to map to prevent nested arrays
       temp.map(x => {
         recursiveArray.unshift(x);
       });
     }
-    console.log('========================RECURSIVEARRAY', recursiveArray);
+    console.log(
+      '========================RecursiveArrayBeforeUnshift',
+      recursiveArray
+    );
     // let recursiveArray = await usrArr.map(async function(x) {
     //   let y = await findTree(x, distance + 1);
     //   return y;
     // });
     recursiveArray.unshift([user.username, distance]);
+    console.log(
+      '========================RecursiveArrayAfterUnshift',
+      recursiveArray
+    );
     return recursiveArray;
   }
 };
@@ -62,30 +71,29 @@ router.get('/', async (req, res) => {
   let sum = 0;
   try {
     user = await User.findById(req.user.id);
-    userArray = await findTree(user, 0);
-    userArray.shift();
-    console.log(
-      '---------------------------------------------------------------------',
-      userArray
-    );
 
+    //recursively find array of users that is one flat level in terms of hierarchy
+    userArray = await findTree(user, 0);
+
+    //need to remove current user from the array
+    userArray.shift();
+
+    console.log('========================finalUserArray', userArray);
+
+    //white space
     userArray.forEach(
       (x, i) => (userArray[i][2] = '   '.repeat(userArray[i][1]))
     );
 
+    //replace distance with appropriate points
     userArray.forEach((x, i) => (userArray[i][1] = calcPoints(x[1])));
 
+    //calculate total sum
     userArray.forEach(x => (sum += x[1]));
 
     if (user.referrer) {
       referrer = await User.findById(user.referrer);
     }
-
-    // userArr = await User.findAll({ referrer: user._id });
-
-    // userArr.forEach(user => {
-    //   userArr1 = await User.findAll({referrer: user._id})
-    //   })
   } finally {
     if (req.user) {
       res.render('home', { referrer, user, userArray, sum });
