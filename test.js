@@ -16,3 +16,28 @@ hello;
 
 
 making a change
+
+
+a - depth 0
+
+aa - depth 1
+
+aaa - depth 2
+
+
+view for points
+
+
+<div>
+  {{#if currentUser.ponzPoints.length }}
+    <table class="table">
+      <tbody>
+          <tr>
+            <h3>Ponz Pointz {{currentUser.ponzPoints}}</h3>
+          </tr>
+      </tbody>
+    </table>
+  {{else }}
+    <p class="text-danger">You have no Ponz Points yet. You're poor.</p>
+  {{/if }}
+</div>

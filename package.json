@@ -1,13 +1,15 @@
 {
   "name": "project_ponz",
   "version": "1.0.0",
-  "description": "Building Ponz.io, with its endearingly upside-down-triangle-shaped business model.",
+  "description":
+    "Building Ponz.io, with its endearingly upside-down-triangle-shaped business model.",
   "main": "app.js",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",

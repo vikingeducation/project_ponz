@@ -146,8 +146,28 @@ app.get("/", async (req, res) => {
       ).deepPopulate(
         "childIds.childIds.childIds.childIds.childIds.childIds.childIds.childIds"
       );
+
+      // getting points
+
+      let points = 0;
+
+      function getPoints(user, pointLevel) {
+        if (user.childIds.length === 0) {
+          return 0;
+        } else {
+          points += user.childIds.length * pointLevel;
+          user.childIds.forEach(childUser => {
+            let newPointLevel = Math.ceil(pointLevel / 2);
+            getPoints(childUser, newPointLevel);
+          });
+        }
+        return points;
+      }
+      points = getPoints(currentUser, 40);
+      // -----------------
       res.render("welcome/index", {
-        currentUser: currentUser
+        currentUser: currentUser,
+        points
       });
     } else {
       res.redirect("/login");
@@ -175,24 +195,26 @@ app.post(
   })
 );
 
+// find out how many parents referral has
+// set depth accord to that
+//
+//
+
 app.post("/register/:referral", async (req, res, next) => {
   const { fname, lname, email, password } = req.body;
   const parentId = req.params.referral;
   if (parentId === "0") {
     const user = new User({ fname, lname, email, password });
-    await user.save(err => {
-      res.redirect("/login");
-    });
+    await user.save(err => {});
   } else {
     const user = new User({ fname, lname, email, password, parentId });
-    await user.save(async err => {
-      await User.findByIdAndUpdate(parentId, {
-        $push: { childIds: user._id },
-        $inc: { depth: 1 }
-      });
-      res.redirect("/login");
+    await user.save();
+    await User.findByIdAndUpdate(parentId, {
+      $push: { childIds: user._id },
+      $inc: { depth: 1 }
     });
   }
+  res.redirect("/login");
 });
 
 app.get("/logout", function(req, res) {
