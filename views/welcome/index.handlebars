@@ -13,17 +13,22 @@
   <h4>PonzPoints: {{points}}</h2>
 </div>
 
+
 <div>
   <h3>Your Ponzverts</h3>
 {{#if currentUser.childIds.length }}
-  <table class="table">
-    <tbody>
+<ul >
       {{#each currentUser.childIds as |ponzvert| }}
           {{>referral ponzvert=ponzvert}}
       {{/each }}
-    </tbody>
-  </table>
+</ul>
 {{else }}
   <p class="text-danger">You have no Ponzverts yet. Get Ponzverting now!</p>
 {{/if }}
 </div>
+
+
+{{#each pyramid as |tier|}}
+  
+
+{{/each}}

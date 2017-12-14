@@ -1,10 +1,12 @@
-<tr>
-  <td>
-    40 points: <strong>{{ponzvert.displayName}} </strong> <em>ponzverted on {{ponzvert.createdAt}}</em>
-  </td>
-</tr>
-{{#if ponzvert.childIds.length }}
- {{#each ponzvert.childIds as |ponzvert|}}
-    {{>referral ponzvert=ponzvert}}
- {{/each}}
-{{/if}}
+
+
+<li >
+
+  <span class='label label-success'>{{pointsCalculator ponzvert.depth}} points</span>: <strong>{{ponzvert.displayName}} </strong> <em>ponzverted on {{mmddyy ponzvert.createdAt}}</em>
+
+  {{#if ponzvert.childIds.length }}
+   {{#each ponzvert.childIds as |ponzvert|}}
+      <ul >{{>referral ponzvert=ponzvert}}</ul>
+   {{/each}}
+  {{/if}}
+</li>

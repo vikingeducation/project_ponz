@@ -1,3 +1,11 @@
-.tab {
-  margin-left: 20px;
+li {
+  list-style-type: none;
+}
+
+ul {
+  list-style-type: none;
+}
+
+ul ul {
+  margin-left: -20px;
 }

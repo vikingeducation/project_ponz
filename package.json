@@ -1,8 +1,7 @@
 {
   "name": "project_ponz",
   "version": "1.0.0",
-  "description":
-    "Building Ponz.io, with its endearingly upside-down-triangle-shaped business model.",
+  "description": "Building Ponz.io, with its endearingly upside-down-triangle-shaped business model.",
   "main": "app.js",
   "directories": {
     "lib": "lib"
@@ -36,6 +35,7 @@
     "load-helpers": "^1.0.1",
     "lodash": "^4.17.4",
     "method-override": "^2.3.10",
+    "moment": "^2.19.4",
     "mongoose": "^4.13.7",
     "mongoose-deep-populate": "^3.0.0",
     "mongoose-unique-validator": "^1.0.6",

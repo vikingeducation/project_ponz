@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const User = require("./models/user");
+const _ = require("lodash");
 
 // ----------------------------------------
 // Passport
@@ -138,13 +139,16 @@ passport.deserializeUser(function(id, done) {
 // ----------------------------------------
 // Routes
 // ----------------------------------------
+
+// user homepage
+
 app.get("/", async (req, res) => {
   try {
     if (req.session.passport && req.session.passport.user) {
       let currentUser = await User.findById(
         req.session.passport.user
       ).deepPopulate(
-        "childIds.childIds.childIds.childIds.childIds.childIds.childIds.childIds"
+        "childIds.childIds.childIds.childIds.childIds.childIds.childIds.childIds.childIds.childIds"
       );
 
       // getting points
@@ -164,10 +168,47 @@ app.get("/", async (req, res) => {
         return points;
       }
       points = getPoints(currentUser, 40);
+
       // -----------------
+
+      // setting depths
+
+      let layers = 1;
+      let pyramid = {};
+
+      function setDepth(user, depthLevel) {
+        user.childIds.forEach(childUser => {
+          childUser.depth = depthLevel;
+
+          //populating pyramid with {tier:number of ponverts} while we're here
+          pyramid[depthLevel] = pyramid[depthLevel] || 0;
+          pyramid[depthLevel] = parseInt(pyramid[depthLevel]) + 1;
+
+          let newdepthLevel = depthLevel + 1;
+          setDepth(childUser, newdepthLevel);
+        });
+      }
+
+      setDepth(currentUser, layers);
+      // -----------------
+
+      // determining highest level of tier for pyramid
+      pyramid["max"] = Object.keys(pyramid)
+        .map(el => parseInt(el))
+        .reduce((a, b) => {
+          return Math.max(a, b);
+        });
+      pyramid.range = _.range(pyramid.max + 1);
+      pyramid.range.shift();
+
+      console.log("-----------pyramid-----------");
+      console.log(pyramid);
+      console.log("-----------pyramid-----------");
+
       res.render("welcome/index", {
         currentUser: currentUser,
-        points
+        points,
+        pyramid
       });
     } else {
       res.redirect("/login");
@@ -177,13 +218,10 @@ app.get("/", async (req, res) => {
   }
 });
 
+// login
+
 app.get("/login", (req, res) => {
   res.render("login");
-});
-
-app.get("/register/:referral", (req, res) => {
-  let path = req.params.referral;
-  res.render("register", { path });
 });
 
 app.post(
@@ -195,10 +233,12 @@ app.post(
   })
 );
 
-// find out how many parents referral has
-// set depth accord to that
-//
-//
+// sign up
+
+app.get("/register/:referral", (req, res) => {
+  let path = req.params.referral;
+  res.render("register", { path });
+});
 
 app.post("/register/:referral", async (req, res, next) => {
   const { fname, lname, email, password } = req.body;
@@ -210,8 +250,7 @@ app.post("/register/:referral", async (req, res, next) => {
     const user = new User({ fname, lname, email, password, parentId });
     await user.save();
     await User.findByIdAndUpdate(parentId, {
-      $push: { childIds: user._id },
-      $inc: { depth: 1 }
+      $push: { childIds: user._id }
     });
   }
   res.redirect("/login");
