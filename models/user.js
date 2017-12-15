@@ -9,7 +9,9 @@ const UserSchema = mongoose.Schema(
     email: {type: String, required: false, unique: true},
     passwordHash: {type: String, required: true},
     parent: {type: Schema.Types.ObjectId, ref: "User"},
-    children: [{type: Schema.Types.ObjectId, ref: "User"}]
+    children: [{type: Schema.Types.ObjectId, ref: "User"}],
+    point: {type: String, required: false},
+    depth: {type: Number, required: false}
   },
   {timestamps: true}
 );

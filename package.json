@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Seeker0/project_ponz#readme",
   "dependencies": {
+    "auto-bind": "^1.1.0",
     "bcrypt": "^1.0.3",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
