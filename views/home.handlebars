@@ -24,11 +24,17 @@
           {{/if}}
         </div>
     </div>
-    {{#each levels as |level|}}
-    <div style='border-bottom:25px solid blue; border-left:25px solid transparent; border-right: 25px solid transparent; width:{{level.[0]}}px; position: relative; left:{{level.[1]}}px;'>
+    <div class='panel panel-default'>
+        <div class='panel-heading'>
+            <h2>Pyramid of Opportunity</h2>
+        </div>
+        <div class='panel-body'>
+            {{#each levels as |level|}}
+            <div style='border-bottom:25px solid blue; border-left:25px solid transparent; border-right: 25px solid transparent; width:{{level.[0]}}px; position: relative; left:{{level.[1]}}px;'>
+            </div>
+            <div style='z-axis: 9; color: #FFFFFF; position:relative; top: -20px; left:{{level.[3]}}px; height: 2px'>
+                {{level.[2]}}
+            </div>
+            {{/each}}
+        </div>
     </div>
-    <div style='z-axis: 9; color: #FFFFFF; position:relative; top: -20px; left:{{level.[3]}}px; height: 2px'>
-        {{level.[2]}}
-    </div>
-    {{/each}}
-</div>
