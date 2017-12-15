@@ -1,0 +1,38 @@
+{
+  "name": "project_ponz",
+  "version": "1.0.0",
+  "description": "Building Ponz.io, with its endearingly upside-down-triangle-shaped business model.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maddiereddy/project_ponz.git"
+  },
+  "author": "Maddie Rajavasireddy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maddiereddy/project_ponz/issues"
+  },
+  "homepage": "https://github.com/maddiereddy/project_ponz#readme",
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.2",
+    "express-flash": "0.0.2",
+    "express-handlebars": "^3.0.0",
+    "express-method-override-get-post-support": "^1.0.0",
+    "express-session": "^1.15.6",
+    "method-override": "^2.3.10",
+    "mongoose": "^4.13.7",
+    "mongoose-unique-validator": "^1.0.6",
+    "morgan": "^1.9.0",
+    "morgan-toolkit": "^1.0.2",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
+  }
+}
