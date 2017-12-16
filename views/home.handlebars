@@ -23,4 +23,14 @@
       {{child.[3]}}<span class="badge badge-success">${{child.[1]}}</span><strong>{{child.[0]}}</strong><em> ponzverted on {{child.[2]}}</em>
     {{/each}}
   </div>
-</div>
+
+
+{{#if pyramidArr.length}}
+ <h4>Pyramid of Opportunity</h4>
+ <div id="tree">
+{{#each pyramidArr as |level|}}
+    <p class='row' style="width: {{level}}%" align="center"><font size='3'><strong>{{level.[1]}}</strong></font></p>
+{{/each}}
+  </div>
+{{/if}}
+ </div>

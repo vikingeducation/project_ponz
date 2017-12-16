@@ -13,17 +13,17 @@ const findTree = async function (user, distance, date) {
   console.log('====================User', user, 'userid', user._id)
   console.log('============================UserArray', usrArr)
   // base case means there is no children
-  if (usrArr === []) {
-    return [user.username, distance, user.date]
-  } else {
+  //if (usrArr === []) {
+   // return [user.username, distance, user.date]
     let recursiveArray = []
     let temp
     for (let i = 0; i < usrArr.length; i++) {
       temp = await findTree(usrArr[i], distance + 1)
+      recursiveArray = recursiveArray.concat(temp)
       // need to map to prevent nested arrays
-      temp.map(x => {
-        recursiveArray.push(x) // push to make sure "children" are listed after the "parent"
-      })
+      // temp.map(x => {
+      //   recursiveArray.push(x) // push to make sure "children" are listed after the "parent"
+      // })
     }
     console.log(
       '========================RecursiveArrayBeforeUnshift',
@@ -34,6 +34,8 @@ const findTree = async function (user, distance, date) {
     //   let y = await findTree(x, distance + 1);
     //   return y;
     // });
+
+    // get parent back since we only pushed the children
     recursiveArray.unshift([user.username, distance, user.date])
     console.log(
       '========================RecursiveArrayAfterUnshift',
@@ -60,16 +62,48 @@ const calcPoints = distance => {
   }
 }
 
+const pyramid = userArr => {
+  // pyramidObj will have key of distance and the number of elements in each distance and width for rendering
+  let pyramidObj = {}
+  let pyramidArr
+
+  userArr.forEach((e, i) => {
+    if (pyramidObj[e[1]][0]) {
+      pyramidObj[e[1]][0] += 1
+    } else {
+      pyramidObj[e[1]][0] = 1
+    }
+  })
+
+  let numRows = Object.keys(pyramidObj).length
+  let amount = numRows
+
+  // for (let i = 0; i < numRows; i++) {
+  //   pyramidObj[i][1] = (100 / amount)
+  //   amount--
+  // }
+
+  pyramidArr = Object.entries(pyramidObj)
+
+  return pyramidArr
+}
+
 router.get('/', async (req, res) => {
   let user
   let referrer
   let userArray
   let sum = 0
+  let pyramidArr
   try {
     user = await User.findById(req.user.id)
 
     // recursively find array of users that is one flat level in terms of hierarchy
     userArray = await findTree(user, 0)
+
+    // before replace distance with points, make triangle
+    pyramidArr = pyramid(userArray)
+
+    console.log('========================', pyramidArr)
 
     // need to remove current user from the array
     userArray.shift()
@@ -98,7 +132,7 @@ router.get('/', async (req, res) => {
     }
   } finally {
     if (req.user) {
-      res.render('home', { referrer, user, userArray, sum })
+      res.render('home', { referrer, user, userArray, sum, pyramidArr })
     } else {
       res.redirect('/login')
     }
