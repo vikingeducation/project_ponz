@@ -51,7 +51,6 @@ passport.use(
     },
     function(email, password, done) {
     User.findOne({ email }, function(err, user) {
-      console.log("User in passport: " + user);
       if (err) return done(err);
       if (!user || !user.validPassword(password))
         return done(null, false, { message: "Invalid email/password" });

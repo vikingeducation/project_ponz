@@ -1,2 +1,26 @@
-<h1>Hey Ponzvert! {{user.email}}</h1>
-  
+<h3 style="color:green">Welcome, {{user.fname}} {{user.lname}}</h3>
+<br>
+<div class="card border-success">
+  <div class="card-body">
+  	<p>Your referral link is: 
+    	<a href="http://localhost:4000/ponzvert/{{ user.id }}">http://localhost:4000/ponzvert/{{ user.id }}</a>
+  	</p>
+  	<p>
+  		Share this link with your friends to <i>ponzvert</i> them!
+  	</p>
+  </div>
+</div>
+<div class="card text-white bg-success">
+  <div class="card-body">
+  	Your Ponz Pointz: ${{user.points}}
+  </div>
+</div>
+<br>
+<div class="card border-success">
+	<div class="card-header bg-success text-white">
+		Your List of Ponzverts:
+	</div>
+  <div class="card-body">
+  	
+  </div>
+</div>

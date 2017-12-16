@@ -7,7 +7,6 @@ var User = mongoose.model("User");
 
 const passport = require("passport");
 
-
 // login view
 router.get("/login", (req, res) => {
 	res.render("login");
@@ -26,7 +25,7 @@ router.get("/logout", function(req, res) {
 
 // login as existing user
 router.post(
-	"/login",
+	"/login",  
 	passport.authenticate("local", {
 		successRedirect: "/",
 		failureRedirect: "/login",
@@ -35,10 +34,9 @@ router.post(
 );
 
 router.post("/register", (req, res, next) => {
-	const { email, password } = req.body;
-	const user = new User({ email, password, points: 0 });
+	const { email, password, fname, lname } = req.body;
+	const user = new User({ email, password, fname, lname, points: 0 });
 	user.save((err, user) => {
-		console.log("User in router: " + user);
 		req.login(user, function(err) {
 			if (err) {
 				return next(err);
