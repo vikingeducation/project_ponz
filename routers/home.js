@@ -10,29 +10,18 @@ const findTree = async function(user, distance) {
   let usrArr = await User.find({
     referrer: user._id
   });
-  console.log("user", user, "userid", user._id);
-  console.log(usrArr);
-  if (usrArr === []) {
-    return [user.username, distance];
-  } else {
-    let recursiveArray = [];
-    let temp;
-    for (let i = 0; i < usrArr.length; i++) {
-      temp = await findTree(usrArr[i], distance + 1);
-      recursiveArray = recursiveArray.concat(temp);
-    }
-    // console.log("========================RECURSIVEARRAY", recursiveArray);
-    // let recursiveArray = await usrArr.map(async function(x) {
-    //   let y = await findTree(x, distance + 1);
-    //   return y;
-    // });
-    recursiveArray.unshift([
-      user.username,
-      distance,
-      user.date.toString().substring(4, 15)
-    ]);
-    return recursiveArray;
+  let recursiveArray = [];
+  let temp;
+  for (let i = 0; i < usrArr.length; i++) {
+    temp = await findTree(usrArr[i], distance + 1);
+    recursiveArray = recursiveArray.concat(temp);
   }
+  recursiveArray.unshift([
+    user.username,
+    distance,
+    user.date.toString().substring(4, 15)
+  ]);
+  return recursiveArray;
 };
 
 const calcPoints = distance => {
@@ -86,8 +75,8 @@ router.get("/", async (req, res) => {
     });
     levels.forEach((x, i) => {
       levels[i][0] = (i + 1) * 50;
-      levels[i][1] = ((levels.length - i) * 25);
-      levels[i][3] = ((levels.length + 1) * 25) - 5;
+      levels[i][1] = (levels.length - i) * 25;
+      levels[i][3] = (levels.length + 1) * 25 - 5;
     });
     userArray.forEach((x, i) => (userArray[i][1] = calcPoints(x[1])));
 
@@ -97,7 +86,6 @@ router.get("/", async (req, res) => {
     if (user.referrer) {
       referrer = await User.findById(user.referrer);
     }
-
   } finally {
     if (req.user) {
       res.render("home", {
@@ -137,10 +125,7 @@ router.post(
 );
 
 router.post("/register/:id", async (req, res, next) => {
-  let {
-    username,
-    password
-  } = req.body;
+  let { username, password } = req.body;
   let currentUser = new User({
     username,
     password
@@ -158,10 +143,7 @@ router.post("/register/:id", async (req, res, next) => {
 
 // 4
 router.post("/register", (req, res, next) => {
-  const {
-    username,
-    password
-  } = req.body;
+  const { username, password } = req.body;
   const user = new User({
     username,
     password
