@@ -1,0 +1,38 @@
+.navbar-header {
+  width: 100%;
+}
+
+#referral-info {
+  border: 1px solid #0877bd;
+  padding: 10px 0 10px 30px;
+  border-radius: 5px;
+}
+
+#current-points {
+  color: #fff;
+  background-color: #16c152;
+  border-radius: 5px;
+  margin: 20px 0;
+  padding: 10px 0 10px 30px;
+}
+
+.thin-text {
+  font-weight: 100;
+}
+
+#ponsverts {
+  padding: 0;
+}
+
+.label-pill {
+  width: 25px !important;
+  display: inline-block !important;
+}
+
+ul.ponverts {
+  list-style: none;
+}
+
+li {
+  margin-bottom: 10px;
+}

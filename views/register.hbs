@@ -1,0 +1,28 @@
+<h3 class="text-center text-primary">{{referringUser.fullName}} is racking on the Ponz Points! So can you...</h3>
+<hr>
+<div class="col-sm-6 col-sm-offset-3">
+  <div class="panel panel-default">
+    <div class="panel-heading">Register</div>
+    <div class="panel-body">
+
+      <form action="/ponzvert" method="post">
+        <input type="hidden" name="referralCode" value="{{referringUser.referralCode}}">
+        <div class="form-group">
+          <input type="text" name="fullName" placeholder="Full Name" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <input type="email" name="email" placeholder="Email" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <input type="password" name="password" placeholder="Password" class="form-control" required>
+        </div>
+        <button class="btn btn-default">Register</button>
+      </form>
+
+    </div>
+
+    <div class="panel-footer">
+      <a href="/login">Or Log In</a>
+    </div>
+  </div>
+</div>

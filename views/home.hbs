@@ -1,0 +1,25 @@
+<div class="container">
+  <h2>{{currentUser.fullName}}</h2>
+  <section id="referral-info" class="col-sm-12">
+    <h4>Your referral link is: <span class="text-primary">http://www.ponz.io/ponzvert/{{currentUser.referralCode}}</span></h4>
+    <p>Share this link with your friends to <i>ponvert</i> them!</p>
+  </section>
+
+  <section id="current-points" class="col-sm-12">
+    <h1><span class="thin-text">Ponz Points:</span> {{currentUser.points}}</h1>
+  </section>
+
+  <section id="ponsverts" class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">Your Ponzverts</div>
+      <div class="panel-body">
+
+        {{#if (any user.referrals)}}
+          {{> shared/_referral referringUser=user user=user}}
+        {{else}}
+          <h5>You have not ponzverted anyone yet</h5>
+        {{/if}}
+      </div>
+    </div>
+  </section>
+</div>
