@@ -1,0 +1,13 @@
+{
+  "development": {
+    "database": "project_ponz",
+    "host": "localhost"
+  },
+  "test": {
+    "database": "project_ponz",
+    "host": "localhost"
+  },
+  "production": {
+    "use_env_variable": "MONGODB_URI"
+  }
+}

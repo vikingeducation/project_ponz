@@ -1,0 +1,36 @@
+<h1>Welcome, {{user.username}}</h1>
+<div class='container-fluid'>
+  <div class='panel panel-success'>
+    <div class='panel-heading'>
+      <h1>Ponz Pointz ${{sum}}</h1></div>
+  </div>
+
+  <h2><a href='/shop'> TREAT YOURSELF AT OUR HOLIDAY SHOP! </a></h2>
+  <hr style="width: 100%; color: black; height: 1px; background-color:black;" />
+  <h3> Your referral link is <a href='/ponzvert/{{user.id}}'>http://localhost:3000/ponzvert/{{user.id}}</a></h3>
+  {{#if referrer.username}}
+    <h4> Your referrer is {{referrer.username}} </h4>
+  {{else}}
+    <h4> You have no referrer. You are the MASTERMIND!!!! </h4>
+  {{/if}}
+
+  <hr style="width: 100%; color: black; height: 1px; background-color:black;" />
+
+
+  <h4>Your Ponzverts</h4>
+    <div style="white-space: pre">
+    {{#each userArray as |child|}}
+      {{child.[3]}}<span class="badge badge-success">${{child.[1]}}</span><strong>{{child.[0]}}</strong><em> ponzverted on {{child.[2]}}</em>
+    {{/each}}
+  </div>
+
+
+{{#if pyramidArr.length}}
+ <h4>Pyramid of Opportunity</h4>
+ <div id="tree">
+{{#each pyramidArr as |level|}}
+    <p class='row' style="width: {{level}}%" align="center"><font size='3'><strong>{{level.[1]}}</strong></font></p>
+{{/each}}
+  </div>
+{{/if}}
+ </div>
