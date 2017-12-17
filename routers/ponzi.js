@@ -9,7 +9,7 @@ const passport = require("passport");
 
 router.get("/", (req, res, next) => {
 	if (req.user) {	
-	  res.render("home", { user: req.user });
+	  res.render("home", { user: req.user, children: req.user.children });
   } else {
 		res.redirect("/login");
 	}

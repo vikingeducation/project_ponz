@@ -1,0 +1,13 @@
+{{#each children }} 
+	<li>
+	    <span style="color:white; border:1px solid green; border-radius:7px; background-color:green; font-size:14px; padding: 1px">${{ points }} </span>&nbsp;&nbsp;
+	    <strong>{{ fname }} {{ lname }}</strong> <i>ponverted on </i>
+	    <span style="font-size: 15px">{{ formatDate createdAt }}</span>
+	    
+	    {{#if children}} 
+		    <ul style="list-style-type: none;">
+		      {{> childview }} 
+		    </ul>
+	    {{/if}}
+	</li>
+{{/each}}

@@ -3,6 +3,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const expressSession = require("express-session");
 const flash = require("express-flash");
+const moment = require("moment");
 
 // User and Mongoose code
 const mongoose = require("mongoose");
@@ -92,7 +93,12 @@ var expressHandlebars = require('express-handlebars');
 
 var hbs = expressHandlebars.create({
   partialsDir: 'views/',
-  defaultLayout: 'application'
+  defaultLayout: 'application',
+  helpers: {
+    formatDate: function(date) {
+      return moment(date).format("MMM Do YY, h:mm:ss a");
+    }
+  }
 });
 
 app.engine('handlebars', hbs.engine);
@@ -105,6 +111,10 @@ app.use("/", loginRouter);
 
 var ponziRouter = require("./routers/ponzi");
 app.use("/", ponziRouter);
+
+var schemeRouter = require("./routers/scheme");
+app.use("/", schemeRouter);
+
 
 let port = 4000;
 app.listen(port, (res, req) => {
