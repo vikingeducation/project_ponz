@@ -1,0 +1,10 @@
+{{#each children as |child|}} {{! Each item is an "li" }}
+<li>
+    Refering <strong>{{child.email}}</strong> got you <strong>{{child.point}}</strong> points
+    {{#if child.children.length}} {{! Within the context of the current item }}
+    <ul>
+    {{> shared/_list children=child.children }} {{! Recursively render the partial }}
+    </ul>
+    {{/if}}
+</li>
+{{/each}}
