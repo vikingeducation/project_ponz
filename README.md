@@ -24,8 +24,8 @@ Challenges:
 
 ## Demo
 
-![Alt text](./1.png?raw=true "Title")
-![Alt text](./2.png?raw=true "Title")
+![Alt text](./images/1.png?raw=true "Title")
+![Alt text](./images/2.png?raw=true "Title")
 
 ## Deployment
 
