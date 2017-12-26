@@ -21,7 +21,6 @@ class triangle {
   }
 
   func(obj) {
-    console.log(obj);
   }
 
   objToArr() {
