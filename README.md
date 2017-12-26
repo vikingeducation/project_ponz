@@ -20,7 +20,7 @@ Key Technologies used:
 - ExpressJS
 
 Challenges:
-- Display of Users referred (i.e. create the 'nesting' of users referred by user's referrals see ) -> utilized a 'deep populate' function from Mongoose (similar to a SQL join) and a recursive function to determine the 'depth'/'nesting' of users 
+- Display of Users referred (i.e. create the 'nesting' of users referred by user's referrals see picture 2) -> utilized a 'deep populate' function from Mongoose (similar to a SQL join) and a recursive function to determine the 'depth'/'nesting' of users 
 
 ## Demo
 
