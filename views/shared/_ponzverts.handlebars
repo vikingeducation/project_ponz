@@ -1,0 +1,11 @@
+{{#each children as |child|}}
+<li class="ponzvert">
+  <span class="badge pull-left">${{originalUserPoints ../distance}}</span>
+  <strong>{{child.username}}</strong> <em>ponverted on {{formatDate child.createdAt}}</em>
+  {{#if child.children.length}}
+  <ul>
+    {{> shared/_ponzverts children=child.children distance=(increment ../distance)}}
+  </ul>
+  {{/if}}
+</li>
+{{/each}}

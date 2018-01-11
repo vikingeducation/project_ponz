@@ -1,8 +1,9 @@
-const app = require('express')();
+const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const expressSession = require('express-session');
 const flash = require('express-flash');
+const app = express();
 
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,11 +31,15 @@ app.use((req, res, next) => {
   }
 });
 
+app.use(express.static(`${__dirname}/public`));
+
 const expressHandlebars = require('express-handlebars');
+const helpers = require('./helpers');
 
 const hbs = expressHandlebars.create({
   partialsDir: 'views/',
-  defaultLayout: 'application'
+  defaultLayout: 'application',
+  helpers: helpers.registered
 });
 
 app.engine('handlebars', hbs.engine);
@@ -49,7 +54,6 @@ app.use(passport.session());
 passport.use(
   new LocalStrategy(function(username, password, done) {
     User.findOne({ username }, function(err, user) {
-      console.log(user);
       if (err) return done(err);
       if (!user || !user.validPassword(password)) {
         return done(null, false, { message: 'Invalid username/password' });
