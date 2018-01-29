@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="row">
+        {{#each result as |product|}}
+        <div class="col-md-3">
+            <div class='panel panel-primary'>
+                <div class='panel-heading'>
+                    <p>
+                        {{product.name}}
+                    </p>
+                </div>
+                <div class=' panel-body '>
+                    <img height="160" width="160" src="/images/{{product.id}}.jpg">
+                    <p>Name: <br><a href='/shop/{{product._id}} '>{{product.name}}</a></p>
+                    <p>Price: ${{product.price}}</p>
+                    <form action='/shop/{{product.id}}/buy ' method='get '>
+                        <button class="btn btn-primary btn-sm">Buy</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>

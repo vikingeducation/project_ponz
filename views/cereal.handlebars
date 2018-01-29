@@ -1,0 +1,16 @@
+<div class='container'>
+    <div class='panel panel-primary'>
+        <div class='panel-heading'>
+            <h2>{{cereal.name}}</h2>
+        </div>
+        <div class='panel-body'>
+            <h1>Cereal: {{ cereal.name }}</h1>
+            <h2>Price: ${{ cereal.price }}</h2>
+            <img height="160" width="160" src="/images/{{cereal.id}}.jpg">
+            <br><br>
+            <form action='/shop/{{cereal.id}}/buy' method='get'>
+                <button class="btn btn-primary btn-sm">Buy</button>
+            </form>
+        </div>
+    </div>
+</div>

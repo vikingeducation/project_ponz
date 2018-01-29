@@ -1,0 +1,7 @@
+<div class='container'>
+<h1>You are too poor for this, peasant!</h1>
+<h2>Go ponzvert more followers to get access to our delicious cereals!</h2>
+<form action='/' method='get'>
+<input type='submit' class='btn btn-primary' value='Back Home'>
+</form>
+</div>
