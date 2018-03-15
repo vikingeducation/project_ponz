@@ -41,3 +41,12 @@ view for points
     <p class="text-danger">You have no Ponz Points yet. You're poor.</p>
   {{/if }}
 </div>
+
+
+
+ghetto hardcoded triangle
+
+<div class='arrow-up'>{{#each pyramid}}
+<p><font color='white'>{{this}}</font></p>
+
+{{/each}}</div>

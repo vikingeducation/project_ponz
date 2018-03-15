@@ -152,7 +152,6 @@ app.get("/", async (req, res) => {
       );
 
       // getting points
-
       let points = 0;
 
       function getPoints(user, pointLevel) {
@@ -168,13 +167,11 @@ app.get("/", async (req, res) => {
         return points;
       }
       points = getPoints(currentUser, 40);
-
       // -----------------
 
       // setting depths
-
       let layers = 1;
-      let pyramid = {};
+      let pyramid = { 0: 1 };
 
       function setDepth(user, depthLevel) {
         user.childIds.forEach(childUser => {
@@ -192,14 +189,9 @@ app.get("/", async (req, res) => {
       setDepth(currentUser, layers);
       // -----------------
 
-      // determining highest level of tier for pyramid
-      pyramid["max"] = Object.keys(pyramid)
-        .map(el => parseInt(el))
-        .reduce((a, b) => {
-          return Math.max(a, b);
-        });
-      pyramid.range = _.range(pyramid.max + 1);
-      pyramid.range.shift();
+      pyramid.max = Object.keys(pyramid).reduce((a, b) => {
+        return Math.max(a, b);
+      });
 
       console.log("-----------pyramid-----------");
       console.log(pyramid);

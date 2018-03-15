@@ -9,3 +9,16 @@ ul {
 ul ul {
   margin-left: -20px;
 }
+
+p {
+  margin-top: 5px;
+  border-bottom: 1px solid white;
+}
+
+.arrow-up {
+  width: 0;
+  height: 0;
+  border-left: 275px solid transparent;
+  border-right: 275px solid transparent;
+  border-bottom: 275px solid #2383ea;
+}
