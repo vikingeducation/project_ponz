@@ -1,0 +1,55 @@
+<h1>Welcome, {{currentUser.displayName}}!</h1>
+
+<div class='well well-sm'>
+  <h3>Your referral link is: <a href='/register/{{currentUser._id}}'>http://www.ponz.io/register/{{currentUser._id}}</a></h3>
+
+  <p>
+    Share this link with your <strong>friends</strong> to <em>ponvert</em> them!
+  </p>
+</div>
+
+
+<div class='well well-sm'>
+  <h4>PonzPoints: {{points}}</h2>
+</div>
+
+
+<div>
+  <h3>Your Ponzverts</h3>
+{{#if currentUser.childIds.length }}
+<ul >
+      {{#each currentUser.childIds as |ponzvert| }}
+          {{>referral ponzvert=ponzvert}}
+      {{/each }}
+</ul>
+{{else }}
+  <p class="text-danger">You have no Ponzverts yet. Get Ponzverting now!</p>
+{{/if }}
+</div>
+
+
+
+
+
+
+<!-- <div class='arrow-up'>{{#each pyramid}}
+<p><font color='white'>{{this}}</font></p>
+
+{{/each}}</div>
+
+
+
+
+
+<script>
+var length1 = {{pyramid.max}} * 70;
+
+console.log(length1)
+
+$(".arrow-up").css({
+  "border-left": length1*scale + "px solid transparent",
+  "border-right": length1*scale + "px solid transparent",
+  "border-bottom": length1*scale + "px solid blue"
+});
+
+</script> -->
