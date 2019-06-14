@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-primary">
+      <div class="panel-body">
+        <h4>Your referral link is <a href="http://localhost:3000/register/{{user.id}}">http://www.ponz.io/ponzvert/{{user.id}}</a>.</h4>
+        Share this link with your friends to <em>ponvert</em> them!
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-success">
+      <div class="panel-body panel-ponz">
+        <h1><span id="ponz-heading">Ponz Points&trade;&nbsp;</span> ${{user.points}}.00</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Your Ponzverts</h3>
+      </div>
+      {{#if user.children.length}}
+      <ul id="ponzverts">
+        {{> shared/_ponzverts children=user.children distance=0}}
+      {{/if}}
+      </ul>
+    </div>
+  </div>
+</div>
